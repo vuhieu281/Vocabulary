@@ -1,6 +1,11 @@
 <?php
 // views/word-detail.php - Trang hiển thị chi tiết từ vựng
 
+// Khởi động session trước khi có output
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Lấy ID từ URL
 $word_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
@@ -83,6 +88,26 @@ if (!$word_data) {
         }
         .back-btn:hover {
             background: #0b5ed7;
+        }
+        .save-btn {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: background 0.2s;
+        }
+        .save-btn:hover {
+            background: #218838;
+        }
+        .save-btn.saved {
+            background: #ff9800;
+        }
+        .save-btn.saved:hover {
+            background: #fb8c00;
         }
         .audio-section {
             display: flex;
@@ -188,6 +213,7 @@ if (!$word_data) {
                 <?php endif; ?>
             </div>
             <button class="back-btn" onclick="history.back();">← Quay lại</button>
+            <button class="save-btn" id="save-btn" onclick="toggleSaveWord();">💾 Lưu từ</button>
         </div>
 
         <!-- Meaning Section -->
@@ -241,6 +267,15 @@ if (!$word_data) {
     </div>
 
     <script>
+        // Biến lưu trữ trạng thái từ
+        let wordId = <?php echo $word_id; ?>;
+        let isSaved = false;
+
+        // Load trạng thái lưu từ khi trang tải
+        document.addEventListener('DOMContentLoaded', function() {
+            checkIfWordSaved();
+        });
+
         // Hàm phát âm
         function playAudio(audioUrl) {
             const audio = new Audio(audioUrl);
@@ -248,6 +283,60 @@ if (!$word_data) {
                 console.error('Lỗi phát âm:', error);
                 alert('Không thể phát âm');
             });
+        }
+
+        // Hàm kiểm tra từ đã được lưu chưa
+        function checkIfWordSaved() {
+            fetch(`../api/check_saved_word.php?word_id=${wordId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        isSaved = data.is_saved;
+                        updateSaveButton();
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi kiểm tra từ đã lưu:', error);
+                });
+        }
+
+        // Hàm toggle lưu/bỏ lưu từ
+        function toggleSaveWord() {
+            const action = isSaved ? 'remove' : 'save';
+            
+            fetch('../api/save_word.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `word_id=${wordId}&action=${action}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    isSaved = data.is_saved;
+                    updateSaveButton();
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi lưu từ:', error);
+                alert('Có lỗi xảy ra');
+            });
+        }
+
+        // Hàm cập nhật giao diện nút lưu
+        function updateSaveButton() {
+            const btn = document.getElementById('save-btn');
+            if (isSaved) {
+                btn.classList.add('saved');
+                btn.textContent = '⭐ Đã lưu';
+            } else {
+                btn.classList.remove('saved');
+                btn.textContent = '💾 Lưu từ';
+            }
         }
     </script>
 

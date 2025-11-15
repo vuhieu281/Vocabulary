@@ -126,10 +126,11 @@ class Word {
      */
     public function getSavedWords($userId) {
         $sql = "
-            SELECT lw.word 
+            SELECT lw.id, lw.word, lw.part_of_speech
             FROM saved_words sw
             JOIN local_words lw ON lw.id = sw.local_word_id
             WHERE sw.user_id = ?
+            ORDER BY sw.saved_at DESC
         ";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$userId]);

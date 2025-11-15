@@ -146,6 +146,114 @@
         color: #b30000;
         background: #ffe5e5;
     }
+
+    .search-history-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        background: #eef4ff;
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+
+    .history-word-info {
+        cursor: pointer;
+        flex: 1;
+    }
+
+    .history-word-info:hover {
+        color: #1d65c1;
+    }
+
+    .history-word-name {
+        font-weight: 600;
+        color: #1d65c1;
+        font-size: 16px;
+    }
+
+    .history-word-type {
+        font-size: 12px;
+        color: #666;
+        margin-top: 2px;
+    }
+
+    .history-time {
+        font-size: 12px;
+        color: #999;
+        margin-right: 10px;
+    }
+
+    .btn-delete-history {
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .btn-delete-history:hover {
+        background: #ff5252;
+    }
+
+    .btn-clear-history {
+        width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+
+    .btn-clear-history:hover {
+        background: #ff6c6c;
+    }
+
+    .saved-word-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        background: #eef4ff;
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+
+    .saved-word-info {
+        cursor: pointer;
+        flex: 1;
+    }
+
+    .saved-word-info:hover {
+        color: #1d65c1;
+    }
+
+    .saved-word-name {
+        font-weight: 600;
+        color: #1d65c1;
+        font-size: 16px;
+    }
+
+    .saved-word-type {
+        font-size: 12px;
+        color: #666;
+        margin-top: 2px;
+    }
+
+    .btn-unsave-word {
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .btn-unsave-word:hover {
+        background: #ff5252;
+    }
+
 </style>
 
 
@@ -174,12 +282,32 @@
         <?php if (empty($savedWords)): ?>
             <p>Bạn chưa lưu từ nào.</p>
         <?php else: ?>
-            <ul>
+            <div id="saved-words-container">
                 <?php foreach ($savedWords as $w): ?>
-                    <li><?= $w['word'] ?></li>
+                    <div class="saved-word-item">
+                        <div class="saved-word-info" onclick="viewWord(<?= $w['id'] ?>)">
+                            <div class="saved-word-name"><?= htmlspecialchars($w['word']) ?></div>
+                            <div class="saved-word-type"><?= htmlspecialchars($w['part_of_speech'] ?? '') ?></div>
+                        </div>
+                        <button class="btn-unsave-word" onclick="unsaveWord(<?= $w['id'] ?>)">Bỏ lưu</button>
+                    </div>
                 <?php endforeach; ?>
-            </ul>
+            </div>
         <?php endif; ?>
+    </div>
+
+    <!-- ================= LỊCH SỬ TÌM KIẾM ================= -->
+    <div class="section">
+        <h3>
+            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1995/1995467.png">
+            Lịch sử tìm kiếm
+        </h3>
+
+        <div id="search-history-container">
+            <p>Đang tải lịch sử tìm kiếm...</p>
+        </div>
+
+        <button class="btn btn-clear-history" style="background: #ff4e4e; margin-top: 15px;">Xóa toàn bộ lịch sử</button>
     </div>
 
     <!-- ================= KẾT QUẢ QUIZ ================= -->
@@ -240,4 +368,132 @@
 
 </div>
 
+<script>
+    // Load search history khi page tải
+    document.addEventListener('DOMContentLoaded', function() {
+        loadSearchHistory();
+        
+        // Xử lý nút Xóa toàn bộ lịch sử
+        document.querySelector('.btn-clear-history').addEventListener('click', function() {
+            if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử tìm kiếm?')) {
+                clearAllHistory();
+            }
+        });
+    });
+
+    function loadSearchHistory() {
+        fetch('../api/get_search_history.php?limit=50')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Search history data:', data);
+                const container = document.getElementById('search-history-container');
+                
+                if (!data.success || data.data.length === 0) {
+                    container.innerHTML = '<p>Bạn chưa tìm kiếm từ nào.</p>';
+                    return;
+                }
+
+                let html = '<div>';
+                data.data.forEach(item => {
+                    const date = new Date(item.searched_at);
+                    const timeStr = date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN');
+                    
+                    html += `
+                        <div class="search-history-item">
+                            <div class="history-word-info" onclick="viewWord(${item.word_id})">
+                                <div class="history-word-name">${escapeHtml(item.word)}</div>
+                                <div class="history-word-type">${escapeHtml(item.part_of_speech || '')}</div>
+                            </div>
+                            <div class="history-time">${timeStr}</div>
+                            <button class="btn-delete-history" onclick="deleteHistory(${item.id})">Xóa</button>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+                container.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading search history:', error);
+                document.getElementById('search-history-container').innerHTML = '<p style="color:red;">Lỗi khi tải lịch sử tìm kiếm</p>';
+            });
+    }
+
+    function deleteHistory(historyId) {
+        if (confirm('Bạn có chắc muốn xóa mục này?')) {
+            fetch('../api/delete_search_history.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'id=' + historyId
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadSearchHistory(); // Reload danh sách
+                } else {
+                    alert('Không thể xóa mục này');
+                }
+            });
+        }
+    }
+
+    function clearAllHistory() {
+        // Tạo API xóa toàn bộ - tham khảo phần bên dưới
+        fetch('../api/clear_all_search_history.php', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadSearchHistory(); // Reload danh sách
+                alert('Đã xóa toàn bộ lịch sử tìm kiếm');
+            } else {
+                alert('Lỗi: ' + data.message);
+            }
+        });
+    }
+
+    function viewWord(wordId) {
+        window.location.href = '../views/word-detail.php?id=' + wordId;
+    }
+
+    function escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    function unsaveWord(wordId) {
+        if (confirm('Bạn có chắc muốn bỏ lưu từ này?')) {
+            fetch('../api/save_word.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'word_id=' + wordId + '&action=remove'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload(); // Reload trang để cập nhật
+                } else {
+                    alert('Lỗi: ' + data.message);
+                }
+            });
+        }
+    }
+
+    function viewWord(wordId) {
+        window.location.href = '../views/word-detail.php?id=' + wordId;
+    }
+</script>
+
 <?php include_once __DIR__ . '/../footer.php'; ?>
+</script>

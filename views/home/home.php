@@ -37,15 +37,9 @@
         <div id="search-results" class="search-results" style="display:none;"></div>
     </div>
     <div class="suggest-section">
-        <h2>Gợi ý từ khóa phổ biến</h2>
-        <ul class="suggest-list">
-            <li>love</li>
-            <li>success</li>
-            <li>challenge</li>
-            <li>opportunity</li>
-            <li>growth</li>
-            <li>friendship</li>
-            <li>motivation</li>
+        <h2>Tìm kiếm gần đây</h2>
+        <ul class="suggest-list" id="recent-searches">
+            <li>Đang tải...</li>
         </ul>
     </div>
 </div>
@@ -59,10 +53,41 @@
     const searchBtn = document.getElementById('search-btn');
     const searchResultsDiv = document.getElementById('search-results');
     const suggestionBox = document.getElementById('suggestion-box');
-    const suggestList = document.querySelectorAll('.suggest-list li');
+    const recentSearchesList = document.getElementById('recent-searches');
 
     let autocompleteTimeout;
     let isSearchActive = false;
+
+    // Load recent searches khi page tải
+    document.addEventListener('DOMContentLoaded', function() {
+        loadRecentSearches();
+    });
+
+    // Hàm load tìm kiếm gần đây
+    function loadRecentSearches() {
+        fetch('../api/get_recent_searches.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.length > 0) {
+                    recentSearchesList.innerHTML = '';
+                    data.data.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item.word;
+                        li.addEventListener('click', () => {
+                            searchInput.value = item.word;
+                            performSearch(item.word);
+                            suggestionBox.classList.remove('active');
+                        });
+                        recentSearchesList.appendChild(li);
+                    });
+                } else {
+                    recentSearchesList.innerHTML = '<li>Chưa có tìm kiếm nào</li>';
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi load tìm kiếm gần đây:', error);
+            });
+    }
 
     // Toggle search mode
     function toggleSearchMode(active) {
@@ -133,15 +158,6 @@
             performSearch(searchInput.value);
             suggestionBox.classList.remove('active');
         }
-    });
-
-    // Tìm kiếm khi click vào gợi ý từ khóa
-    suggestList.forEach(item => {
-        item.addEventListener('click', () => {
-            searchInput.value = item.textContent;
-            performSearch(item.textContent);
-            suggestionBox.classList.remove('active');
-        });
     });
 
     // Ẩn suggestion-box khi click bên ngoài
@@ -316,8 +332,26 @@
         // TODO: Implement filter logic later
     }
 
-    // Hàm chọn từ vựng - điều hướng đến trang chi tiết từ
+    // Hàm chọn từ vựng - lưu search history và điều hướng đến trang chi tiết từ
     function selectWord(wordId) {
+        console.log('Saving search history for word:', wordId);
+        // Gửi request lưu search history (nếu user đã đăng nhập)
+        fetch('../api/save_search_history.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'word_id=' + wordId
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Search history saved:', data);
+        })
+        .catch(error => {
+            console.error('Error saving search history:', error);
+        });
+
+        // Điều hướng đến trang chi tiết từ
         window.location.href = `../views/word-detail.php?id=${wordId}`;
     }
 

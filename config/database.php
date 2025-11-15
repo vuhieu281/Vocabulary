@@ -1,6 +1,6 @@
 <?php
 class Database {
-    private $host = "localhost:3366";
+    private $host = "localhost";
     private $db_name = "vocabulary_db";
     private $username = "root";
     private $password = "";
@@ -15,14 +15,11 @@ class Database {
                 $this->username,
                 $this->password
             );
-
             // Cài đặt charset UTF-8
             $this->conn->exec("SET NAMES utf8");
-
         } catch (PDOException $e) {
             echo "Kết nối thất bại: " . $e->getMessage();
         }
-
         return $this->conn;
     }
 
