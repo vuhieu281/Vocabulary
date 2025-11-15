@@ -1,12 +1,19 @@
 <?php
 // models/Word.php - Model để quản lý dữ liệu từ vựng
 
+require_once __DIR__ . '/../config/database.php';
+
 class Word {
     private $db;
     private $table = 'local_words';
 
-    public function __construct($db) {
-        $this->db = $db;
+    // Accept an optional PDO instance for flexibility (works with both patterns)
+    public function __construct($db = null) {
+        if ($db) {
+            $this->db = $db;
+        } else {
+            $this->db = (new Database())->connect();
+        }
     }
 
     /**
@@ -22,7 +29,7 @@ class Word {
     }
 
     /**
-     * Tìm kiếm từ vựng theo từ khóa (bắt đầu với keyword)
+     * Tìm kiếm từ vựng theo từ khóa
      */
     public function search($keyword, $limit = 10, $offset = 0) {
         $keyword = trim($keyword) . '%';
@@ -30,18 +37,18 @@ class Word {
                   WHERE word LIKE :keyword 
                   ORDER BY word ASC 
                   LIMIT :limit OFFSET :offset";
-        
+
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':keyword', $keyword, PDO::PARAM_STR);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
-        
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Tìm kiếm từ chính xác
+     * Lấy từ chính xác
      */
     public function searchExact($word) {
         $query = "SELECT * FROM " . $this->table . " WHERE word = :word";
@@ -70,34 +77,34 @@ class Word {
                   WHERE level = :level 
                   ORDER BY word ASC 
                   LIMIT :limit OFFSET :offset";
-        
+
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':level', $level, PDO::PARAM_STR);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
-        
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Đếm tổng số từ vựng theo từ khóa
+     * Đếm số từ tìm được
      */
     public function countSearch($keyword) {
         $keyword = '%' . trim($keyword) . '%';
-        $query = "SELECT COUNT(*) as total FROM " . $this->table . " 
+        $query = "SELECT COUNT(*) AS total FROM " . $this->table . " 
                   WHERE word LIKE :keyword OR senses LIKE :keyword";
-        
+
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':keyword', $keyword, PDO::PARAM_STR);
         $stmt->execute();
-        
+
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
     }
 
     /**
-     * Gợi ý tìm kiếm (Autocomplete) - tìm từ bắt đầu bằng term
+     * Gợi ý autocomplete
      */
     public function autocomplete($term, $limit = 10) {
         $term = trim($term) . '%';
@@ -105,13 +112,42 @@ class Word {
                   WHERE word LIKE :term 
                   ORDER BY word ASC 
                   LIMIT :limit";
-        
+
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':term', $term, PDO::PARAM_STR);
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
-        
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Lấy từ đã lưu của user
+     */
+    public function getSavedWords($userId) {
+        $sql = "
+            SELECT lw.word 
+            FROM saved_words sw
+            JOIN local_words lw ON lw.id = sw.local_word_id
+            WHERE sw.user_id = ?
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Lấy kết quả quiz của user
+     */
+    public function getQuizResults($userId) {
+        $sql = "
+            SELECT * 
+            FROM quiz_results
+            WHERE user_id = ?
+            ORDER BY created_at DESC
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$userId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-?>

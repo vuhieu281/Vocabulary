@@ -1,25 +1,33 @@
 <?php
 class Database {
-    private $host = "localhost";
+    private $host = "localhost:3366";
     private $db_name = "vocabulary_db";
     private $username = "root";
     private $password = "";
     public $conn;
 
-    public function getConnection() {
+    public function connect() {
         $this->conn = null;
+
         try {
             $this->conn = new PDO(
-                "mysql:host=".$this->host.";dbname=".$this->db_name,
+                "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
                 $this->username,
                 $this->password
             );
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->conn->exec("set names utf8");
-        } catch(PDOException $exception) {
-            echo "Connection error: " . $exception->getMessage();
+
+            // Cài đặt charset UTF-8
+            $this->conn->exec("SET NAMES utf8");
+
+        } catch (PDOException $e) {
+            echo "Kết nối thất bại: " . $e->getMessage();
         }
+
         return $this->conn;
     }
+
+    // Backwards-compatible alias for older code that expects getConnection()
+    public function getConnection() {
+        return $this->connect();
+    }
 }
-?>

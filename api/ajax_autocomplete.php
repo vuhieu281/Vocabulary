@@ -8,9 +8,9 @@ require_once '../models/Word.php';
 
 // Kết nối database
 $database = new Database();
-$db = $database->getConnection();
+$db = $database->connect();
 
-// Khởi tạo model Word
+// Khởi tạo model Word (Word constructor accepts an optional PDO)
 $word = new Word($db);
 
 // Lấy tham số từ request
