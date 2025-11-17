@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechBook</title>
+    <style>
+      /* Header */
+      .header {
+        background-color: #000;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        padding: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px; /* Thêm chiều cao cố định */
+      }
+
+      .header h1 {
+        margin: 0;
+        line-height: 1; /* Thêm line-height */
+      }
+
+      .header h1 a {
+        text-decoration: none;
+        font-size: 28px;
+        font-weight: 600;
+        color: #ffffff;
+        display: block; /* Thêm display block */
+        padding: 0; /* Reset padding */
+      }
+
+      .header .nav {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+      }
+
+      .header .nav a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+        padding: 8px 0;
+        position: relative;
+      }
+
+      .header .nav a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #ffffff;
+        transition: width 0.3s ease;
+      }
+
+      .header .nav a:hover::after {
+        width: 100%;
+      }
+
+      .header .account {
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Icon-only navigation styles */
+      .nav .icon-only {
+        font-size: 1.2rem;
+        padding: 0.7rem;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+      }
+
+      .nav .icon-only:nth-of-type(1) {
+        right: 120px;
+      }
+      .nav .icon-only:nth-of-type(2) {
+        right: 70px;
+      }
+      .nav .icon-only:nth-of-type(3) {
+        right: 20px;
+      }
+
+      .nav .icon-only span {
+        display: none;
+      }
+
+      .nav .icon-only:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: scale(1.1);
+      }
+
+      /* Style cho nút đăng nhập */
+      .nav .login-btn {
+        position: fixed;
+        right: 20px;
+      }
+      /* Reset CSS */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Body */
+      .body {
+        padding: 40px 80px; /* Increased side padding */
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .search-filter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        max-width: 1200px;
+      }
+
+      .search-form {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+        max-width: 800px;
+      }
+
+      .search-group {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .search-input {
+        flex: 1;
+        max-width: 70%;
+      }
+
+      .search-input input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .filter-container {
+        min-width: 200px;
+      }
+
+      .filter-container select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .search-group input {
+        flex: 1;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .search-group select {
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        min-width: 150px;
+      }
+
+      .search-group button {
+        padding: 12px 25px;
+        background: #000;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .search-group button:hover {
+        background-color: #333;
+      }
+
+      .search-filter .search-input {
+        flex: 1;
+        max-width: 300px; /* Increased from 200px */
+      }
+
+      .search-filter input {
+        padding: 12px 15px; /* Increased padding */
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 100%;
+        font-size: 15px; /* Increased from 14px */
+      }
+
+      .search-filter select {
+        padding: 12px 15px; /* Increased padding */
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 15px; /* Increased from 14px */
+        margin-left: 20px; /* Increased from 15px */
+        cursor: pointer;
+        min-width: 180px; /* Increased from 150px */
+      }
+
+      .search-filter select:hover {
+        border-color: #000;
+      }
+      .reviews {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 50px; /* Increased gap between cards */
+        margin: 40px 0; /* Added margin top and bottom */
+      }
+      .review-card {
+        background: white;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.2s;
+        display: block;
+      }
+      .review-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .review-card .stars {
+        color: #ffc107;
+        margin-bottom: 10px;
+      }
+      .review-card .store-name {
+        font-size: 1.2em;
+        color: #333;
+        margin: 0 0 5px 0;
+      }
+      .review-card .store-address {
+        color: #666;
+        font-size: 0.9em;
+        margin-bottom: 10px;
+      }
+      .review-card .review-content {
+        color: #444;
+        line-height: 1.4;
+        margin-bottom: 15px;
+      }
+      .review-card .review-meta {
+        display: flex;
+        justify-content: space-between;
+        color: #888;
+        font-size: 0.85em;
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+      }
+      .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      .pagination a {
+        padding: 8px 12px;
+        text-decoration: none;
+        color: black;
+        background: white;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .pagination a.active {
+        background-color: #000;
+        color: white;
+      }
+
+      .pagination a:hover:not(.active) {
+        background-color: #f5f5f5;
+      }
+      /* Footer */
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 60px 20px 20px;
+        margin-top: auto; /* Đẩy footer xuống dưới cùng */
+      }
+
+      .footer .content {
+        max-width: 900px;
+        margin: 0 auto 20px; /* Giảm margin bottom */
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 40px;
+      }
+
+      .footer .section {
+        min-width: 0;
+      }
+
+      .footer .section h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer .section p {
+        margin: 10px 0;
+        line-height: 1.6;
+        color: #ccc;
+      }
+
+      .footer .section a {
+        color: #ccc;
+        text-decoration: none;
+        display: block;
+        margin: 10px 0;
+        transition: color 0.3s ease;
+      }
+
+      .footer .section a:hover {
+        color: #fff;
+        text-decoration: none;
+        padding-left: 5px;
+      }
+
+      .footer .policy {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 0; /* Đảm bảo không có khoảng trắng dưới cùng */
+      }
+
+      .footer .policy a {
+        color: #ccc;
+        text-decoration: none;
+        margin: 0 20px;
+        transition: color 0.3s ease;
+      }
+
+      .footer .policy a:hover {
+        color: #fff;
+      }
+      /* Responsive Design */
+      @media (max-width: 968px) {
+        .footer {
+          padding: 40px 20px 20px;
+        }
+
+        .footer .content {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+      }
+
+      @media (max-width: 840px) {
+        /* Increased breakpoint */
+        .container {
+          padding: 20px;
+        }
+
+        .login-card {
+          padding: 40px;
+        }
+
+        input {
+          font-size: 16px; /* Better for mobile touch targets */
+        }
+      }
+
+      @media (max-width: 768px) {
+        .login-card {
+          padding: 40px; /* Adjusted padding for mobile */
+          margin: 20px;
+        }
+
+        .footer .content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .header-container {
+          padding: 10px 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-container">
+        <h1><a href="./index.html">TechBook</a></h1>
+        <nav class="nav">
+          <a href="./index.html">TRANG CHỦ</a>
+          <a href="./baidang.html">BÀI ĐĂNG</a>
+          <a href="./gioithieu.html">GIỚI THIỆU</a>
+          <a href="./dangnhap.html">ĐĂNG NHẬP</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="body">
+      <div class="search-filter">
+        <div class="search-input">
+          <input type="text" placeholder="Tìm kiếm" />
+        </div>
+        <select>
+          <option>Tất cả</option>
+          <option value="5">5 sao</option>
+          <option value="4">4 sao</option>
+          <option value="3">3 sao</option>
+          <option value="2">2 sao</option>
+          <option value="1">1 sao</option>
+          <option value="newest">Bài viết mới nhất</option>
+          <option value="oldest">Bài viết cũ nhất</option>
+        </select>
+      </div>
+      <div class="reviews">
+        <a href="post.html?id=1" class="review-card">
+          <div class="stars">★★★☆☆</div>
+          <h3 class="title">Điện Thoại Vui</h3>
+          <p class="address">186 Tây Sơn, T.T Trung Liệt, Đống Đa, Hà Nội</p>
+          <p class="content">
+            Sửa chữa và bán điện thoại cũ ổn, nhưng giá hơi cao.
+          </p>
+          <div class="review-meta">
+            <span>Phạm Minh Đức</span>
+            <span>08/06/2025</span>
+          </div>
+        </a>
+        <a href="post.html?id=2" class="review-card">
+          <div class="stars">★★★☆☆</div>
+          <h3 class="title">Điện Thoại Vui</h3>
+          <p class="address">186 Tây Sơn, T.T Trung Liệt, Đống Đa, Hà Nội</p>
+          <p class="content">
+            Sửa chữa và bán điện thoại cũ ổn, nhưng giá hơi cao.
+          </p>
+          <div class="review-meta">
+            <span>Phạm Minh Đức</span>
+            <span>08/06/2025</span>
+          </div>
+        </a>
+        <a href="post.html?id=3" class="review-card">
+          <div class="stars">★★★☆☆</div>
+          <h3 class="title">Điện Thoại Vui</h3>
+          <p class="address">186 Tây Sơn, T.T Trung Liệt, Đống Đa, Hà Nội</p>
+          <p class="content">
+            Sửa chữa và bán điện thoại cũ ổn, nhưng giá hơi cao.
+          </p>
+          <div class="review-meta">
+            <span>Phạm Minh Đức</span>
+            <span>08/06/2025</span>
+          </div>
+        </a>
+        <a href="post.html?id=4" class="review-card">
+          <div class="stars">★★★☆☆</div>
+          <h3 class="title">Điện Thoại Vui</h3>
+          <p class="address">186 Tây Sơn, T.T Trung Liệt, Đống Đa, Hà Nội</p>
+          <p class="content">
+            Sửa chữa và bán điện thoại cũ ổn, nhưng giá hơi cao.
+          </p>
+          <div class="review-meta">
+            <span>Phạm Minh Đức</span>
+            <span>08/06/2025</span>
+          </div>
+        </a>
+        <a href="post.html?id=5" class="review-card">
+          <div class="stars">★★★☆☆</div>
+          <h3 class="title">Điện Thoại Vui</h3>
+          <p class="address">186 Tây Sơn, T.T Trung Liệt, Đống Đa, Hà Nội</p>
+          <p class="content">
+            Sửa chữa và bán điện thoại cũ ổn, nhưng giá hơi cao.
+          </p>
+          <div class="review-meta">
+            <span>Phạm Minh Đức</span>
+            <span>08/06/2025</span>
+          </div>
+        </a>
+        <a href="post.html?id=6" class="review-card">
+          <div class="stars">★★★☆☆</div>
+          <h3 class="title">Điện Thoại Vui</h3>
+          <p class="address">186 Tây Sơn, T.T Trung Liệt, Đống Đa, Hà Nội</p>
+          <p class="content">
+            Sửa chữa và bán điện thoại cũ ổn, nhưng giá hơi cao.
+          </p>
+          <div class="review-meta">
+            <span>Phạm Minh Đức</span>
+            <span>08/06/2025</span>
+          </div>
+        </a>
+        <a href="post.html?id=7" class="review-card">
+          <div class="stars">★★★☆☆</div>
+          <h3 class="title">Điện Thoại Vui</h3>
+          <p class="address">186 Tây Sơn, T.T Trung Liệt, Đống Đa, Hà Nội</p>
+          <p class="content">
+            Sửa chữa và bán điện thoại cũ ổn, nhưng giá hơi cao.
+          </p>
+          <div class="review-meta">
+            <span>Phạm Minh Đức</span>
+            <span>08/06/2025</span>
+          </div>
+        </a>
+        <a href="post.html?id=8" class="review-card">
+          <div class="stars">★★★☆☆</div>
+          <h3 class="title">Điện Thoại Vui</h3>
+          <p class="address">186 Tây Sơn, T.T Trung Liệt, Đống Đa, Hà Nội</p>
+          <p class="content">
+            Sửa chữa và bán điện thoại cũ ổn, nhưng giá hơi cao.
+          </p>
+          <div class="review-meta">
+            <span>Phạm Minh Đức</span>
+            <span>08/06/2025</span>
+          </div>
+        </a>
+        <a href="post.html?id=9" class="review-card">
+          <div class="stars">★★★☆☆</div>
+          <h3 class="title">Điện Thoại Vui</h3>
+          <p class="address">186 Tây Sơn, T.T Trung Liệt, Đống Đa, Hà Nội</p>
+          <p class="content">
+            Sửa chữa và bán điện thoại cũ ổn, nhưng giá hơi cao.
+          </p>
+          <div class="review-meta">
+            <span>Phạm Minh Đức</span>
+            <span>08/06/2025</span>
+          </div>
+        </a>
+      </div>
+      <div class="pagination">
+        <a href="#">Previous</a>
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+
+        <span>...</span>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">Next</a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="content">
+        <div class="section">
+          <h3>Về TechBook</h3>
+          <p>
+            Trang chuyên review cửa hàng đồ công nghệ secondhand uy tín tại Việt
+            Nam
+          </p>
+          <p><i class="fas fa-envelope"></i> TechBook@gmail.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</p>
+        </div>
+        <div class="section">
+          <h3>Hỗ trợ khách hàng</h3>
+          <a href="./gioithieu.html">Về chúng tôi</a>
+          <a href="./gioithieu.html">Liên hệ</a>
+        </div>
+        <div class="section">
+          <h3>Chính sách</h3>
+          <a href="./gioithieu.html">Chính sách quyền riêng tư</a>
+          <a href="./gioithieu.html">Điều khoản & điều kiện</a>
+        </div>
+      </div>
+      <div class="policy">
+        <p>&copy; 2025 TechBook. Tất cả quyền được bảo lưu.</p>
+      </div>
+    </footer>
+    <script src="../assets/js/index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechBook - Đánh giá dịch vụ điện tử cũ</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // Cập nhật navbar trong tất cả các file
+const Navbar = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  return (
+    <nav class="bg-black text-white p-4 flex items-center justify-between">
+      <div class="text-2xl font-bold">
+        <a href="trangchu.html" class="hover:text-gray-300">TechBook</a>
+      </div>
+      <div class="flex-1 flex justify-center space-x-6">
+        <a href="trangchu.html" class="hover:underline">
+          TRANG CHỦ
+        </a>
+        <a href="baidang.html" class="hover:underline">
+          BÀI ĐĂNG
+        </a>
+        <a href="#" class="hover:underline">
+          GIỚI THIỆU
+        </a>
+      </div>
+      <div class="relative">
+        <button
+          class="hover:underline flex items-center"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          TÀI KHOẢN
+          <svg
+            class="w-4 h-4 ml-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+        {isDropdownOpen && (
+          <div class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
+            {!isLoggedIn ? (
+              <>
+                <a href="dangnhap.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Đăng nhập
+                </a>
+                <a href="dangky.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Đăng ký
+                </a>
+              </>
+            ) : (
+              <>
+                <a href="trangcanhan.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Xem hồ sơ
+                </a>
+                <a href="caidat.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Cài đặt
+                </a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200" onClick={() => setIsLoggedIn(false)}>
+                  Đăng xuất
+                </a>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+      const ReviewCard = ({ title, rating, reviewer, date }) => {
+        const stars = Array(5)
+          .fill(0)
+          .map((_, i) => (
+            <span key={i} class="text-yellow-400">
+              {i < rating ? "★" : "☆"}
+            </span>
+          ));
+
+        return (
+          <div class="bg-white p-4 rounded-lg shadow-md">
+            <div class="flex">{stars}</div>
+            <h3 class="font-bold mt-2">{title}</h3>
+            <p class="text-gray-600 text-sm mt-1">
+              {reviewer} <br /> {date}
+            </p>
+          </div>
+        );
+      };
+
+      const Homepage = () => {
+        const [filter, setFilter] = React.useState("All");
+        const reviews = Array(9)
+          .fill({
+            title: "Review title",
+            rating: Math.floor(Math.random() * 5) + 1,
+            reviewer: "Reviewer name",
+            date: "06/04/2025",
+          })
+          .sort((a, b) => a.rating - b.rating); // Sắp xếp mặc định theo rating
+
+        const filteredReviews = () => {
+          let result = [...reviews];
+          if (filter === "Newest") {
+            result.sort((a, b) => new Date(b.date) - new Date(a.date));
+          } else if (filter === "Oldest") {
+            result.sort((a, b) => new Date(a.date) - new Date(b.date));
+          } else if (filter !== "All") {
+            result = result.filter(
+              (review) => review.rating === parseInt(filter)
+            );
+          }
+          return result;
+        };
+
+        return (
+          <div>
+            <Navbar />
+            <div class="p-6">
+              <div class="flex justify-center mb-6 space-x-4">
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm"
+                  class="border rounded-lg p-2 w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button class="ml-2 bg-gray-200 p-2 rounded-lg">🔍</button>
+                <select
+                  class="border rounded-lg p-2"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                >
+                  <option value="All">Tất cả</option>
+                  <option value="5">5 sao</option>
+                  <option value="4">4 sao</option>
+                  <option value="3">3 sao</option>
+                  <option value="2">2 sao</option>
+                  <option value="1">1 sao</option>
+                  <option value="Newest">Mới nhất</option>
+                  <option value="Oldest">Cũ nhất</option>
+                </select>
+              </div>
+              <div class="grid grid-cols-3 gap-6">
+                {filteredReviews().map((review, index) => (
+                  <ReviewCard
+                    key={index}
+                    title={review.title}
+                    rating={review.rating}
+                    reviewer={review.reviewer}
+                    date={review.date}
+                  />
+                ))}
+              </div>
+              <div class="flex justify-center mt-6 space-x-2">
+                <button class="px-4 py-2 bg-gray-200 rounded-lg">
+                  Previous
+                </button>
+                <button class="px-4 py-2 bg-blue-500 text-white rounded-lg">
+                  1
+                </button>
+                <button class="px-4 py-2 bg-gray-200 rounded-lg">2</button>
+                <button class="px-4 py-2 bg-gray-200 rounded-lg">3</button>
+                <span>...</span>
+                <button class="px-4 py-2 bg-gray-200 rounded-lg">67</button>
+                <button class="px-4 py-2 bg-gray-200 rounded-lg">68</button>
+                <button class="px-4 py-2 bg-gray-200 rounded-lg">Next</button>
+              </div>
+            </div>
+            <footer class="bg-black text-white p-6 flex justify-between">
+              <div>
+                <h3 class="font-bold">TechBook</h3>
+                <p class="text-sm">
+                  Trang chủ review của hàng <br />
+                  đồ công nghệ secondhand uy <br />
+                  tín nhất Việt Nam
+                </p>
+                <p class="text-sm mt-2">© TechBook@Gmail.com</p>
+                <p class="text-sm mt-2">Hà Nội, Việt Nam</p>
+              </div>
+              <div>
+                <h3 class="font-bold">CUSTOMER CARE</h3>
+                <p class="text-sm mt-2">About Us</p>
+                <p class="text-sm">Contact Us</p>
+                <p class="text-sm">Blog</p>
+              </div>
+              <div>
+                <h3 class="font-bold">CHÍNH SÁCH QUYỀN RIÊNG TƯ</h3>
+                <p class="text-sm mt-2">ĐIỀU KHOẢN VÀ ĐIỀU KIỆN</p>
+              </div>
+            </footer>
+          </div>
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<Homepage />);
+    </script>
+  </body>
+</html>

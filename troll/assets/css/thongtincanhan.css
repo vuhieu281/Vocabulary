@@ -1,0 +1,254 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  background-color: #000;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.header h1 {
+  margin: 0;
+  line-height: 1;
+}
+
+.header h1 a {
+  text-decoration: none;
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+  display: block;
+  padding: 0;
+}
+
+.header .nav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.header .nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 8px 0;
+  position: relative;
+}
+
+.header .nav a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ffffff;
+  transition: width 0.3s ease;
+}
+
+.header .nav a:hover::after {
+  width: 100%;
+}
+
+.header .account {
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+/* Body and Container */
+.container {
+  max-width: 1200px; /* Increased from 800px */
+  margin: 40px auto;
+  padding: 0 40px;
+  width: 50%; /* Added to ensure full width */
+}
+
+h1 {
+  margin-bottom: 35px;
+  color: #333;
+  font-size: 28px;
+  text-align: center; /* Thêm thuộc tính này để căn giữa */
+}
+
+/* Settings Card */
+.settings-card {
+  background: white;
+  padding: 50px; /* Increased padding */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 35px;
+}
+
+.settings-card h2 {
+  font-size: 24px; /* Increased from 22px */
+  color: #333;
+  margin-bottom: 35px; /* Increased from 30px */
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Form Styles */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Increased from 25px */
+  max-width: 100%; /* Ensure form uses full width */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-group label {
+  font-size: 16px; /* Increased from 15px */
+  color: #555;
+  font-weight: 500;
+}
+
+.form-group input {
+  padding: 14px 18px; /* Increased padding */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px; /* Increased from 15px */
+  width: 100%; /* Ensure input uses full width */
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1); /* Thêm focus shadow */
+}
+
+/* Button Styles */
+.btn-update {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 14px 20px; /* Tăng padding */
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 10px; /* Thêm khoảng cách trên button */
+}
+
+.btn-update:hover {
+  background: #0056b3;
+  transform: translateY(-1px); /* Thêm hiệu ứng hover nhẹ */
+}
+
+/* Footer */
+.footer {
+  background-color: #000;
+  color: #fff;
+  padding: 60px 20px 20px;
+  margin-top: auto;
+}
+
+.footer .content {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer .section {
+  min-width: 0;
+}
+
+.footer .section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer .section p {
+  margin: 10px 0;
+  line-height: 1.6;
+  color: #ccc;
+}
+
+.footer .section a {
+  color: #ccc;
+  text-decoration: none;
+  display: block;
+  margin: 10px 0;
+  transition: color 0.3s ease;
+}
+
+.footer .section a:hover {
+  color: #fff;
+  text-decoration: none;
+  padding-left: 5px;
+}
+
+.footer .policy {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 0;
+}
+
+.footer .policy a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 20px;
+  transition: color 0.3s ease;
+}
+
+.footer .policy a:hover {
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 1280px) {
+  .container {
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 968px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .settings-card {
+    padding: 30px;
+  }
+}

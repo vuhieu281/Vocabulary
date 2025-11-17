@@ -1,0 +1,225 @@
+/* Reset & Base styles */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --background-color: #f5f7fa;
+  --text-color: #2c3e50;
+  --card-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: var(--background-color);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Body */
+.body {
+  padding: 40px 80px; /* Increased side padding */
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.search-filter {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: var(--card-shadow);
+  margin: 20px auto;
+  max-width: 800px;
+  display: flex;
+  gap: 15px;
+}
+
+.search-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.search-group {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 70%;
+}
+
+.search-input input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 2px solid #eee;
+  border-radius: 25px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.search-input input:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.filter-container {
+  min-width: 200px;
+}
+
+.filter-container select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-group input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-group select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 150px;
+}
+
+.search-group button {
+  padding: 12px 25px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-group button:hover {
+  background-color: #333;
+}
+
+.search-filter .search-input {
+  flex: 1;
+  max-width: 300px; /* Increased from 200px */
+}
+
+.search-filter input {
+  padding: 12px 15px; /* Increased padding */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 15px; /* Increased from 14px */
+}
+
+.search-filter select {
+  padding: 12px 15px; /* Increased padding */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 15px; /* Increased from 14px */
+  margin-left: 20px; /* Increased from 15px */
+  cursor: pointer;
+  min-width: 180px; /* Increased from 150px */
+}
+
+.search-filter select:hover {
+  border-color: #000;
+}
+.reviews {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 20px;
+}
+.review-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  color: var(--text-color);
+}
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+.review-card .stars {
+  color: #f1c40f;
+  font-size: 1.2em;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.review-card .store-name {
+  font-size: 1.4em;
+  color: var(--primary-color);
+  margin: 10px 0;
+}
+.review-card .store-address {
+  color: #666;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+.review-card .review-content {
+  color: #444;
+  line-height: 1.4;
+  margin-bottom: 15px;
+}
+.review-card .review-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #888;
+  font-size: 0.85em;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 30px 0;
+}
+
+.pagination a {
+  padding: 10px 15px;
+  border-radius: 8px;
+  background: white;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: var(--card-shadow);
+}
+
+.pagination a.active,
+.pagination a:hover {
+  background: var(--secondary-color);
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    margin-top: 0;
+    border-radius: 0;
+  }
+}

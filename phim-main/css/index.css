@@ -1,0 +1,506 @@
+:root {
+        --primary-color: #e50914;
+        --secondary-color: #141414;
+        --accent-color: #f5c518;
+        --text-light: #ffffff;
+        --text-dark: #333333;
+        --bg-light: #f8f9fa;
+        --bg-dark: #0f0f0f;
+        --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        --hover-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        --gradient-primary: linear-gradient(135deg, #e50914 0%, #b20710 100%);
+        --gradient-dark: linear-gradient(135deg, #141414 0%, #2d2d2d 100%);
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+        color: var(--text-light);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    /* Hero Carousel */
+    .hero-carousel {
+        position: relative;
+        height: 80vh;
+        min-height: 200px;
+        overflow: hidden;
+        border-radius: 0 0 30px 30px;
+        box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .carousel-item {
+        height: 80vh;
+        min-height: 200px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+    }
+
+    .carousel-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            45deg,
+            rgba(20, 20, 20, 0.9) 0%,
+            rgba(20, 20, 20, 0.7) 50%,
+            rgba(20, 20, 20, 0.4) 100%
+        );
+        z-index: 1;
+    }
+
+    .carousel-caption {
+        position: absolute;         /* Quan trọng – giúp căn giữa toàn slide */
+        top: 50%;                   /* Giữa theo chiều dọc */
+        left: 50%;                  /* Giữa theo chiều ngang */
+        transform: translate(-50%, -50%); /* Đẩy về chính giữa */
+        z-index: 2;
+        text-align: center;
+
+        /* Ô mờ */
+        max-width: 700px;
+        width: 90%;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.1); /* nền mờ */
+        backdrop-filter: blur(20px);          /* làm mờ phần sau */
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+    }
+
+    .carousel-caption h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, var(--text-light), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: none;
+    }
+
+    .carousel-caption p {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        font-weight: 300;
+    }
+    
+
+
+    /* Movies Section */
+    .movies-section {
+        padding: 80px 0;
+        background: var(--bg-dark);
+    }
+
+    .section-heading {
+        margin-bottom: 4rem;
+    }
+
+    .section-subtitle {
+        display: inline-block;
+        padding: 8px 20px;
+        background: var(--gradient-primary);
+        color: white;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+    }
+
+    .section-title {
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, var(--text-light), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+    }
+
+    /* Movie Cards */
+    /* Phim Title Overlay */
+.phim-image {
+    position: relative;
+    overflow: hidden;
+    height: 350px;
+}
+
+.phim-title-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.9) 100%);
+    padding: 60px 20px 20px 20px;
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+}
+
+.phim-card:hover .phim-title-overlay {
+    transform: translateY(0);
+}
+
+.phim-title-text {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    text-align: center;
+    line-height: 1.3;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Phiên bản đơn giản - tên phim luôn hiển thị */
+.phim-title-overlay.simple {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.9) 100%);
+    padding: 15px;
+    transform: translateY(0);
+}
+
+.phim-title-text.simple {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+    color: white;
+}
+    .phim-card {
+        background: var(--gradient-dark);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+    }
+
+    .phim-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent 0%, rgba(229, 9, 20, 0.1) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+    }
+
+    .phim-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: var(--hover-shadow);
+        border-color: rgba(229, 9, 20, 0.3);
+    }
+
+    .phim-card:hover::before {
+        opacity: 1;
+    }
+
+    .phim-image {
+        position: relative;
+        overflow: hidden;
+        height: 350px;
+    }
+
+    .phim-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .phim-card:hover .phim-image img {
+        transform: scale(1.1);
+    }
+
+    .phim-details {
+        padding: 25px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .phim-details h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        line-height: 1.4;
+    }
+
+    .phim-details h3 a {
+        color: var(--text-light);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .phim-details h3 a:hover {
+        color: var(--accent-color);
+    }
+
+    .phim-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .phim-meta span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .phim-meta i {
+        color: var(--accent-color);
+    }
+
+    .btn-custom {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(229, 9, 20, 0.4);
+        color: white;
+    }
+
+    .btn-primary {
+        background: var(--gradient-primary);
+        border: none;
+        padding: 15px 30px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(229, 9, 20, 0.3);
+    }
+
+    /* About Section */
+    .about-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .about-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(229, 9, 20, 0.1) 0%, transparent 70%);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .about-section h2 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 2rem;
+        background: linear-gradient(45deg, var(--text-light), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .about-section .lead {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+        opacity: 0.9;
+    }
+
+    .about-stats {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 3rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .stat-value {
+        font-size: 3rem;
+        font-weight: 800;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .about-images img {
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+        box-shadow: var(--card-shadow);
+    }
+
+    .about-images img:hover {
+        transform: scale(1.05);
+    }
+
+    /* CTA Section */
+    .cta-section {
+        padding: 120px 0;
+        background: linear-gradient(135deg, 
+            rgba(20, 20, 20, 0.95) 0%, 
+            rgba(45, 45, 45, 0.95) 100%),
+            url('https://images.unsplash.com/photo-1489599849927-2ee91cede3f5?q=80&w=2070&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        text-align: center;
+        position: relative;
+    }
+
+    .cta-section h2 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, var(--text-light), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .cta-section .lead {
+        font-size: 1.3rem;
+        margin-bottom: 3rem;
+        opacity: 0.9;
+    }
+
+    .cta-section .btn-lg {
+        padding: 18px 40px;
+        font-size: 1.2rem;
+        border-radius: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Footer */
+    footer {
+        background: var(--gradient-dark);
+        padding: 40px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Animations */
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .animate {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-carousel {
+            height: 60vh;
+            min-height: 400px;
+        }
+
+        .carousel-caption h1 {
+            font-size: 2rem;
+        }
+
+        .carousel-caption p {
+            font-size: 1rem;
+        }
+
+        .search-container {
+            margin: 0 10px;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .phim-image {
+            height: 250px;
+        }
+
+        .about-stats {
+            gap: 15px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-carousel {
+            height: 50vh;
+        }
+
+        .carousel-caption {
+            padding: 20px;
+        }
+
+        .search-section {
+            margin-top: -40px;
+        }
+
+        .phim-meta {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .about-section h2,
+        .cta-section h2 {
+            font-size: 2rem;
+        }
+    }

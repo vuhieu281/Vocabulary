@@ -1,0 +1,238 @@
+/* Reset styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.other-reviews {
+  margin-top: 20px;
+}
+
+.other-reviews h3 {
+  font-size: 24px;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.review-item {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.username {
+  font-size: 16px;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.review-date {
+  font-size: 13px;
+  color: #65676b;
+  margin-left: 10px;
+}
+
+.store-name {
+  font-size: 18px;
+  color: #1877f2;
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.store-name:hover {
+  text-decoration: underline;
+}
+
+.rating-section {
+  margin-bottom: 12px;
+}
+
+.location {
+  font-size: 14px;
+  color: #65676b;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.stars {
+  color: #f7c427;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
+.review-text {
+  font-size: 15px;
+  color: #1a1a1a;
+  margin: 12px 0;
+  line-height: 1.5;
+}
+
+.comments-section {
+  margin-top: 15px;
+  border-top: 1px solid #e4e6eb;
+  padding-top: 15px;
+}
+
+.comments-section h4 {
+  font-size: 15px;
+  color: #65676b;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.comment {
+  padding: 8px 0;
+}
+
+.comment-author {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #65676b;
+  margin-left: 8px;
+}
+
+.comment-content {
+  font-size: 14px;
+  color: #1a1a1a;
+  margin-top: 4px;
+}
+
+.review-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.review-image {
+  flex: 0 0 200px;
+}
+
+.review-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-actions {
+  float: right;
+}
+
+.edit-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.edit-btn:hover {
+  background: #45a049;
+}
+
+.edit-btn i {
+  font-size: 14px;
+}
+
+.edit-form {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.edit-form input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.edit-form .form-group {
+  margin-bottom: 15px;
+}
+
+.edit-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.edit-form textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.edit-form select {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.edit-form .save-btn,
+.edit-form .cancel-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.edit-form .save-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.edit-form .cancel-btn {
+  background: #f44336;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .review-item {
+    padding: 15px;
+  }
+}

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechBook - Đăng bài/Đánh giá</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div id="root"></div>
+
+    <script type="text/babel">
+            // Cập nhật navbar trong tất cả các file
+const Navbar = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  return (
+    <nav class="bg-black text-white p-4 flex items-center justify-between">
+      <div class="text-2xl font-bold">
+        <a href="trangchu.html" class="hover:text-gray-300">TechBook</a>
+      </div>
+      <div class="flex-1 flex justify-center space-x-6">
+        <a href="trangchu.html" class="hover:underline">
+          TRANG CHỦ
+        </a>
+        <a href="baidang.html" class="hover:underline">
+          BÀI ĐĂNG
+        </a>
+        <a href="#" class="hover:underline">
+          GIỚI THIỆU
+        </a>
+      </div>
+      <div class="relative">
+        <button
+          class="hover:underline flex items-center"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          TÀI KHOẢN
+          <svg
+            class="w-4 h-4 ml-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+        {isDropdownOpen && (
+          <div class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
+            {!isLoggedIn ? (
+              <>
+                <a href="dangnhap.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Đăng nhập
+                </a>
+                <a href="dangky.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Đăng ký
+                </a>
+              </>
+            ) : (
+              <>
+                <a href="trangcanhan.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Xem hồ sơ
+                </a>
+                <a href="caidat.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Cài đặt
+                </a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200" onClick={() => setIsLoggedIn(false)}>
+                  Đăng xuất
+                </a>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
+      const ReviewForm = () => {
+        const [rating, setRating] = React.useState(0);
+        return (
+          <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+            <h2 class="text-xl font-bold mb-4">Đăng bài đánh giá</h2>
+            <input
+              type="text"
+              placeholder="Tên cửa hàng"
+              class="border p-2 w-full mb-4 rounded-lg"
+            />
+            <input
+              type="text"
+              placeholder="Địa chỉ"
+              class="border p-2 w-full mb-4 rounded-lg"
+            />
+            <div class="mb-4">
+              <label>Đánh giá sao: </label>
+              {Array(5)
+                .fill(0)
+                .map((_, i) => (
+                  <span
+                    key={i}
+                    class={
+                      i < rating
+                        ? "text-yellow-400 cursor-pointer"
+                        : "text-gray-300 cursor-pointer"
+                    }
+                    onClick={() => setRating(i + 1)}
+                  >
+                    ★
+                  </span>
+                ))}
+            </div>
+            <textarea
+              placeholder="Nhận xét"
+              class="border p-2 w-full mb-4 rounded-lg h-24"
+            ></textarea>
+            <input type="file" accept="image/*" class="mb-8" />
+            <button class="bg-blue-500 text-white p-2 rounded-lg">Gửi</button>
+          </div>
+        );
+      };
+
+      const ReviewPost = ({
+        storeName,
+        address,
+        rating,
+        reviewer,
+        date,
+        content,
+        image,
+        userRatings,
+        commentsData,
+      }) => {
+        const stars = Array(5)
+          .fill(0)
+          .map((_, i) => (
+            <span key={i} class="text-yellow-400">
+              {i < rating ? "★" : "☆"}
+            </span>
+          ));
+        const [userRating, setUserRating] = React.useState(0);
+        const [comment, setComment] = React.useState("");
+        const [showAllComments, setShowAllComments] = React.useState(false);
+
+        const averageUserRating =
+          userRatings.length > 0
+            ? (
+                userRatings.reduce((sum, rating) => sum + rating, 0) /
+                userRatings.length
+              ).toFixed(1)
+            : "0";
+
+        const visibleComments = showAllComments
+          ? commentsData
+          : commentsData.slice(0, 3);
+
+        return (
+          <div class="bg-white p-4 rounded-lg shadow-md mt-4">
+            <div class="flex items-center mb-2">
+              <div class="w-10 h-10 bg-gray-300 rounded-full mr-2"></div>
+              <div>
+                <p class="font-bold">{reviewer}</p>
+                <p class="text-gray-500 text-sm">{date}</p>
+              </div>
+            </div>
+            <h3 class="font-bold">{storeName}</h3>
+            <p class="text-gray-600 text-sm mb-2">{address}</p>
+            <div class="flex mb-2">{stars}</div>
+            <p class="mb-2">{content}</p>
+            {image && (
+              <div class="mb-6">
+                <div class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <span class="text-gray-500">Ảnh đính kèm (Placeholder)</span>
+                </div>
+              </div>
+            )}
+            <div class="flex space-x-4 mb-2 text-gray-600">
+              <p>
+                Điểm đánh giá:{" "}
+                <span class="font-bold">{averageUserRating}</span>/5
+              </p>
+              <p>
+                Tổng bình luận:{" "}
+                <span class="font-bold">{commentsData.length}</span>
+              </p>
+            </div>
+            <div class="border-t pt-2">
+              {visibleComments.map((commentData, index) => (
+                <div key={index} class="mb-2">
+                  <p class="font-bold">{commentData.reviewer}</p>
+                  <p class="text-gray-600">{commentData.text}</p>
+                  <div class="flex text-yellow-400">
+                    {Array(5)
+                      .fill(0)
+                      .map((_, i) => (
+                        <span key={i}>
+                          {i < commentData.rating ? "★" : "☆"}
+                        </span>
+                      ))}
+                  </div>
+                </div>
+              ))}
+              {commentsData.length > 3 && !showAllComments && (
+                <button
+                  class="text-blue-600 hover:underline"
+                  onClick={() => setShowAllComments(true)}
+                >
+                  Xem thêm bình luận
+                </button>
+              )}
+              {showAllComments && (
+                <button
+                  class="text-blue-600 hover:underline"
+                  onClick={() => setShowAllComments(false)}
+                >
+                  Ẩn bớt
+                </button>
+              )}
+              <div class="flex items-center mb-2 mt-4">
+                <label class="mr-2">Đánh giá của bạn: </label>
+                {Array(5)
+                  .fill(0)
+                  .map((_, i) => (
+                    <span
+                      key={i}
+                      class={
+                        i < userRating
+                          ? "text-yellow-400 cursor-pointer"
+                          : "text-gray-300 cursor-pointer"
+                      }
+                      onClick={() => setUserRating(i + 1)}
+                    >
+                      ★
+                    </span>
+                  ))}
+              </div>
+              <textarea
+                placeholder="Viết bình luận..."
+                class="border p-2 w-full rounded-lg h-16 mb-2"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              ></textarea>
+              <button class="bg-blue-500 text-white p-2 rounded-lg">Gửi</button>
+            </div>
+          </div>
+        );
+      };
+
+      const PostReviewPage = () => {
+        const reviews = [
+          {
+            storeName: "Cửa hàng Tech A",
+            address: "123 Đường Láng, Hà Nội",
+            rating: 3,
+            reviewer: "User 1",
+            date: "04/06/2025, 15:08",
+            content:
+              "Cửa hàng này bán đồ điện tử cũ khá chất lượng, giá cả hợp lý.",
+            image: true,
+            userRatings: [5, 4, 3],
+            commentsData: [
+              { reviewer: "Người dùng 1", text: "Sản phẩm tốt!", rating: 5 },
+              { reviewer: "Người dùng 2", text: "Giá hơi cao.", rating: 3 },
+              { reviewer: "Người dùng 3", text: "Dịch vụ ok.", rating: 4 },
+              { reviewer: "Người dùng 4", text: "Sẽ quay lại.", rating: 5 },
+            ],
+          },
+          {
+            storeName: "Cửa hàng Tech B",
+            address: "456 Nguyễn Trãi, TP.HCM",
+            rating: 5,
+            reviewer: "User 2",
+            date: "03/06/2025, 09:30",
+            content: "Dịch vụ tốt, nhân viên nhiệt tình. Tôi rất hài lòng!",
+            image: false,
+            userRatings: [5, 4],
+            commentsData: [
+              { reviewer: "Người dùng 5", text: "Tuyệt vời!", rating: 5 },
+              {
+                reviewer: "Người dùng 6",
+                text: "Nhân viên thân thiện.",
+                rating: 4,
+              },
+            ],
+          },
+          {
+            storeName: "Cửa hàng Tech C",
+            address: "789 Lê Lợi, Đà Nẵng",
+            rating: 4,
+            reviewer: "User 3",
+            date: "02/06/2025, 16:10",
+            content: "Cửa hàng ổn nhưng cần cải thiện dịch vụ khách hàng.",
+            image: true,
+            userRatings: [],
+            commentsData: [
+              { reviewer: "Người dùng 7", text: "Cần cải thiện!", rating: 2 },
+            ],
+          },
+        ];
+
+        return (
+          <div>
+            <Navbar />
+            <div class="p-6">
+              <ReviewForm />
+              <h2 class="text-xl font-bold mt-6 mb-4">Các bài đánh giá khác</h2>
+              {reviews.map((review, index) => (
+                <ReviewPost
+                  key={index}
+                  storeName={review.storeName}
+                  address={review.address}
+                  rating={review.rating}
+                  reviewer={review.reviewer}
+                  date={review.date}
+                  content={review.content}
+                  image={review.image}
+                  userRatings={review.userRatings}
+                  commentsData={review.commentsData}
+                />
+              ))}
+            </div>
+            <footer class="bg-black text-white p-6 flex justify-between">
+              <div>
+                <h3 class="font-bold">TechBook</h3>
+                <p class="text-sm">Trang phục review...</p>
+              </div>
+              <div>
+                <h3 class="font-bold">CUSTOMER SERVICE</h3>
+                <p class="text-sm">About Us</p>
+              </div>
+              <div>
+                <h3 class="font-bold">CHÍNH SÁCH QUYỀN RIÊNG TƯ</h3>
+                <p class="text-sm">ĐIỀU KHOẢN</p>
+              </div>
+            </footer>
+          </div>
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<PostReviewPage />);
+    </script>
+  </body>
+</html>

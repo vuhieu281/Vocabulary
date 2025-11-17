@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đánh giá cửa hàng</title>
+    <link rel="stylesheet" href="../assets/css/baidang.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-container">
+        <h1><a href="./index.html">TechBook</a></h1>
+        <nav class="nav">
+          <a href="./index.html">TRANG CHỦ</a>
+          <a href="./baidang.html">BÀI ĐĂNG</a>
+          <a href="./gioithieu.html">GIỚI THIỆU</a>
+          <a href="./dangnhap.html">ĐĂNG NHẬP</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="container">
+      <!-- Form đánh giá mới -->
+      <div class="review-form">
+        <h2>Đăng bài đánh giá</h2>
+        <form>
+          <div class="form-group">
+            <input type="text" placeholder="Tên cửa hàng" />
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Địa chỉ" />
+          </div>
+          <div class="form-group">
+            <label>Đánh giá sao:</label>
+            <div class="rating">
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Nhận xét"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn-file">Chọn tệp</button>
+            <span class="file-info">Không tệp nào được chọn</span>
+          </div>
+          <button type="submit" class="btn-submit">Gửi</button>
+        </form>
+      </div>
+
+      <!-- Phần hiển thị đánh giá khác -->
+      <div class="other-reviews">
+        <h3>Các bài đánh giá khác</h3>
+
+        <div class="review-item">
+          <div class="reviewer-info">
+            <img src="avatar-placeholder.png" alt="User 1" />
+            <div>
+              <h4>User 1</h4>
+              <span class="review-date">04/06/2025, 15:08</span>
+            </div>
+          </div>
+
+          <h4>Cửa hàng Tech A</h4>
+          <p class="address">123 Đường Láng, Hà Nội</p>
+
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+          </div>
+
+          <p class="review-text">
+            Cửa hàng này bán đồ điện tử cũ khá chất lượng, giá cả hợp lý.
+          </p>
+
+          <div class="review-image">
+            <img src="placeholder.jpg" alt="Ảnh đính kèm (Placeholder)" />
+          </div>
+
+          <div class="review-stats">
+            <span>Điểm đánh giá: 4.0/5</span>
+            <span>Tổng bình luận: 4</span>
+          </div>
+
+          <!-- Comments section -->
+          <div class="comments">
+            <div class="comment">
+              <h5>Người dùng 1</h5>
+              <p>Sản phẩm tốt!</p>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+            <!-- More comments... -->
+          </div>
+
+          <a href="#" class="view-more">Xem thêm bình luận</a>
+
+          <!-- Comment form -->
+          <div class="comment-form">
+            <h5>Đánh giá của bạn:</h5>
+            <div class="rating">
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <textarea placeholder="Viết bình luận..."></textarea>
+            <button type="submit" class="btn-submit">Gửi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="content">
+        <div class="section">
+          <h3>Về TechBook</h3>
+          <p>
+            Trang chuyên review cửa hàng đồ công nghệ secondhand uy tín tại Việt
+            Nam
+          </p>
+          <p><i class="fas fa-envelope"></i> TechBook@gmail.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</p>
+        </div>
+        <div class="section">
+          <h3>Hỗ trợ khách hàng</h3>
+          <a href="./gioithieu.html">Về chúng tôi</a>
+          <a href="./gioithieu.html">Liên hệ</a>
+        </div>
+        <div class="section">
+          <h3>Chính sách</h3>
+          <a href="./gioithieu.html">Chính sách quyền riêng tư</a>
+          <a href="./gioithieu.html">Điều khoản & điều kiện</a>
+        </div>
+      </div>
+      <div class="policy">
+        <p>&copy; 2025 TechBook. Tất cả quyền được bảo lưu.</p>
+      </div>
+    </footer>
+  </body>
+</html>

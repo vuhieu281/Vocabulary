@@ -1,0 +1,209 @@
+/* Reset CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Body */
+.body {
+  padding: 40px 80px; /* Increased side padding */
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.search-filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  max-width: 1200px;
+}
+
+.search-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.search-group {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 70%;
+}
+
+.search-input input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.filter-container {
+  min-width: 200px;
+}
+
+.filter-container select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.search-group input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-group select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 150px;
+}
+
+.search-group button {
+  padding: 12px 25px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-group button:hover {
+  background-color: #333;
+}
+
+.search-filter .search-input {
+  flex: 1;
+  max-width: 300px; /* Increased from 200px */
+}
+
+.search-filter input {
+  padding: 12px 15px; /* Increased padding */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 15px; /* Increased from 14px */
+}
+
+.search-filter select {
+  padding: 12px 15px; /* Increased padding */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 15px; /* Increased from 14px */
+  margin-left: 20px; /* Increased from 15px */
+  cursor: pointer;
+  min-width: 180px; /* Increased from 150px */
+}
+
+.search-filter select:hover {
+  border-color: #000;
+}
+.reviews {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px; /* Increased gap between cards */
+  margin: 40px 0; /* Added margin top and bottom */
+}
+.review-card {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s;
+  display: block;
+}
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.review-card .stars {
+  color: #ffc107;
+  margin-bottom: 10px;
+}
+.review-card .store-name {
+  font-size: 1.2em;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+.review-card .store-address {
+  color: #666;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+.review-card .review-content {
+  color: #444;
+  line-height: 1.4;
+  margin-bottom: 15px;
+}
+.review-card .review-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #888;
+  font-size: 0.85em;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.pagination a {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: black;
+  background: white;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.pagination a.active {
+  background-color: #000;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #f5f5f5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    margin-top: 0;
+    border-radius: 0;
+  }
+}

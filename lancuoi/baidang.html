@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đánh giá cửa hàng</title>
+    <style>
+      /* Header */
+      .header {
+        background-color: #000;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        padding: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px; /* Thêm chiều cao cố định */
+      }
+
+      .header h1 {
+        margin: 0;
+        line-height: 1; /* Thêm line-height */
+      }
+
+      .header h1 a {
+        text-decoration: none;
+        font-size: 28px;
+        font-weight: 600;
+        color: #ffffff;
+        display: block; /* Thêm display block */
+        padding: 0; /* Reset padding */
+      }
+
+      .header .nav {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+      }
+
+      .header .nav a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+        padding: 8px 0;
+        position: relative;
+      }
+
+      .header .nav a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #ffffff;
+        transition: width 0.3s ease;
+      }
+
+      .header .nav a:hover::after {
+        width: 100%;
+      }
+
+      .header .account {
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Icon-only navigation styles */
+      .nav .icon-only {
+        font-size: 1.2rem;
+        padding: 0.7rem;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+      }
+
+      .nav .icon-only:nth-of-type(1) {
+        right: 120px;
+      }
+      .nav .icon-only:nth-of-type(2) {
+        right: 70px;
+      }
+      .nav .icon-only:nth-of-type(3) {
+        right: 20px;
+      }
+
+      .nav .icon-only span {
+        display: none;
+      }
+
+      .nav .icon-only:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: scale(1.1);
+      }
+
+      /* Style cho nút đăng nhập */
+      .nav .login-btn {
+        position: fixed;
+        right: 20px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Smooth scrolling for Safari */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Container adjustments */
+      .container {
+        flex: 1;
+        width: 50%;
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* Form đánh giá mới */
+      .review-form {
+        background: white;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      /* Style cho các input trong form */
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      /* File upload container */
+      .file-upload-container {
+        padding: 20px;
+        margin: 15px 0;
+      }
+
+      /* Button styles */
+      .btn-submit {
+        padding: 12px 30px; /* Tăng kích thước nút */
+        font-size: 16px;
+        width: auto;
+        min-width: 150px;
+      }
+
+      /* Responsive Design - điều chỉnh breakpoint */
+      @media (max-width: 1680px) {
+        .container {
+          width: 90%; /* Điều chỉnh width cho màn hình nhỏ hơn */
+          max-width: 1600px;
+          padding: 0 60px;
+        }
+
+        .review-form {
+          padding: 50px 80px; /* Giảm padding cho màn hình nhỏ hơn */
+        }
+      }
+
+      @media (max-width: 968px) {
+        .other-reviews {
+          padding: 15px;
+          max-width: 100%;
+        }
+
+        .review-item {
+          padding: 10px;
+        }
+
+        .username {
+          font-size: 14px;
+        }
+
+        .store-name {
+          font-size: 15px;
+        }
+
+        .review-text {
+          font-size: 13px;
+        }
+
+        .stars {
+          font-size: 12px;
+        }
+
+        .container {
+          width: 95%;
+          max-width: 100%;
+          padding: 0 20px;
+        }
+
+        .review-form {
+          padding: 30px;
+        }
+      }
+
+      /* CSS cho phần comments */
+      .comments-section {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+      }
+
+      .comments-section h4 {
+        margin-bottom: 15px;
+      }
+
+      .comments {
+        margin: 15px 0;
+        padding-left: 20px;
+      }
+
+      .comment {
+        padding: 10px;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 10px;
+      }
+
+      .comment:last-child {
+        border-bottom: none;
+      }
+
+      .comment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+      }
+
+      .comment-author {
+        font-weight: bold;
+        color: #495057;
+      }
+
+      .comment-date {
+        color: #6c757d;
+        font-size: 0.9em;
+      }
+
+      .comment-content p {
+        margin: 10px 0;
+        color: #333;
+      }
+
+      .comment-rating {
+        margin: 5px 0;
+        display: flex;
+        gap: 5px;
+      }
+
+      .comment-rating .fa-star {
+        color: #ffd700;
+        margin-right: 2px;
+      }
+
+      .view-more {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 14px;
+        display: block;
+        margin: 10px 0;
+      }
+
+      /* Style cho form bình luận */
+      .comment-form {
+        margin-top: 15px;
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+
+      .comment-form h4 {
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #333;
+      }
+
+      .comment-form .form-group {
+        margin-bottom: 15px;
+      }
+
+      .comment-form label {
+        display: block;
+        margin-bottom: 5px;
+        color: #666;
+      }
+
+      .comment-form textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        min-height: 60px;
+        margin-bottom: 10px;
+      }
+
+      .comment-form button {
+        margin-top: 10px;
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .comment-form button:hover {
+        background-color: #0056b3;
+      }
+
+      /* Ẩn các review và comment quá 3 */
+      .review-item.hidden,
+      .comment.hidden {
+        display: none;
+      }
+
+      /* Style cho nút xem thêm */
+      .view-more-button,
+      .view-more-comments {
+        background: none;
+        border: none;
+        color: #007bff;
+        cursor: pointer;
+        padding: 10px;
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+      }
+
+      .view-more-button:hover,
+      .view-more-comments:hover {
+        text-decoration: underline;
+      }
+
+      /* Alert Styles */
+      .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+      }
+
+      .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+      }
+
+      .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+      }
+
+      /* Style cho rating input trong comment */
+      .comment-rating-input {
+        display: none;
+      }
+
+      .comment-stars {
+        display: flex;
+        gap: 5px;
+        margin: 10px 0;
+      }
+
+      .comment-stars i {
+        color: #ffd700;
+        font-size: 20px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .comment-stars i:hover {
+        transform: scale(1.2);
+      }
+
+      /* Đảm bảo sao hiển thị trong comment không bị ảnh hưởng */
+      .comment-rating i {
+        pointer-events: none;
+        color: #ffd700;
+      }
+
+      /* Rating Stars */
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .stars {
+        display: inline-flex;
+        flex-direction: row-reverse;
+        gap: 5px;
+        color: #ffc107;
+        font-size: 20px;
+        margin: 10px 0;
+      }
+
+      .stars input {
+        display: none;
+      }
+
+      .stars label {
+        cursor: pointer;
+        font-size: 24px;
+        color: #ddd;
+        transition: 0.2s;
+      }
+
+      .stars label:hover,
+      .stars label:hover ~ label,
+      .stars input:checked ~ label {
+        color: #ffd700;
+      }
+
+      .rating-text {
+        color: #666;
+        font-size: 14px;
+        margin-left: 10px;
+      }
+
+      .stars-outer {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      .stars-outer::before {
+        content: "☆☆☆☆☆";
+        color: #ddd;
+        font-size: 24px;
+      }
+
+      .stars-inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 0;
+      }
+
+      .stars-inner::before {
+        content: "★★★★★";
+        color: #ffc107;
+        font-size: 24px;
+      }
+
+      .rating-text {
+        color: #666;
+        font-size: 14px;
+      }
+
+      /* Hover effect for rating input */
+      .rating.hoverable .stars-outer:hover .stars-inner {
+        width: 100%;
+      }
+
+      .rating.hoverable .stars-outer span:hover ~ span .stars-inner {
+        width: 0;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1680px) {
+        .container {
+          max-width: 100%;
+        }
+
+        .review-form {
+          padding: 60px;
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 968px) {
+        .header-container {
+          height: auto;
+          padding: 10px 20px;
+        }
+
+        .header .nav {
+          gap: 20px;
+        }
+
+        .container {
+          width: 95%;
+          max-width: 100%;
+          padding: 0 20px;
+        }
+
+        .review-form {
+          padding: 30px;
+        }
+
+        .footer {
+          padding: 40px 20px 20px;
+        }
+
+        .footer .content {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+      }
+
+      .reviewer-info {
+        margin-bottom: 15px;
+      }
+
+      .reviewer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .reviewer-header h4 {
+        margin: 0;
+      }
+
+      .stars {
+        color: #ffc107;
+        font-size: 16px;
+      }
+
+      .review-date {
+        color: #666;
+        font-size: 0.9em;
+      }
+
+      .store-info {
+        margin-bottom: 15px;
+      }
+
+      /* File Upload Styles */
+      .file-upload-container {
+        background: #f8f9fa;
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        padding: 30px;
+        margin: 20px 0;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .file-upload-container:hover {
+        border-color: #007bff;
+      }
+
+      .file-upload-button {
+        position: relative;
+        margin-bottom: 15px;
+        cursor: pointer;
+      }
+
+      .file-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .upload-icon {
+        display: block;
+        font-size: 32px;
+        color: #007bff;
+        margin-bottom: 10px;
+      }
+
+      .upload-text {
+        color: #007bff;
+        font-weight: 500;
+      }
+
+      .file-info-container {
+        margin-top: 15px;
+      }
+
+      .file-info {
+        display: block;
+        color: #666;
+        margin-bottom: 5px;
+      }
+
+      .file-hint {
+        color: #888;
+        font-size: 12px;
+      }
+
+      .selected-images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .selected-image-preview {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .selected-image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .remove-image {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .load-more-container {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      #load-more {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      #load-more:hover {
+        background-color: #0056b3;
+      }
+
+      .load-more-comments {
+        text-align: center;
+        margin: 10px 0;
+      }
+
+      .btn-load-more {
+        background-color: #f0f0f0;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 15px;
+        cursor: pointer;
+        color: #666;
+        font-size: 14px;
+        transition: background-color 0.3s;
+      }
+
+      .btn-load-more:hover {
+        background-color: #e0e0e0;
+      }
+
+      .login-prompt {
+        text-align: center;
+        color: #6c757d;
+        margin: 10px 0;
+      }
+
+      /* Style cho phần các bài đánh giá khác */
+      .other-reviews {
+        margin-top: 40px;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .other-reviews h3 {
+        margin-bottom: 20px;
+        font-size: 20px;
+        color: #333;
+      }
+
+      .review-item {
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 20px;
+      }
+
+      .review-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+
+      .reviewer-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .username {
+        font-weight: bold;
+        color: #333;
+        font-size: 16px;
+      }
+
+      .review-date {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .store-name {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 5px;
+      }
+
+      .address {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .review-text {
+        color: #333;
+        line-height: 1.5;
+        margin: 15px 0;
+      }
+
+      .stars {
+        color: #ffc107;
+        font-size: 16px;
+        margin: 10px 0;
+      }
+
+      /* Style cho ảnh trong review */
+      .review-images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 15px 0;
+      }
+
+      .review-image {
+        width: 200px;
+        height: 200px;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .review-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* Responsive cho ảnh */
+      @media (max-width: 768px) {
+        .review-image {
+          width: 150px;
+          height: 150px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .review-image {
+          width: 100%;
+          height: auto;
+          max-height: 300px;
+        }
+      }
+      /* Footer */
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 60px 20px 20px;
+        margin-top: auto; /* Đẩy footer xuống dưới cùng */
+      }
+
+      .footer .content {
+        max-width: 900px;
+        margin: 0 auto 20px; /* Giảm margin bottom */
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 40px;
+      }
+
+      .footer .section {
+        min-width: 0;
+      }
+
+      .footer .section h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer .section p {
+        margin: 10px 0;
+        line-height: 1.6;
+        color: #ccc;
+      }
+
+      .footer .section a {
+        color: #ccc;
+        text-decoration: none;
+        display: block;
+        margin: 10px 0;
+        transition: color 0.3s ease;
+      }
+
+      .footer .section a:hover {
+        color: #fff;
+        text-decoration: none;
+        padding-left: 5px;
+      }
+
+      .footer .policy {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 0; /* Đảm bảo không có khoảng trắng dưới cùng */
+      }
+
+      .footer .policy a {
+        color: #ccc;
+        text-decoration: none;
+        margin: 0 20px;
+        transition: color 0.3s ease;
+      }
+
+      .footer .policy a:hover {
+        color: #fff;
+      }
+      /* Responsive Design */
+      @media (max-width: 968px) {
+        .footer {
+          padding: 40px 20px 20px;
+        }
+
+        .footer .content {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+      }
+
+      @media (max-width: 840px) {
+        /* Increased breakpoint */
+        .container {
+          padding: 20px;
+        }
+
+        .login-card {
+          padding: 40px;
+        }
+
+        input {
+          font-size: 16px; /* Better for mobile touch targets */
+        }
+      }
+
+      @media (max-width: 768px) {
+        .login-card {
+          padding: 40px; /* Adjusted padding for mobile */
+          margin: 20px;
+        }
+
+        .footer .content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .header-container {
+          padding: 10px 15px;
+        }
+      }
+
+      /* Container styles */
+      .container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* Review form styles */
+      .review-form {
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 40px;
+      }
+
+      .review-form h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        font-weight: normal;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group input[type="text"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .form-group textarea {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        min-height: 100px;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      /* Rating stars */
+      .rating-stars {
+        display: flex;
+        gap: 5px;
+        margin: 10px 0;
+      }
+
+      .rating-stars i {
+        color: #ddd;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      /* File upload area */
+      .file-upload {
+        border: 2px dashed #ddd;
+        padding: 30px;
+        border-radius: 4px;
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .file-upload i {
+        font-size: 40px;
+        color: #007bff;
+        margin-bottom: 10px;
+      }
+
+      .btn-submit {
+        background: #eee;
+        border: none;
+        padding: 8px 30px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      /* Other reviews section */
+      .other-reviews {
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .other-reviews h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .review-title {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      .review-address {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .review-rating {
+        color: #ffc107;
+        margin: 10px 0;
+      }
+
+      .review-content {
+        margin: 10px 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .review-meta {
+        display: flex;
+        justify-content: space-between;
+        color: #666;
+        font-size: 14px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+      }
+
+      /* Container styles */
+      .container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* Review form styles */
+      .review-form {
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 40px;
+      }
+
+      .review-form h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        font-weight: normal;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group input[type="text"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .form-group textarea {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        min-height: 100px;
+        font-size: 14px;
+        resize: vertical;
+      }
+
+      /* Rating stars */
+      .rating-stars {
+        display: flex;
+        gap: 5px;
+        margin: 10px 0;
+      }
+
+      .rating-stars i {
+        color: #ddd;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      /* File upload area */
+      .file-upload {
+        border: 2px dashed #ddd;
+        padding: 30px;
+        border-radius: 4px;
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .file-upload i {
+        font-size: 40px;
+        color: #007bff;
+        margin-bottom: 10px;
+      }
+
+      .btn-submit {
+        background: #eee;
+        border: none;
+        padding: 8px 30px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      /* Other reviews section */
+      .other-reviews {
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .other-reviews h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .review-title {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      .review-address {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .review-rating {
+        color: #ffc107;
+        margin: 10px 0;
+      }
+
+      .review-content {
+        margin: 10px 0;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .review-meta {
+        display: flex;
+        justify-content: space-between;
+        color: #666;
+        font-size: 14px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-container">
+        <h1><a href="./index.html">TechBook</a></h1>
+        <nav class="nav">
+          <a href="./index.html">TRANG CHỦ</a>
+          <a href="./baidang.html">BÀI ĐĂNG</a>
+          <a href="./gioithieu.html">GIỚI THIỆU</a>
+          <a href="./dangnhap.html">ĐĂNG NHẬP</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="container">
+      <!-- Form đánh giá mới -->
+      <div class="review-form">
+        <h2>Đăng bài đánh giá</h2>
+        <form>
+          <div class="form-group">
+            <input type="text" placeholder="Tên cửa hàng" />
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Địa chỉ" />
+          </div>
+          <div class="form-group">
+            <label>Đánh giá sao:</label>
+            <div class="rating">
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Nhận xét"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn-file">Chọn tệp</button>
+            <span class="file-info">Không tệp nào được chọn</span>
+          </div>
+          <button type="submit" class="btn-submit">Gửi</button>
+        </form>
+      </div>
+
+      <!-- Phần hiển thị đánh giá khác -->
+      <div class="other-reviews">
+        <h3>Các bài đánh giá khác</h3>
+
+        <div class="review-item">
+          <div class="reviewer-info">
+            <img src="avatar-placeholder.png" alt="User 1" />
+            <div>
+              <h4>User 1</h4>
+              <span class="review-date">04/06/2025, 15:08</span>
+            </div>
+          </div>
+
+          <h4>Cửa hàng Tech A</h4>
+          <p class="address">123 Đường Láng, Hà Nội</p>
+
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+          </div>
+
+          <p class="review-text">
+            Cửa hàng này bán đồ điện tử cũ khá chất lượng, giá cả hợp lý.
+          </p>
+
+          <div class="review-image">
+            <img src="placeholder.jpg" alt="Ảnh đính kèm (Placeholder)" />
+          </div>
+
+          <div class="review-stats">
+            <span>Điểm đánh giá: 4.0/5</span>
+            <span>Tổng bình luận: 4</span>
+          </div>
+
+          <!-- Comments section -->
+          <div class="comments">
+            <div class="comment">
+              <h5>Người dùng 1</h5>
+              <p>Sản phẩm tốt!</p>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+            <!-- More comments... -->
+          </div>
+
+          <a href="#" class="view-more">Xem thêm bình luận</a>
+
+          <!-- Comment form -->
+          <div class="comment-form">
+            <h5>Đánh giá của bạn:</h5>
+            <div class="rating">
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <textarea placeholder="Viết bình luận..."></textarea>
+            <button type="submit" class="btn-submit">Gửi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="content">
+        <div class="section">
+          <h3>Về TechBook</h3>
+          <p>
+            Trang chuyên review cửa hàng đồ công nghệ secondhand uy tín tại Việt
+            Nam
+          </p>
+          <p><i class="fas fa-envelope"></i> TechBook@gmail.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</p>
+        </div>
+        <div class="section">
+          <h3>Hỗ trợ khách hàng</h3>
+          <a href="./gioithieu.html">Về chúng tôi</a>
+          <a href="./gioithieu.html">Liên hệ</a>
+        </div>
+        <div class="section">
+          <h3>Chính sách</h3>
+          <a href="./gioithieu.html">Chính sách quyền riêng tư</a>
+          <a href="./gioithieu.html">Điều khoản & điều kiện</a>
+        </div>
+      </div>
+      <div class="policy">
+        <p>&copy; 2025 TechBook. Tất cả quyền được bảo lưu.</p>
+      </div>
+    </footer>
+  </body>
+</html>

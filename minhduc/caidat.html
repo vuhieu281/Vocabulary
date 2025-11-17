@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechBook - Cài đặt</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div id="root"></div>
+
+    <script type="text/babel">
+            // Cập nhật navbar trong tất cả các file
+const Navbar = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  return (
+    <nav class="bg-black text-white p-4 flex items-center justify-between">
+      <div class="text-2xl font-bold">
+        <a href="trangchu.html" class="hover:text-gray-300">TechBook</a>
+      </div>
+      <div class="flex-1 flex justify-center space-x-6">
+        <a href="trangchu.html" class="hover:underline">
+          TRANG CHỦ
+        </a>
+        <a href="baidang.html" class="hover:underline">
+          BÀI ĐĂNG
+        </a>
+        <a href="#" class="hover:underline">
+          GIỚI THIỆU
+        </a>
+      </div>
+      <div class="relative">
+        <button
+          class="hover:underline flex items-center"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          TÀI KHOẢN
+          <svg
+            class="w-4 h-4 ml-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+        {isDropdownOpen && (
+          <div class="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg">
+            {!isLoggedIn ? (
+              <>
+                <a href="dangnhap.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Đăng nhập
+                </a>
+                <a href="dangky.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Đăng ký
+                </a>
+              </>
+            ) : (
+              <>
+                <a href="trangcanhan.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Xem hồ sơ
+                </a>
+                <a href="caidat.html" class="block px-4 py-2 hover:bg-gray-200">
+                  Cài đặt
+                </a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-200" onClick={() => setIsLoggedIn(false)}>
+                  Đăng xuất
+                </a>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
+
+      const SettingsPage = () => {
+        const [userInfo, setUserInfo] = React.useState({
+          name: "User Name",
+          email: "user@example.com",
+          phone: "0123 456 789",
+          address: "Hà Nội, Việt Nam",
+        });
+        const [passwordData, setPasswordData] = React.useState({
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+        const [message, setMessage] = React.useState("");
+
+        const handleUserInfoChange = (e) => {
+          const { name, value } = e.target;
+          setUserInfo((prev) => ({ ...prev, [name]: value }));
+        };
+
+        const handlePasswordChange = (e) => {
+          const { name, value } = e.target;
+          setPasswordData((prev) => ({ ...prev, [name]: value }));
+        };
+
+        const handleUserInfoSubmit = (e) => {
+          e.preventDefault();
+          setMessage("Thông tin đã được cập nhật thành công!");
+          setTimeout(() => setMessage(""), 3000);
+        };
+
+        const handlePasswordSubmit = (e) => {
+          e.preventDefault();
+          const { oldPassword, newPassword, confirmPassword } = passwordData;
+
+          if (!oldPassword || !newPassword || !confirmPassword) {
+            setMessage("Vui lòng điền đầy đủ các trường!");
+            setTimeout(() => setMessage(""), 3000);
+            return;
+          }
+
+          if (newPassword !== confirmPassword) {
+            setMessage("Mật khẩu mới và xác nhận mật khẩu không khớp!");
+            setTimeout(() => setMessage(""), 3000);
+            return;
+          }
+
+          // Giả lập API call để đổi mật khẩu
+          setMessage("Mật khẩu đã được đổi thành công!");
+          setPasswordData({
+            oldPassword: "",
+            newPassword: "",
+            confirmPassword: "",
+          });
+          setTimeout(() => setMessage(""), 3000);
+        };
+
+        return (
+          <div>
+            <Navbar />
+            <div class="p-6">
+              <h2 class="text-2xl font-bold mb-6 text-center">Cài đặt</h2>
+
+              {/* Thông tin cá nhân */}
+              <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mb-6">
+                <h3 class="text-xl font-bold mb-4">Thông tin cá nhân</h3>
+                <div>
+                  <label class="block mb-2 font-medium">Tên</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={userInfo.name}
+                    onChange={handleUserInfoChange}
+                    class="border p-2 w-full mb-4 rounded-lg"
+                  />
+                  <label class="block mb-2 font-medium">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={userInfo.email}
+                    onChange={handleUserInfoChange}
+                    class="border p-2 w-full mb-4 rounded-lg"
+                  />
+                  <label class="block mb-2 font-medium">Số điện thoại</label>
+                  <input
+                    type="text"
+                    name="phone"
+                    value={userInfo.phone}
+                    onChange={handleUserInfoChange}
+                    class="border p-2 w-full mb-4 rounded-lg"
+                  />
+                  <label class="block mb-2 font-medium">Địa chỉ</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={userInfo.address}
+                    onChange={handleUserInfoChange}
+                    class="border p-2 w-full mb-4 rounded-lg"
+                  />
+                  <button
+                    onClick={handleUserInfoSubmit}
+                    class="bg-blue-500 text-white p-2 rounded-lg w-full"
+                  >
+                    Cập nhật thông tin
+                  </button>
+                </div>
+              </div>
+
+              {/* Đổi mật khẩu */}
+              <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+                <h3 class="text-xl font-bold mb-4">Đổi mật khẩu</h3>
+                <div>
+                  <label class="block mb-2 font-medium">Mật khẩu cũ</label>
+                  <input
+                    type="password"
+                    name="oldPassword"
+                    value={passwordData.oldPassword}
+                    onChange={handlePasswordChange}
+                    class="border p-2 w-full mb-4 rounded-lg"
+                  />
+                  <label class="block mb-2 font-medium">Mật khẩu mới</label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    class="border p-2 w-full mb-4 rounded-lg"
+                  />
+                  <label class="block mb-2 font-medium">
+                    Xác nhận mật khẩu mới
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    class="border p-2 w-full mb-4 rounded-lg"
+                  />
+                  <button
+                    onClick={handlePasswordSubmit}
+                    class="bg-blue-500 text-white p-2 rounded-lg w-full"
+                  >
+                    Đổi mật khẩu
+                  </button>
+                </div>
+              </div>
+
+              {/* Thông báo */}
+              {message && (
+                <div class="fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg">
+                  {message}
+                </div>
+              )}
+            </div>
+            <footer class="bg-black text-white p-6 flex justify-between">
+              <div>
+                <h3 class="font-bold">TechBook</h3>
+                <p class="text-sm">Trang chủ review...</p>
+              </div>
+              <div>
+                <h3 class="font-bold">CUSTOMER SERVICE</h3>
+                <p class="text-sm">About Us</p>
+              </div>
+              <div>
+                <h3 class="font-bold">CHÍNH SÁCH QUYỀN RIÊNG TƯ</h3>
+                <p class="text-sm">ĐIỀU KHOẢN</p>
+              </div>
+            </footer>
+          </div>
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<SettingsPage />);
+    </script>
+  </body>
+</html>

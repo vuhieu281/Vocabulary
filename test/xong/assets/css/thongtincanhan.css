@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Body and Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  margin-bottom: 35px;
+  color: #333;
+  font-size: 28px;
+  text-align: center; /* Thêm thuộc tính này để căn giữa */
+}
+
+/* Settings Card */
+.settings-card {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--card-shadow);
+  animation: slideIn 0.5s ease-out;
+}
+
+.settings-card h2 {
+  font-size: 24px; /* Increased from 22px */
+  color: #333;
+  margin-bottom: 35px; /* Increased from 30px */
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Form Styles */
+.settings-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.form-group input {
+  padding: 12px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* Button Styles */
+.btn-update {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px; /* Thêm khoảng cách trên button */
+}
+
+.btn-update:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+}
+
+/* Error and Success Messages */
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1280px) {
+  .container {
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 968px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .settings-card {
+    padding: 30px;
+  }
+}

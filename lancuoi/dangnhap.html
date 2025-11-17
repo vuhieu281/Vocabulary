@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập</title>
+    <style>
+      /* Header */
+      .header {
+        background-color: #000;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        padding: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px; /* Thêm chiều cao cố định */
+      }
+
+      .header h1 {
+        margin: 0;
+        line-height: 1; /* Thêm line-height */
+      }
+
+      .header h1 a {
+        text-decoration: none;
+        font-size: 28px;
+        font-weight: 600;
+        color: #ffffff;
+        display: block; /* Thêm display block */
+        padding: 0; /* Reset padding */
+      }
+
+      .header .nav {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+      }
+
+      .header .nav a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+        padding: 8px 0;
+        position: relative;
+      }
+
+      .header .nav a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #ffffff;
+        transition: width 0.3s ease;
+      }
+
+      .header .nav a:hover::after {
+        width: 100%;
+      }
+
+      .header .account {
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Icon-only navigation styles */
+      .nav .icon-only {
+        font-size: 1.2rem;
+        padding: 0.7rem;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+      }
+
+      .nav .icon-only:nth-of-type(1) {
+        right: 120px;
+      }
+      .nav .icon-only:nth-of-type(2) {
+        right: 70px;
+      }
+      .nav .icon-only:nth-of-type(3) {
+        right: 20px;
+      }
+
+      .nav .icon-only span {
+        display: none;
+      }
+
+      .nav .icon-only:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: scale(1.1);
+      }
+
+      /* Style cho nút đăng nhập */
+      .nav .login-btn {
+        position: fixed;
+        right: 20px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column; /* Thay đổi flex direction */
+      }
+
+      .container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+
+      .login-card {
+        width: 100%;
+        max-width: 600px; /* Increased from 500px to match signup form */
+        background: white;
+        padding: 50px; /* Increased from 40px for more spacing */
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 40px; /* Increased from 30px */
+        font-size: 32px; /* Increased from 28px */
+        color: #333;
+      }
+
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px; /* Increased from 15px */
+      }
+
+      .form-group {
+        position: relative;
+      }
+
+      input {
+        width: 100%;
+        padding: 15px; /* Increased from 12px */
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px; /* Increased from 14px */
+        transition: border-color 0.3s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+
+      input::placeholder {
+        color: #999;
+      }
+
+      .btn-login {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 16px; /* Increased from 12px */
+        border-radius: 8px; /* Increased from 4px */
+        font-size: 18px; /* Increased from 16px */
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 20px; /* Increased from 10px */
+      }
+
+      .btn-login:hover {
+        background: #0056b3;
+      }
+
+      .signup-link {
+        text-align: center;
+        margin-top: 30px; /* Increased from 20px */
+        font-size: 16px; /* Increased from 14px */
+        color: #666;
+      }
+
+      .signup-link a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .signup-link a:hover {
+        text-decoration: underline;
+      }
+
+      /* Error message styles */
+      .error-message {
+        background-color: #ffebee;
+        color: #c62828;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .form-group.error input {
+        border-color: #ff0000;
+      }
+
+      /* Footer styles */
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 60px 20px 20px;
+        margin-top: auto;
+      }
+
+      .footer .content {
+        max-width: 900px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer .section {
+        min-width: 0;
+      }
+
+      .footer .section h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer .section p {
+        margin: 10px 0;
+        line-height: 1.6;
+        color: #ccc;
+      }
+
+      .footer .section a {
+        color: #ccc;
+        text-decoration: none;
+        display: block;
+        margin: 10px 0;
+        transition: color 0.3s ease;
+      }
+
+      .footer .section a:hover {
+        color: #fff;
+        padding-left: 5px;
+      }
+
+      .footer .policy {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 0;
+      }
+
+      .footer .policy a {
+        color: #ccc;
+        text-decoration: none;
+        margin: 0 20px;
+        transition: color 0.3s ease;
+      }
+
+      .footer .policy a:hover {
+        color: #fff;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 968px) {
+        .footer {
+          padding: 40px 20px 20px;
+        }
+
+        .footer .content {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+      }
+
+      @media (max-width: 840px) {
+        /* Increased breakpoint */
+        .container {
+          padding: 20px;
+        }
+
+        .login-card {
+          padding: 40px;
+        }
+
+        input {
+          font-size: 16px; /* Better for mobile touch targets */
+        }
+      }
+
+      @media (max-width: 768px) {
+        .login-card {
+          padding: 40px; /* Adjusted padding for mobile */
+          margin: 20px;
+        }
+
+        .footer .content {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .header-container {
+          padding: 10px 15px;
+        }
+      }
+      /* Footer */
+      .footer {
+        background-color: #000;
+        color: #fff;
+        padding: 60px 20px 20px;
+        margin-top: auto; /* Đẩy footer xuống dưới cùng */
+      }
+
+      .footer .content {
+        max-width: 900px;
+        margin: 0 auto 20px; /* Giảm margin bottom */
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 40px;
+      }
+
+      .footer .section {
+        min-width: 0;
+      }
+
+      .footer .section h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer .section p {
+        margin: 10px 0;
+        line-height: 1.6;
+        color: #ccc;
+      }
+
+      .footer .section a {
+        color: #ccc;
+        text-decoration: none;
+        display: block;
+        margin: 10px 0;
+        transition: color 0.3s ease;
+      }
+
+      .footer .section a:hover {
+        color: #fff;
+        text-decoration: none;
+        padding-left: 5px;
+      }
+
+      .footer .policy {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 0; /* Đảm bảo không có khoảng trắng dưới cùng */
+      }
+
+      .footer .policy a {
+        color: #ccc;
+        text-decoration: none;
+        margin: 0 20px;
+        transition: color 0.3s ease;
+      }
+
+      .footer .policy a:hover {
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-container">
+        <h1><a href="./index.html">TechBook</a></h1>
+        <nav class="nav">
+          <a href="./index.html">TRANG CHỦ</a>
+          <a href="./baidang.html">BÀI ĐĂNG</a>
+          <a href="./gioithieu.html">GIỚI THIỆU</a>
+          <a href="./dangky.html">ĐĂNG KÝ</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="container">
+      <div class="login-card">
+        <h1>Đăng nhập</h1>
+
+        <form class="login-form">
+          <div class="form-group">
+            <input type="email" placeholder="Email" required />
+          </div>
+
+          <div class="form-group">
+            <input type="password" placeholder="Mật khẩu" required />
+          </div>
+
+          <button type="submit" class="btn-login">Đăng nhập</button>
+        </form>
+
+        <div class="signup-link">
+          Chưa có tài khoản? <a href="./dangky.html">Đăng ký ngay</a>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="content">
+        <div class="section">
+          <h3>Về TechBook</h3>
+          <p>
+            Trang chuyên review cửa hàng đồ công nghệ secondhand uy tín tại Việt
+            Nam
+          </p>
+          <p><i class="fas fa-envelope"></i> TechBook@gmail.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam</p>
+        </div>
+        <div class="section">
+          <h3>Hỗ trợ khách hàng</h3>
+          <a href="./gioithieu.html">Về chúng tôi</a>
+          <a href="./gioithieu.html">Liên hệ</a>
+        </div>
+        <div class="section">
+          <h3>Chính sách</h3>
+          <a href="./gioithieu.html">Chính sách quyền riêng tư</a>
+          <a href="./gioithieu.html">Điều khoản & điều kiện</a>
+        </div>
+      </div>
+      <div class="policy">
+        <p>&copy; 2025 TechBook. Tất cả quyền được bảo lưu.</p>
+      </div>
+    </footer>
+    <script src="../assets/js/dangnhap.js"></script>
+  </body>
+</html>
