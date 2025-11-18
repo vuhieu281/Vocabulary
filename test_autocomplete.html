@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Autocomplete</title>
+    <link rel="stylesheet" href="public/css/home.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 700px;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Test Autocomplete Display</h1>
+        <div class="search-bar-wrapper">
+            <div class="search-bar">
+                <input type="text" id="search-input" class="search-input" placeholder="Gõ từ để test...">
+            </div>
+            <!-- Suggestion Box -->
+            <div id="suggestion-box" class="suggestion-box"></div>
+        </div>
+    </div>
+
+    <script>
+        const suggestionBox = document.getElementById('suggestion-box');
+        const searchInput = document.getElementById('search-input');
+
+        // Dữ liệu test
+        const testData = [
+            {"id": "2500", "word": "habit"},
+            {"id": "2503", "word": "habitat"},
+            {"id": "2496", "word": "hail"},
+            {"id": "2507", "word": "hair"},
+            {"id": "2494", "word": "half"},
+            {"id": "2499", "word": "halfway"},
+            {"id": "2501", "word": "hall"},
+            {"id": "2502", "word": "halt"},
+            {"id": "2509", "word": "hand"},
+            {"id": "2506", "word": "handful"}
+        ];
+
+        // Render suggestions
+        function displaySuggestions(suggestions) {
+            console.log('Displaying suggestions:', suggestions);
+            suggestionBox.innerHTML = '';
+            suggestions.forEach((item, index) => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'suggestion-item';
+                link.textContent = item.word;
+                link.style.display = 'block';
+                link.style.padding = '12px 32px';
+                link.style.borderBottom = '1px solid #f0f0f0';
+                link.style.textDecoration = 'none';
+                link.style.color = '#222';
+                link.style.fontWeight = '700';
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    alert('Clicked: ' + item.word + ' (ID: ' + item.id + ')');
+                };
+                suggestionBox.appendChild(link);
+            });
+            suggestionBox.classList.add('active');
+        }
+
+        // Test khi click button
+        searchInput.addEventListener('click', () => {
+            displaySuggestions(testData);
+        });
+
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Escape') {
+                suggestionBox.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
