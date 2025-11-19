@@ -125,16 +125,50 @@ class Word {
      * Lấy từ đã lưu của user
      */
     public function getSavedWords($userId) {
+        // Backwards-compatible: if only $userId passed, return all saved words.
+        $args = func_get_args();
+        if (count($args) === 1) {
+            $sql = "
+                SELECT lw.id, lw.word, lw.part_of_speech
+                FROM saved_words sw
+                JOIN local_words lw ON lw.id = sw.local_word_id
+                WHERE sw.user_id = ?
+                ORDER BY sw.saved_at DESC
+            ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$userId]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        // If limit/offset provided, use pagination
+        $limit = isset($args[1]) ? (int)$args[1] : 20;
+        $offset = isset($args[2]) ? (int)$args[2] : 0;
+
         $sql = "
             SELECT lw.id, lw.word, lw.part_of_speech
             FROM saved_words sw
             JOIN local_words lw ON lw.id = sw.local_word_id
-            WHERE sw.user_id = ?
+            WHERE sw.user_id = :uid
             ORDER BY sw.saved_at DESC
+            LIMIT :limit OFFSET :offset
         ";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$userId]);
+        $stmt->bindParam(':uid', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    /**
+     * Đếm số lượng từ đã lưu của user
+     */
+    public function countSavedWords($userId) {
+        $sql = "SELECT COUNT(*) AS total FROM saved_words WHERE user_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$userId]);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)($res['total'] ?? 0);
     }
 
     /**

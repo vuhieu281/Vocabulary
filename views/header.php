@@ -108,9 +108,9 @@ if (session_status() === PHP_SESSION_NONE) session_start();
         <div class="nav-center">
             <a href="/Vocabulary/public/index.php?route=home">Home</a>
             <a href="/Vocabulary/public/index.php?route=topics">Topics</a>
-            <a href="/Vocabulary/public/index.php?route=search">Search</a>
-            <a href="/Vocabulary/public/index.php?route=saved">Saved</a>
-            <a href="/Vocabulary/public/index.php?route=history">History</a>
+            <!-- <a href="/Vocabulary/public/index.php?route=search">Search</a> -->
+            <a href="/Vocabulary/public/index.php?route=profile">Saved</a>
+            <a href="/Vocabulary/public/index.php?route=profile">History</a>
             <a href="/Vocabulary/public/index.php?route=flashcard">Flashcard</a>
             <a href="/Vocabulary/public/index.php?route=quiz">Quiz</a>
         </div>

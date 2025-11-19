@@ -1,6 +1,6 @@
 <?php
 class Database {
-    private $host = "localhost";
+    private $host = "localhost:3366";
     private $db_name = "vocabulary_db";
     private $username = "root";
     private $password = "";

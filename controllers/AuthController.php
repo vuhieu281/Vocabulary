@@ -68,7 +68,12 @@ class AuthController {
         $wordModel = new Word();
 
         $user = $userModel->getById($_SESSION['user_id']);
-        $savedWords = $wordModel->getSavedWords($_SESSION['user_id']);
+        // Saved words pagination (server-side)
+        $savedLimit = isset($_GET['saved_limit']) ? max(1, (int)$_GET['saved_limit']) : 6;
+        $savedPage = isset($_GET['saved_page']) ? max(1, (int)$_GET['saved_page']) : 1;
+        $savedOffset = ($savedPage - 1) * $savedLimit;
+        $savedTotal = $wordModel->countSavedWords($_SESSION['user_id']);
+        $savedWords = $wordModel->getSavedWords($_SESSION['user_id'], $savedLimit, $savedOffset);
         $quizResults = $wordModel->getQuizResults($_SESSION['user_id']);
 
         include __DIR__ . '/../views/auth/profile.php';
