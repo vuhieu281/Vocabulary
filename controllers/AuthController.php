@@ -32,9 +32,16 @@ class AuthController {
     }
 
     public function login() {
+        if (!isset($_POST['email']) || !isset($_POST['password'])) {
+            session_start();
+            $error = "Vui lòng nhập email và mật khẩu!";
+            include __DIR__.'/../views/auth/login.php';
+            return;
+        }
+        
         session_start();
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
 
         $user = new User();
         $data = $user->getByEmail($email);
@@ -46,7 +53,16 @@ class AuthController {
         }
 
         $_SESSION['user_id'] = $data['id'];
-        header("Location: index.php?route=profile");
+        $_SESSION['user_name'] = $data['name'];
+        $_SESSION['user_email'] = $data['email'];
+        $_SESSION['user_role'] = $data['role'];
+        
+        // Chuyển hướng dựa trên role
+        if ($data['role'] === 'admin') {
+            header("Location: index.php?route=admin_dashboard");
+        } else {
+            header("Location: index.php?route=profile");
+        }
         exit;
     }
 
@@ -58,7 +74,6 @@ class AuthController {
     }
 
     public function profile() {
-        session_start();
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?route=login");
             exit;

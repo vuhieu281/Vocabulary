@@ -16,8 +16,7 @@ class Topic {
      * Lấy tất cả topics
      */
     public function getAll() {
-        // Do not select `image` here because older DB schemas may not have that column.
-        $query = "SELECT id, name, description FROM topics ORDER BY id ASC";
+        $query = "SELECT id, name, description, image FROM topics ORDER BY id ASC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -27,7 +26,7 @@ class Topic {
      * Lấy topic theo ID
      */
     public function getById($id) {
-        $query = "SELECT id, name, description FROM topics WHERE id = :id LIMIT 1";
+        $query = "SELECT id, name, description, image FROM topics WHERE id = :id LIMIT 1";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -75,12 +74,13 @@ class Topic {
     /**
      * Tạo topic mới (cho admin sau này)
      */
-    public function create($name, $description) {
-        $query = "INSERT INTO topics (name, description) VALUES (:name, :description)";
+    public function create($name, $description, $image = null) {
+        $query = "INSERT INTO topics (name, description, image) VALUES (:name, :description, :image)";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
-
+        $stmt->bindParam(':image', $image);
+        
         if ($stmt->execute()) {
             return (int)$this->db->lastInsertId();
         }
@@ -90,13 +90,14 @@ class Topic {
     /**
      * Cập nhật topic (cho admin sau này)
      */
-    public function update($id, $name, $description) {
-        $query = "UPDATE topics SET name = :name, description = :description WHERE id = :id";
+    public function update($id, $name, $description, $image = null) {
+        $query = "UPDATE topics SET name = :name, description = :description, image = :image WHERE id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
-
+        $stmt->bindParam(':image', $image);
+        
         return $stmt->execute();
     }
 
