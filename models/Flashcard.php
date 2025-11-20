@@ -20,9 +20,10 @@ class Flashcard {
      * Lấy tất cả từ đã lưu của user, xáo trộn ngẫu nhiên
      * 
      * @param int $userId ID của user
+     * @param string|null $difficulty Lọc theo độ khó (A1, A2, B1, B2, C1, C2) hoặc null để lấy tất cả
      * @return array Danh sách flashcard
      */
-    public function getFlashcardsByUserId($userId) {
+    public function getFlashcardsByUserId($userId, $difficulty = null) {
         $query = "
             SELECT 
                 lw.id,
@@ -36,11 +37,21 @@ class Flashcard {
             FROM " . $this->table_saved_words . " sw
             JOIN " . $this->table_local_words . " lw ON sw.local_word_id = lw.id
             WHERE sw.user_id = :user_id
-            ORDER BY RAND()
         ";
+
+        if ($difficulty) {
+            $query .= " AND lw.level = :difficulty";
+        }
+
+        $query .= " ORDER BY RAND()";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        
+        if ($difficulty) {
+            $stmt->bindParam(':difficulty', $difficulty, PDO::PARAM_STR);
+        }
+
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -159,5 +170,53 @@ class Flashcard {
     public function hasSavedWords($userId) {
         $count = $this->getSavedWordsCount($userId);
         return $count > 0;
+    }
+
+    /**
+     * Lấy danh sách độ khó của các từ đã lưu của user
+     * 
+     * @param int $userId ID của user
+     * @return array Danh sách độ khó có sẵn
+     */
+    public function getAvailableLevels($userId) {
+        $query = "
+            SELECT DISTINCT lw.level
+            FROM " . $this->table_saved_words . " sw
+            JOIN " . $this->table_local_words . " lw ON sw.local_word_id = lw.id
+            WHERE sw.user_id = :user_id AND lw.level IS NOT NULL
+            ORDER BY lw.level
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $levels = array_map(function($row) { return $row['level']; }, $results);
+        return $levels;
+    }
+
+    /**
+     * Lấy số lượng từ theo độ khó
+     * 
+     * @param int $userId ID của user
+     * @param string $difficulty Độ khó
+     * @return int Số lượng từ
+     */
+    public function getCountByLevel($userId, $difficulty) {
+        $query = "
+            SELECT COUNT(*) as total
+            FROM " . $this->table_saved_words . " sw
+            JOIN " . $this->table_local_words . " lw ON sw.local_word_id = lw.id
+            WHERE sw.user_id = :user_id AND lw.level = :difficulty
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':difficulty', $difficulty, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'] ?? 0;
     }
 }

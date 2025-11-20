@@ -1,8 +1,7 @@
 <?php
 /**
- * Seed Topics & Topic Words Data
- * Tạo 3 chủ đề mẫu, mỗi chủ đề có 10 từ
- * File: sql/seed_topics.php
+ * Seed Topics với 3 chủ đề mẫu, mỗi chủ đề 10 từ
+ * File: sql/seed_topics_sample.php
  */
 
 require_once __DIR__ . '/../config/database.php';
@@ -21,17 +20,17 @@ try {
     $topicsData = [
         [
             'name' => 'Animals (Động vật)',
-            'description' => 'Tìm hiểu các loài động vật từ quen thuộc đến hiếm gặp. Từ các thú cưng đến động vật hoang dã.',
+            'description' => 'Tìm hiểu các loài động vật từ quen thuộc đến hiếm gặp.',
             'words' => ['dog', 'cat', 'elephant', 'lion', 'tiger', 'bear', 'monkey', 'bird', 'fish', 'horse']
         ],
         [
             'name' => 'Food (Thực phẩm)',
-            'description' => 'Các từ vựng liên quan đến thức ăn, đồ uống và nấu ăn. Cần thiết cho những ai yêu thích ẩm thực.',
+            'description' => 'Các từ vựng liên quan đến thức ăn, đồ uống và nấu ăn.',
             'words' => ['apple', 'bread', 'cheese', 'milk', 'egg', 'rice', 'chicken', 'beef', 'pizza', 'soup']
         ],
         [
             'name' => 'Travel (Du lịch)',
-            'description' => 'Từ vựng hữu ích khi đi du lịch và khám phá thế giới. Học cách nói chuyện khi du lịch.',
+            'description' => 'Từ vựng hữu ích khi đi du lịch và khám phá thế giới.',
             'words' => ['hotel', 'airport', 'ticket', 'passport', 'luggage', 'map', 'tour', 'beach', 'mountain', 'flight']
         ]
     ];

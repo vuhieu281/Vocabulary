@@ -1,0 +1,141 @@
+<?php include __DIR__ . '/../header.php'; ?>
+<link rel="stylesheet" href="css/admin-new.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="admin-container">
+    <!-- Sidebar Navigation -->
+    <nav class="admin-sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-cogs"></i> Admin Panel</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="index.php?route=admin_dashboard" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="index.php?route=admin_users" class="nav-link"><i class="fas fa-users"></i> Quản lý User</a></li>
+            <li><a href="index.php?route=admin_words" class="nav-link"><i class="fas fa-book"></i> Quản lý Từ vựng</a></li>
+            <li><a href="index.php?route=admin_topics" class="nav-link"><i class="fas fa-tags"></i> Quản lý Chủ đề</a></li>
+            <li><a href="index.php?route=admin_activities" class="nav-link active"><i class="fas fa-history"></i> Lịch sử hoạt động</a></li>
+            <li><a href="index.php?route=logout" class="nav-link logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <h1>Lịch sử hoạt động của người dùng</h1>
+            <a href="index.php?route=admin_users" class="btn btn-secondary">← Quay lại</a>
+        </div>
+
+        <div class="content-box">
+            <div class="user-info">
+                <h3><?php echo htmlspecialchars($userData['name']); ?></h3>
+                <p>Email: <?php echo htmlspecialchars($userData['email']); ?></p>
+                <p>Ngày tham gia: <?php echo date('d/m/Y', strtotime($userData['created_at'])); ?></p>
+            </div>
+
+            <h3>Hoạt động</h3>
+            
+            <?php if (empty($activities)): ?>
+            <p style="text-align: center; color: #7f8c8d;">Người dùng này chưa có hoạt động nào.</p>
+            <?php else: ?>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Loại hoạt động</th>
+                        <th>Từ vựng</th>
+                        <th>Thời gian</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($activities as $activity): ?>
+                    <tr>
+                        <td>
+                            <span class="activity-type <?php echo $activity['activity_type']; ?>">
+                                <?php echo $activity['activity_type'] === 'search' ? '🔍 Tìm kiếm' : '💾 Lưu từ'; ?>
+                            </span>
+                        </td>
+                        <td><?php echo htmlspecialchars($activity['target_name']); ?></td>
+                        <td><?php echo date('d/m/Y H:i:s', strtotime($activity['activity_date'])); ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <?php if ($page > 1): ?>
+                    <a href="index.php?route=admin_user_activities&user_id=<?php echo $user_id; ?>&page=<?php echo $page - 1; ?>" class="btn btn-secondary">← Trước</a>
+                <?php endif; ?>
+
+                <span class="page-info">Trang <?php echo $page; ?>/<?php echo $totalPages; ?></span>
+
+                <?php if ($page < $totalPages): ?>
+                    <a href="index.php?route=admin_user_activities&user_id=<?php echo $user_id; ?>&page=<?php echo $page + 1; ?>" class="btn btn-secondary">Tiếp →</a>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
+        </div>
+    </main>
+</div>
+
+<style>
+<?php include __DIR__ . '/admin-styles.php'; ?>
+
+.content-box {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.user-info {
+    background-color: #ecf0f1;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.user-info h3 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+}
+
+.user-info p {
+    margin: 5px 0;
+    color: #7f8c8d;
+}
+
+.activity-type {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.activity-type.search {
+    background-color: #3498db;
+    color: white;
+}
+
+.activity-type.saved_word {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.page-info {
+    padding: 8px 15px;
+    background-color: #ecf0f1;
+    border-radius: 4px;
+    font-weight: 600;
+}
+</style>
+
+<?php include __DIR__ . '/../footer.php'; ?>

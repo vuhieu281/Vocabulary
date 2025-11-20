@@ -9,11 +9,34 @@ $totalCards = count($flashcards);
 ?>
 
 <div class="flashcard-learn-container">
-    <div class="flashcard-header">
-        <div class="flashcard-progress">
-            <span id="current-card">1</span> / <span id="total-cards"><?php echo $totalCards; ?></span>
+    <div class="flashcard-header-wrapper">
+        <div class="flashcard-header">
+            <div class="flashcard-progress">
+                <span id="current-card">1</span> / <span id="total-cards"><?php echo $totalCards; ?></span>
+            </div>
+            <button class="btn-exit" onclick="goBackToFlashcard()">❌ Thoát</button>
         </div>
-        <button class="btn-exit" onclick="goBackToFlashcard()">❌ Thoát</button>
+
+        <div class="filter-bar">
+            <select id="difficulty-select" class="difficulty-select" onchange="changeDifficulty(this.value)">
+                <option value="">📚 Tất cả từ</option>
+                <?php 
+                    $availableLevels = [];
+                    foreach ($flashcards as $card) {
+                        if ($card['level'] && !in_array($card['level'], $availableLevels)) {
+                            $availableLevels[] = $card['level'];
+                        }
+                    }
+                    sort($availableLevels);
+                    foreach ($availableLevels as $level): 
+                ?>
+                    <option value="<?php echo htmlspecialchars($level); ?>">
+                        <?php echo htmlspecialchars($level); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <div></div>
+        </div>
     </div>
 
     <div class="flashcard-wrapper">
@@ -60,10 +83,12 @@ $totalCards = count($flashcards);
 
 <!-- Script để xử lý flashcard -->
 <script>
-const flashcards = <?php echo json_encode($flashcards); ?>;
+const allFlashcards = <?php echo json_encode($flashcards); ?>;
+let flashcards = [...allFlashcards];
 let currentIndex = 0;
 let isFlipped = false;
 let audioUrl = '';
+let currentDifficulty = null;
 
 // Tải card đầu tiên
 document.addEventListener('DOMContentLoaded', function() {
@@ -71,6 +96,34 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('flashcard').addEventListener('click', flipCard);
     document.addEventListener('keydown', handleKeyPress);
 });
+
+/**
+ * Thay đổi độ khó
+ */
+function changeDifficulty(difficulty) {
+    currentDifficulty = difficulty;
+    
+    if (difficulty) {
+        // Lọc flashcards theo độ khó
+        flashcards = allFlashcards.filter(card => card.level === difficulty);
+    } else {
+        // Hiển thị tất cả
+        flashcards = [...allFlashcards];
+    }
+    
+    // Reset về card đầu tiên
+    if (flashcards.length > 0) {
+        currentIndex = 0;
+        loadCard(0);
+    } else {
+        // Nếu không có từ nào, quay lại
+        alert('Không có từ nào với độ khó này');
+        document.getElementById('difficulty-select').value = '';
+        currentDifficulty = null;
+        flashcards = [...allFlashcards];
+        loadCard(0);
+    }
+}
 
 /**
  * Tải flashcard theo index

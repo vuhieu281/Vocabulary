@@ -35,6 +35,13 @@ class FlashcardController {
         // Kiểm tra xem user có từ lưu không
         $hasWords = $this->flashcard->hasSavedWords($userId);
 
+        // Lấy danh sách độ khó có sẵn
+        $availableLevels = $this->flashcard->getAvailableLevels($userId);
+        $levelCounts = [];
+        foreach ($availableLevels as $level) {
+            $levelCounts[$level] = $this->flashcard->getCountByLevel($userId, $level);
+        }
+
         // Include header
         include_once __DIR__ . '/../views/header.php';
         
@@ -63,8 +70,17 @@ class FlashcardController {
             exit;
         }
 
-        // Lấy tất cả flashcard
-        $flashcards = $this->flashcard->getFlashcardsByUserId($userId);
+        // Lấy độ khó từ query string (nếu có)
+        $difficulty = isset($_GET['difficulty']) ? trim($_GET['difficulty']) : null;
+
+        // Lấy tất cả flashcard (hoặc lọc theo độ khó)
+        $flashcards = $this->flashcard->getFlashcardsByUserId($userId, $difficulty);
+
+        // Nếu không có từ nào với độ khó đã chọn, quay lại
+        if (empty($flashcards)) {
+            header('Location: /Vocabulary/public/index.php?route=flashcard');
+            exit;
+        }
 
         // Include header
         include_once __DIR__ . '/../views/header.php';
