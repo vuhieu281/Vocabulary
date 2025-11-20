@@ -34,7 +34,9 @@ CREATE TABLE users (
 );
 
 -- ==========================================
--- 3) TOPICS ─ (ĐÃ CẬP NHẬT - Thêm image)
+<<<<<<< HEAD
+-- ==========================================
+-- 3) TOPICS
 -- ==========================================
 CREATE TABLE topics (
     id INT AUTO_INCREMENT PRIMARY KEY,

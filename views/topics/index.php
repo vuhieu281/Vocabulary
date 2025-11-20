@@ -9,7 +9,7 @@
         <?php foreach ($topics as $topic): ?>
             <div class="topic-card" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(13,110,253,0.06);border:1px solid #eef7ff;">
                 <?php if (!empty($topic['image'])): ?>
-                    <img src="<?php echo htmlspecialchars($topic['image']); ?>" alt="<?php echo htmlspecialchars($topic['name']); ?>" style="width:100%;height:180px;object-fit:cover;">
+                    <img src="/Vocabulary/<?php echo htmlspecialchars($topic['image']); ?>" alt="<?php echo htmlspecialchars($topic['name']); ?>" style="width:100%;height:180px;object-fit:cover;">
                 <?php endif; ?>
                 <div style="padding:20px;">
                     <h3 style="margin:0 0 8px 0;color:#0d6efd;"><?php echo htmlspecialchars($topic['name']); ?></h3>
