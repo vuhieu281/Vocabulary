@@ -128,6 +128,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 
         <!-- NAV TRUNG TÂM -->
         <div class="nav-center">
+<<<<<<< Updated upstream
             <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
                 <!-- Menu user bình thường (ẩn cho admin) -->
                 <a href="/Vocabulary/public/index.php?route=home">Home</a>
@@ -138,6 +139,15 @@ if (session_status() === PHP_SESSION_NONE) session_start();
                 <a href="/Vocabulary/public/index.php?route=flashcard">Flashcard</a>
                 <a href="/Vocabulary/public/index.php?route=quiz">Quiz</a>
             <?php endif; ?>
+=======
+            <a href="/Vocabulary/public/index.php?route=home">Home</a>
+            <a href="/Vocabulary/public/index.php?route=topics">Topics</a>
+            <a href="/Vocabulary/public/index.php?route=chat">ChatBot</a>
+            <a href="/Vocabulary/public/index.php?route=profile">Saved</a>
+            <!-- <a href="/Vocabulary/public/index.php?route=profile">History</a> -->
+            <a href="/Vocabulary/public/index.php?route=flashcard">Flashcard</a>
+            <a href="/Vocabulary/public/index.php?route=quiz">Quiz</a>
+>>>>>>> Stashed changes
         </div>
 
         <!-- NAV PHẢI -->
