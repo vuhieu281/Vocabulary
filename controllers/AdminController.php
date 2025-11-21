@@ -49,6 +49,25 @@ class AdminController {
         $totalUsers = $this->admin->countUsers();
         $totalPages = ceil($totalUsers / $limit);
 
+        // Tách admin và non-admin users
+        $adminUsers = [];
+        $regularUsers = [];
+        
+        $userModel = new User();
+        foreach ($users as $user) {
+            $user['highest_score'] = $userModel->getHighestScore($user['id']);
+            $user['quiz_attempts'] = $userModel->getQuizAttempts($user['id']);
+            $user['average_score'] = $userModel->getAverageScore($user['id']);
+            
+            if ($user['role'] === 'admin') {
+                $adminUsers[] = $user;
+            } else {
+                $regularUsers[] = $user;
+            }
+        }
+
+        $users = array_merge($adminUsers, $regularUsers);
+
         include __DIR__ . '/../views/admin/users.php';
     }
 
@@ -295,16 +314,18 @@ class AdminController {
         try {
             $result = $this->admin->updateTopic($id, $name, $description, $image);
             if ($result) {
-                // Nếu có từ mới được gửi lên thì chỉ gán thêm (không xóa từ cũ)
+                // Xoá tất cả từ cũ
+                $this->admin->removeAllWordsFromTopic($id);
+                
+                // Xử lý các từ vựng mới
                 $words = $_POST['words'] ?? [];
                 $words = array_filter($words, 'strlen'); // Loại bỏ các trường trống
                 $words = array_slice($words, 0, 10); // Giới hạn 10 từ
-
+                
                 if (!empty($words)) {
-                    // Gán (INSERT IGNORE trong assignWordsToTopic sẽ tránh trùng lặp)
                     $this->admin->assignWordsToTopic($id, $words);
                 }
-
+                
                 header("Location: index.php?route=admin_topics&success=Cập nhật chủ đề thành công");
             } else {
                 header("Location: index.php?route=admin_edit_topic&id=$id&error=Cập nhật chủ đề thất bại");

@@ -97,12 +97,19 @@ CREATE TABLE search_history (
 CREATE TABLE quiz_results (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
+<<<<<<< HEAD
     user_quiz_id INT,
     score INT NOT NULL,
     total_questions INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (user_quiz_id) REFERENCES user_quizzes(id) ON DELETE CASCADE
+=======
+    score INT NOT NULL,
+    total_questions INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+>>>>>>> dd20d1fd78b2ea20cb13823a93939e86f972f189
 );
 
 -- ==========================================

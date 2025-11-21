@@ -32,6 +32,10 @@ class AuthController {
     }
 
     public function login() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
         if (!isset($_POST['email']) || !isset($_POST['password'])) {
             $error = "Vui lòng nhập email và mật khẩu!";
             include __DIR__.'/../views/auth/login.php';
@@ -64,6 +68,7 @@ class AuthController {
     }
 
     public function logout() {
+        session_start();
         session_destroy();
         header("Location: index.php?route=login");
         exit;
@@ -79,13 +84,19 @@ class AuthController {
         $wordModel = new Word();
 
         $user = $userModel->getById($_SESSION['user_id']);
-        $savedWords = $wordModel->getSavedWords($_SESSION['user_id']);
+        // Saved words pagination (server-side)
+        $savedLimit = isset($_GET['saved_limit']) ? max(1, (int)$_GET['saved_limit']) : 6;
+        $savedPage = isset($_GET['saved_page']) ? max(1, (int)$_GET['saved_page']) : 1;
+        $savedOffset = ($savedPage - 1) * $savedLimit;
+        $savedTotal = $wordModel->countSavedWords($_SESSION['user_id']);
+        $savedWords = $wordModel->getSavedWords($_SESSION['user_id'], $savedLimit, $savedOffset);
         $quizResults = $wordModel->getQuizResults($_SESSION['user_id']);
 
         include __DIR__ . '/../views/auth/profile.php';
     }
 
     public function changePassword() {
+        session_start();
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?route=login");
             exit;
@@ -105,5 +116,12 @@ class AuthController {
         }
 
         include __DIR__ . '/../views/auth/profile.php';
+    }
+
+    public function logoutPreview() {
+        // Redirect sang trang home mà vẫn giữ session admin
+        // KHÔNG gọi session_destroy()
+        header("Location: /Vocabulary/public/index.php?route=home");
+        exit;
     }
 }

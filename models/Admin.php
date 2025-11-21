@@ -113,18 +113,7 @@ class Admin {
             INSERT INTO local_words (word, part_of_speech, ipa, audio_link, senses, level, oxford_url) 
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
-            try {
-                $result = $stmt->execute([$word, $part_of_speech, $ipa, $audio_link, $senses, $level, $oxford_url]);
-                if (!$result) {
-                    $err = $stmt->errorInfo();
-                    error_log("createWord failed: " . implode(' | ', $err));
-                    throw new Exception('Database insert failed: ' . $err[2]);
-                }
-                return $this->db->lastInsertId();
-            } catch (Exception $e) {
-                error_log("Exception in createWord: " . $e->getMessage());
-                throw $e;
-            }
+        return $stmt->execute([$word, $part_of_speech, $ipa, $audio_link, $senses, $level, $oxford_url]);
     }
 
     public function updateWord($id, $word, $part_of_speech, $ipa, $audio_link, $senses, $level, $oxford_url) {
