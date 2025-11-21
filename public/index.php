@@ -116,7 +116,6 @@ switch ($route) {
         (new TopicController())->detail($id);
         break;
 
-<<<<<<< Updated upstream
     // ========== ADMIN PANEL ==========
     case 'admin_dashboard':
         require_once __DIR__ . '/../controllers/AdminController.php';
@@ -201,12 +200,10 @@ switch ($route) {
     case 'admin_delete_user':
         require_once __DIR__ . '/../controllers/AdminController.php';
         (new AdminController())->deleteUser();
-=======
     // ----------------- CHATBOT ------------------
     case 'chat':
         require_once __DIR__ . '/../controllers/ChatbotController.php';
         (new ChatbotController())->index();
->>>>>>> Stashed changes
         break;
 
     default:
