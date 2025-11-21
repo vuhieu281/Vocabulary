@@ -1,7 +1,23 @@
 <?php
 // Router đơn giản theo tham số ?route=
+
+// Middleware: Nếu là admin, redirect sang admin dashboard (trừ logout, api routes)
+if (session_status() === PHP_SESSION_NONE) session_start();
+
 $route = $_GET['route'] ?? 'home';
 
+// Routes cho phép admin access
+$adminAllowedRoutes = ['logout', 'logout_preview', 'home', 'search', 'topics', 'topic_detail', 'saved', 'history', 'flashcard', 'quiz'];
+
+// Nếu là admin và route không phải admin route hay logout, redirect về admin dashboard
+if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin' && 
+    !in_array($route, $adminAllowedRoutes) && 
+    strpos($route, 'admin_') === false) {
+    header("Location: index.php?route=admin_dashboard");
+    exit;
+}
+
+// Routes bình thường
 switch ($route) {
 
     // ----------------- AUTH (Đăng nhập, Đăng ký, Profile) ------------------
@@ -40,6 +56,44 @@ switch ($route) {
         (new AuthController())->logout();
         break;
 
+    case 'logout_preview':
+        require_once "../controllers/AuthController.php";
+        (new AuthController())->logoutPreview();
+        break;
+
+    // ----------------- FLASHCARD ------------------
+    case 'flashcard':
+        require_once __DIR__ . '/../controllers/FlashcardController.php';
+        $action = $_GET['action'] ?? 'index';
+        $controller = new FlashcardController();
+        
+        if ($action === 'learn') {
+            $controller->learn();
+        } else {
+            $controller->index();
+        }
+        break;
+
+    // ----------------- QUIZ ------------------
+    case 'quiz':
+        require_once __DIR__ . '/../controllers/QuizController.php';
+        $action = $_GET['action'] ?? 'index';
+        $controller = new QuizController();
+        
+        switch ($action) {
+            case 'start':
+                $controller->start();
+                break;
+            case 'submit':
+                $controller->submit();
+                break;
+            case 'result':
+                $controller->result();
+                break;
+            default:
+                $controller->index();
+        }
+        break;
 
     // ----------------- HOME / SEARCH ------------------
     case 'home':
@@ -65,6 +119,96 @@ switch ($route) {
         require_once __DIR__ . '/../controllers/TopicController.php';
         $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
         (new TopicController())->detail($id);
+        break;
+
+    // ========== ADMIN PANEL ==========
+    case 'admin_dashboard':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->dashboard();
+        break;
+
+    case 'admin_users':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->users();
+        break;
+
+    case 'admin_edit_user':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->editUser();
+        break;
+
+    case 'admin_words':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->words();
+        break;
+
+    case 'admin_add_word':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->addWord();
+        break;
+
+    case 'admin_save_word':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->saveWord();
+        break;
+
+    case 'admin_edit_word':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->editWord();
+        break;
+
+    case 'admin_topics':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->topics();
+        break;
+
+    case 'admin_add_topic':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->addTopic();
+        break;
+
+    case 'admin_save_topic':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->saveTopic();
+        break;
+
+    case 'admin_edit_topic':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->editTopic();
+        break;
+
+    case 'admin_update_topic':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->updateTopic();
+        break;
+
+    case 'admin_activities':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->activities();
+        break;
+
+    case 'admin_user_activities':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->userActivities();
+        break;
+
+    case 'admin_delete_topic':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->deleteTopic();
+        break;
+
+    case 'admin_delete_word':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->deleteWord();
+        break;
+
+    case 'admin_delete_user':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->deleteUser();
+    // ----------------- CHATBOT ------------------
+    case 'chat':
+        require_once __DIR__ . '/../controllers/ChatbotController.php';
+        (new ChatbotController())->index();
         break;
 
     default:

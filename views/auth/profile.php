@@ -51,6 +51,7 @@
         background: #f9fbff;
         border-radius: 10px;
         overflow: hidden;
+        table-layout: fixed;
     }
 
     table th {
@@ -63,7 +64,19 @@
     table td {
         padding: 10px;
         border-bottom: 1px solid #e6efff;
+        vertical-align: middle;
+        text-align: center;
     }
+
+    /* Make header cells centered and control column widths */
+    table th {
+        text-align: center;
+    }
+
+    /* Specific column widths for quiz results table */
+    .quiz-table col.col-score { width: 15%; }
+    .quiz-table col.col-count { width: 15%; }
+    .quiz-table col.col-date { width: 70%; }
 
     ul li {
         margin-bottom: 6px;
@@ -148,8 +161,9 @@
     }
 
     .search-history-item {
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 120px 80px;
+        gap: 12px;
         align-items: center;
         padding: 12px;
         background: #eef4ff;
@@ -181,7 +195,7 @@
     .history-time {
         font-size: 12px;
         color: #999;
-        margin-right: 10px;
+        text-align: right;
     }
 
     .btn-delete-history {
@@ -210,8 +224,9 @@
     }
 
     .saved-word-item {
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 100px;
+        gap: 12px;
         align-items: center;
         padding: 12px;
         background: #eef4ff;
@@ -254,6 +269,26 @@
         background: #ff5252;
     }
 
+    /* Pagination controls */
+    .pager {
+        display:flex;
+        gap:8px;
+        justify-content:center;
+        margin-top:12px;
+    }
+    .pager a, .pager span {
+        padding:8px 10px;
+        background:#fff;
+        border:1px solid #e6efff;
+        border-radius:8px;
+        color:#1d65c1;
+        text-decoration:none;
+        font-weight:600;
+    }
+    .pager .active {
+        background:#1d65c1;color:#fff;
+    }
+
 </style>
 
 
@@ -293,6 +328,36 @@
                     </div>
                 <?php endforeach; ?>
             </div>
+            <?php
+                // Saved words pager (server-side rendered)
+                $savedTotal = $savedTotal ?? 0;
+                $savedPage = $savedPage ?? 1;
+                $savedLimit = $savedLimit ?? count($savedWords);
+                $savedPages = (int)ceil($savedTotal / $savedLimit);
+            ?>
+            <?php if ($savedPages > 1): ?>
+                <div class="pager" style="margin-top:10px;">
+                    <?php if ($savedPage > 1): ?>
+                        <a href="index.php?route=profile&saved_page=<?php echo $savedPage - 1; ?>&saved_limit=<?php echo $savedLimit; ?>">&laquo; Trước</a>
+                    <?php else: ?>
+                        <span style="opacity:0.5">&laquo; Trước</span>
+                    <?php endif; ?>
+
+                    <?php for ($p = 1; $p <= $savedPages; $p++): ?>
+                        <?php if ($p == $savedPage): ?>
+                            <span class="active"><?php echo $p; ?></span>
+                        <?php else: ?>
+                            <a href="index.php?route=profile&saved_page=<?php echo $p; ?>&saved_limit=<?php echo $savedLimit; ?>"><?php echo $p; ?></a>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+
+                    <?php if ($savedPage < $savedPages): ?>
+                        <a href="index.php?route=profile&saved_page=<?php echo $savedPage + 1; ?>&saved_limit=<?php echo $savedLimit; ?>">Tiếp &raquo;</a>
+                    <?php else: ?>
+                        <span style="opacity:0.5">Tiếp &raquo;</span>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 
@@ -310,7 +375,8 @@
         <button class="btn btn-clear-history" style="background: #ff4e4e; margin-top: 15px;">Xóa toàn bộ lịch sử</button>
     </div>
 
-    <!-- ================= KẾT QUẢ QUIZ ================= -->
+    <!-- ================= KẾT QUẢ QUIZ CỦA USER ================= -->
+    <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
     <div class="section">
         <h3>
             <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png">
@@ -320,23 +386,32 @@
         <?php if (empty($quizResults)): ?>
             <p>Bạn chưa làm bài kiểm tra nào.</p>
         <?php else: ?>
-            <table>
+            <table class="quiz-table">
+                <colgroup>
+                    <col class="col-score">
+                    <col class="col-count">
+                    <col class="col-date">
+                </colgroup>
+                <thead>
                 <tr>
                     <th>Điểm</th>
                     <th>Số câu</th>
                     <th>Ngày làm</th>
                 </tr>
-
+                </thead>
+                <tbody>
                 <?php foreach ($quizResults as $q): ?>
                 <tr>
-                    <td><?= $q['score'] ?></td>
-                    <td><?= $q['total_questions'] ?></td>
-                    <td><?= $q['created_at'] ?></td>
+                    <td><?= htmlspecialchars($q['score']) ?></td>
+                    <td><?= htmlspecialchars($q['total_questions']) ?></td>
+                    <td><?= htmlspecialchars($q['created_at']) ?></td>
                 </tr>
                 <?php endforeach; ?>
+                </tbody>
             </table>
         <?php endif; ?>
     </div>
+    <?php endif; ?>
 
     <!-- ================= ĐỔI MẬT KHẨU ================= -->
     <div class="section">
@@ -369,10 +444,11 @@
 </div>
 
 <script>
-    // Load search history khi page tải
+    // Load search history khi page tải (client-side pagination)
     document.addEventListener('DOMContentLoaded', function() {
-        loadSearchHistory();
-        
+        const historyLimit = 6; // items per page
+        loadSearchHistory(1, historyLimit);
+
         // Xử lý nút Xóa toàn bộ lịch sử
         document.querySelector('.btn-clear-history').addEventListener('click', function() {
             if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử tìm kiếm?')) {
@@ -381,8 +457,8 @@
         });
     });
 
-    function loadSearchHistory() {
-        fetch('../api/get_search_history.php?limit=50')
+    function loadSearchHistory(page = 1, limit = 6) {
+        fetch(`../api/get_search_history.php?limit=${limit}&page=${page}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Search history data:', data);
@@ -393,30 +469,61 @@
                     return;
                 }
 
-                let html = '<div>';
-                data.data.forEach(item => {
-                    const date = new Date(item.searched_at);
-                    const timeStr = date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN');
-                    
-                    html += `
-                        <div class="search-history-item">
-                            <div class="history-word-info" onclick="viewWord(${item.word_id})">
-                                <div class="history-word-name">${escapeHtml(item.word)}</div>
-                                <div class="history-word-type">${escapeHtml(item.part_of_speech || '')}</div>
-                            </div>
-                            <div class="history-time">${timeStr}</div>
-                            <button class="btn-delete-history" onclick="deleteHistory(${item.id})">Xóa</button>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-                
-                container.innerHTML = html;
+                renderSearchHistory(data.data, data.total, page, limit);
             })
             .catch(error => {
                 console.error('Error loading search history:', error);
                 document.getElementById('search-history-container').innerHTML = '<p style="color:red;">Lỗi khi tải lịch sử tìm kiếm</p>';
             });
+    }
+
+    function renderSearchHistory(items, total, page, limit) {
+        const container = document.getElementById('search-history-container');
+        let html = '<div>';
+        items.forEach(item => {
+            const date = new Date(item.searched_at);
+            const timeStr = date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN');
+
+            html += `
+                <div class="search-history-item">
+                    <div class="history-word-info" onclick="viewWord(${item.word_id})">
+                        <div class="history-word-name">${escapeHtml(item.word)}</div>
+                        <div class="history-word-type">${escapeHtml(item.part_of_speech || '')}</div>
+                    </div>
+                    <div class="history-time">${timeStr}</div>
+                    <button class="btn-delete-history" onclick="deleteHistory(${item.id})">Xóa</button>
+                </div>
+            `;
+        });
+        html += '</div>';
+
+        // Pager
+        const totalPages = Math.max(1, Math.ceil(total / limit));
+        if (totalPages > 1) {
+            html += '<div id="search-history-pager" class="pager">';
+            if (page > 1) html += `<a href="#" data-page="${page-1}" class="history-page">&laquo; Trước</a>`;
+            else html += `<span style="opacity:0.5">&laquo; Trước</span>`;
+
+            for (let p = 1; p <= totalPages; p++) {
+                if (p === page) html += `<span class="active">${p}</span>`;
+                else html += `<a href="#" data-page="${p}" class="history-page">${p}</a>`;
+            }
+
+            if (page < totalPages) html += `<a href="#" data-page="${page+1}" class="history-page">Tiếp &raquo;</a>`;
+            else html += `<span style="opacity:0.5">Tiếp &raquo;</span>`;
+            html += '</div>';
+        }
+
+        container.innerHTML = html;
+
+        // Attach pager handlers
+        document.querySelectorAll('.history-page').forEach(el => {
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+                const p = parseInt(this.getAttribute('data-page'));
+                if (!isNaN(p)) loadSearchHistory(p, limit);
+            });
+        });
     }
 
     function deleteHistory(historyId) {
@@ -488,10 +595,6 @@
                 }
             });
         }
-    }
-
-    function viewWord(wordId) {
-        window.location.href = '../views/word-detail.php?id=' + wordId;
     }
 </script>
 

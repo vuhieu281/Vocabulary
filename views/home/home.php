@@ -405,3 +405,8 @@
         timeoutId = setTimeout(step, 600);
     })();
 </script>
+
+<?php
+// Include chat widget on homepage
+include __DIR__ . '/../chat/widget.php';
+?>

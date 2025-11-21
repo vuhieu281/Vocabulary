@@ -34,12 +34,15 @@ CREATE TABLE users (
 );
 
 -- ==========================================
--- 3) TOPICS ─ (Không thay đổi)
+<<<<<<< HEAD
+-- ==========================================
+-- 3) TOPICS
 -- ==========================================
 CREATE TABLE topics (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
+    image VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

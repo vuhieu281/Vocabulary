@@ -8,27 +8,55 @@ if (session_status() === PHP_SESSION_NONE) session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vocabulary - Học từ vựng tiếng Anh</title>
-    <link rel="stylesheet" href="/Vocabulary/public/css/home.css">
+    <link rel="stylesheet" href="../public/css/home.css">
+    <link rel="stylesheet" href="../public/css/flashcard.css">
+    <link rel="stylesheet" href="../public/css/quiz.css">
 
     <style>
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            padding: 0;
+            padding-top: 48px;
+        }
         .navbar {
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             background: #0d6efd;
-            padding: 14px 22px;
+            padding: 8px 22px;
             border-radius: 0 0 14px 14px;
             box-shadow: 0 6px 20px rgba(13,110,253,0.08);
-            min-height: 64px;
+            min-height: 48px;
         }
         .nav-center { 
             position: absolute; left: 50%; transform: translateX(-50%);
             display:flex; gap:12px; align-items:center;
         }
-        .nav-right { position: absolute; right: 18px; display:flex; gap:12px; align-items:center; }
-        .logo { position:absolute; left:18px; display:flex; align-items:center; gap:10px; }
+        .nav-right { 
+            position: absolute; right: 18px; 
+            display:flex; 
+            gap:8px; 
+            align-items:center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .logo { 
+            position:absolute; 
+            left:18px; 
+            display:flex; 
+            align-items:center; 
+            gap:10px;
+            z-index: 1001;
+        }
+        .logo a { color: #fff; text-decoration: none; font-weight: 700; font-size: 1.1rem; }
+        .logo .accent { font-weight: 900; font-size: 1.3em; }
 
         .navbar a {
             color: #fff;
@@ -117,16 +145,19 @@ if (session_status() === PHP_SESSION_NONE) session_start();
                 <a href="/Vocabulary/public/index.php?route=login" class="btn-login">Log in</a>
                 <a href="/Vocabulary/public/index.php?route=register" class="btn-register">Sign up</a>
 
-            <?php else: ?>
-                <!-- Đã đăng nhập -->
-                <a href="/Vocabulary/public/index.php?route=profile">Profile</a>
+            <?php elseif (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                <!-- Admin user -->
+                <span style="color: #fff; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-user-shield" style="font-size: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
+                    <span>Administrator</span>
+                </span>
+                <a href="/Vocabulary/public/index.php?route=profile" class="btn-register" style="background:#fff;color:#0066cc;">👤 Profile</a>
                 <a href="/Vocabulary/public/index.php?route=logout" class="btn-register" style="background:#fff;color:#d10000;">Logout</a>
 
-                <?php 
-                // Nếu muốn phân quyền Admin: thêm cột role trong bảng users
-                if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
-                    <a href="/Vocabulary/public/admin/" class="admin-badge">Admin</a>
-                <?php endif; ?>
+            <?php else: ?>
+                <!-- Normal user -->
+                <a href="/Vocabulary/public/index.php?route=profile">👤 Profile</a>
+                <a href="/Vocabulary/public/index.php?route=logout" class="btn-register" style="background:#fff;color:#d10000;">Logout</a>
 
             <?php endif; ?>
         </div>
