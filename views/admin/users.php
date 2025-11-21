@@ -45,6 +45,9 @@
                         <th>Tên</th>
                         <th>Email</th>
                         <th>Vai trò</th>
+                        <th>Điểm cao nhất</th>
+                        <th>Lần làm quiz</th>
+                        <th>Điểm trung bình</th>
                         <th>Ngày tạo</th>
                         <th>Hành động</th>
                     </tr>
@@ -60,10 +63,26 @@
                                 <?php echo $user['role'] === 'admin' ? 'Admin' : 'User'; ?>
                             </span>
                         </td>
-                        <td><?php echo date('d/m/Y', strtotime($user['created_at'])); ?></td>
                         <td>
-                            <a href="index.php?route=admin_edit_user&id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary">Sửa</a>
-                            <a href="index.php?route=admin_user_activities&user_id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info">Xem hoạt động</a>
+                            <span class="score-badge">
+                                <?php echo $user['highest_score'] > 0 ? $user['highest_score'] . '/10' : 'N/A'; ?>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="attempts-badge">
+                                <?php echo $user['quiz_attempts']; ?>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="avg-score-badge">
+                                <?php echo $user['quiz_attempts'] > 0 ? $user['average_score'] . '/10' : 'N/A'; ?>
+                            </span>
+                        </td>
+                        <td><?php echo date('d/m/Y', strtotime($user['created_at'])); ?></td>
+                        <td class="actions-cell">
+                            <a href="index.php?route=admin_edit_user&id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary" title="Chỉnh sửa user">Sửa</a>
+                            <a href="index.php?route=admin_user_activities&user_id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info" title="Xem hoạt động">Hoạt động</a>
+                            <a href="/Vocabulary/public/index.php" target="_blank" class="btn btn-sm btn-success" title="Xem trang Home">🏠 Home</a>
                             <form method="POST" action="index.php?route=admin_delete_user&id=<?php echo $user['id']; ?>" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa user này?');">
                                 <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
                             </form>
@@ -176,6 +195,58 @@
     background-color: #ecf0f1;
     border-radius: 4px;
     font-weight: 600;
+}
+
+.score-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #f39c12;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.attempts-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #9b59b6;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.avg-score-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #1abc9c;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.btn-success {
+    background-color: #27ae60;
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-success:hover {
+    background-color: #229954;
 }
 </style>
 

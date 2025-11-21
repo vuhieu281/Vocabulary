@@ -49,6 +49,14 @@ class AdminController {
         $totalUsers = $this->admin->countUsers();
         $totalPages = ceil($totalUsers / $limit);
 
+        // Lấy thông tin điểm cho từng user
+        $userModel = new User();
+        foreach ($users as &$user) {
+            $user['highest_score'] = $userModel->getHighestScore($user['id']);
+            $user['quiz_attempts'] = $userModel->getQuizAttempts($user['id']);
+            $user['average_score'] = $userModel->getAverageScore($user['id']);
+        }
+
         include __DIR__ . '/../views/admin/users.php';
     }
 
