@@ -117,4 +117,13 @@ class AuthController {
 
         include __DIR__ . '/../views/auth/profile.php';
     }
+
+    public function logoutPreview() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        session_destroy();
+        header("Location: index.php?route=home");
+        exit;
+    }
 }

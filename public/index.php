@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 $route = $_GET['route'] ?? 'home';
 
 // Routes cho phép admin access
-$adminAllowedRoutes = ['logout'];
+$adminAllowedRoutes = ['logout', 'logout_preview'];
 
 // Nếu là admin và route không phải admin route hay logout, redirect về admin dashboard
 if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin' && 
@@ -54,6 +54,11 @@ switch ($route) {
     case 'logout':
         require_once "../controllers/AuthController.php";
         (new AuthController())->logout();
+        break;
+
+    case 'logout_preview':
+        require_once "../controllers/AuthController.php";
+        (new AuthController())->logoutPreview();
         break;
 
     // ----------------- FLASHCARD ------------------

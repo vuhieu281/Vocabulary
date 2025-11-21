@@ -65,7 +65,7 @@
                             <td class="actions-cell">
                                 <a href="index.php?route=admin_edit_user&id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary" title="Chỉnh sửa user">Sửa</a>
                                 <a href="index.php?route=admin_user_activities&user_id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info" title="Xem hoạt động">Hoạt động</a>
-                                <a href="/Vocabulary/public/index.php" target="_blank" class="btn btn-sm btn-success" title="Xem trang Home">🏠 Home</a>
+                                <a href="/Vocabulary/public/index.php?route=logout_preview" class="btn btn-sm btn-success" title="Xem trang Home">🏠 Home</a>
                                 <form method="POST" action="index.php?route=admin_delete_user&id=<?php echo $user['id']; ?>" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa user này?');">
                                     <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
                                 </form>
@@ -128,7 +128,7 @@
                             <td class="actions-cell">
                                 <a href="index.php?route=admin_edit_user&id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary" title="Chỉnh sửa user">Sửa</a>
                                 <a href="index.php?route=admin_user_activities&user_id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info" title="Xem hoạt động">Hoạt động</a>
-                                <a href="/Vocabulary/public/index.php" target="_blank" class="btn btn-sm btn-success" title="Xem trang Home">🏠 Home</a>
+                                <a href="/Vocabulary/public/index.php?route=logout_preview" class="btn btn-sm btn-success" title="Xem trang Home">🏠 Home</a>
                                 <form method="POST" action="index.php?route=admin_delete_user&id=<?php echo $user['id']; ?>" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa user này?');">
                                     <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
                                 </form>
