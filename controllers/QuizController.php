@@ -65,61 +65,90 @@ class QuizController {
      * Lưu kết quả quiz
      */
     public function submit() {
-        if (!$this->isUserLoggedIn()) {
-            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-            exit;
+        // Start output buffering để tránh output trước JSON
+        ob_start();
+        
+        // Set error log file
+        $errorLogFile = __DIR__ . '/../logs/quiz_error.log';
+        if (!is_dir(dirname($errorLogFile))) {
+            mkdir(dirname($errorLogFile), 0755, true);
         }
 
-        // Lấy dữ liệu từ POST
-        $answers = json_decode($_POST['answers'] ?? '{}', true);
-        $quizData = json_decode($_POST['quiz'] ?? '[]', true);
+        // Set header
+        header('Content-Type: application/json');
 
-        if (empty($answers) || empty($quizData)) {
-            echo json_encode(['success' => false, 'message' => 'Invalid data']);
-            exit;
-        }
-
-        $userId = $_SESSION['user_id'];
-        $score = 0;
-        $totalQuestions = count($quizData);
-
-        // Tính điểm
-        foreach ($quizData as $index => $question) {
-            $userAnswer = $answers[$index] ?? null;
-            $correctAnswer = $question['correct_answer'];
-
-            if ($userAnswer == $correctAnswer) {
-                $score++;
+        try {
+            if (!$this->isUserLoggedIn()) {
+                ob_end_clean();
+                echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+                exit;
             }
-        }
 
-        // Lưu kết quả quiz
-        $quizResultId = $this->quiz->saveQuizResult($userId, $score, $totalQuestions);
+            // Lấy dữ liệu từ POST
+            $answers = json_decode($_POST['answers'] ?? '{}', true);
+            $quizData = json_decode($_POST['quiz'] ?? '[]', true);
 
-        if ($quizResultId) {
-            // Lưu chi tiết câu trả lời
+            if (empty($answers) || empty($quizData)) {
+                file_put_contents($errorLogFile, date('Y-m-d H:i:s') . " - Empty data: answers=" . count($answers) . ", quiz=" . count($quizData) . "\n", FILE_APPEND);
+                ob_end_clean();
+                echo json_encode(['success' => false, 'message' => 'Invalid data']);
+                exit;
+            }
+
+            $userId = $_SESSION['user_id'];
+            $score = 0;
+            $totalQuestions = count($quizData);
+
+            // Tính điểm
             foreach ($quizData as $index => $question) {
                 $userAnswer = $answers[$index] ?? null;
-                $correctAnswer = $question['correct_answer'];
-                $isCorrect = ($userAnswer == $correctAnswer);
+                $correctAnswer = $question['correct_answer'] ?? null;
 
-                $this->quiz->saveQuestionDetail(
-                    $quizResultId,
-                    $question['word_id'],
-                    $userAnswer,
-                    $correctAnswer,
-                    $isCorrect
-                );
+                if ($userAnswer == $correctAnswer) {
+                    $score++;
+                }
             }
 
-            echo json_encode([
-                'success' => true,
-                'quiz_result_id' => $quizResultId,
-                'score' => $score,
-                'total' => $totalQuestions
-            ]);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to save results']);
+            // Lưu kết quả quiz
+            $quizResultId = $this->quiz->saveQuizResult($userId, $score, $totalQuestions);
+
+            if ($quizResultId) {
+                // Lưu chi tiết câu trả lời
+                foreach ($quizData as $index => $question) {
+                    $userAnswer = $answers[$index] ?? null;
+                    $correctAnswer = $question['correct_answer'] ?? null;
+                    $isCorrect = ($userAnswer == $correctAnswer) ? 1 : 0;
+                    
+                    // word_id có thể null nên skip nếu không có
+                    if (!isset($question['word_id']) || $question['word_id'] === null) {
+                        continue;
+                    }
+
+                    $this->quiz->saveQuestionDetail(
+                        $quizResultId,
+                        $question['word_id'],
+                        $userAnswer,
+                        $correctAnswer,
+                        $isCorrect
+                    );
+                }
+
+                ob_end_clean();
+                echo json_encode([
+                    'success' => true,
+                    'quiz_result_id' => $quizResultId,
+                    'score' => $score,
+                    'total' => $totalQuestions
+                ]);
+            } else {
+                file_put_contents($errorLogFile, date('Y-m-d H:i:s') . " - Failed to save quiz result for user " . $userId . "\n", FILE_APPEND);
+                ob_end_clean();
+                echo json_encode(['success' => false, 'message' => 'Failed to save results']);
+            }
+        } catch (Exception $e) {
+            file_put_contents($errorLogFile, date('Y-m-d H:i:s') . " - Exception: " . $e->getMessage() . "\nTrace: " . $e->getTraceAsString() . "\n", FILE_APPEND);
+            ob_end_clean();
+            echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
         }
 
         exit;
@@ -143,6 +172,11 @@ class QuizController {
 
         $quizResult = $this->quiz->getQuizResultDetail($quizResultId);
         $quizDetails = $this->quiz->getQuizResultDetails($quizResultId);
+
+        // Debug log
+        file_put_contents(__DIR__ . '/../logs/quiz_error.log', 
+            date('Y-m-d H:i:s') . " - Result page: ID=$quizResultId, Found=" . ($quizResult ? 'YES' : 'NO') . "\n", 
+            FILE_APPEND);
 
         if (!$quizResult) {
             header('Location: /Vocabulary/public/index.php?route=quiz');
@@ -206,18 +240,22 @@ class QuizController {
                 break;
 
             case 'word_to_ipa':
-                if ($word['ipa'] && $word['ipa'] !== 'N/A') {
+                if (isset($word['ipa']) && $word['ipa'] && $word['ipa'] !== 'N/A') {
                     $question = "Phiên âm của từ \"{$word['word']}\" là gì?";
                     $correctAnswer = $word['ipa'];
                     $options = $this->getRandomIPA($word, $allWords, 4);
+                } else {
+                    return null; // Skip nếu không có IPA
                 }
                 break;
 
             case 'ipa_to_word':
-                if ($word['ipa'] && $word['ipa'] !== 'N/A') {
+                if (isset($word['ipa']) && $word['ipa'] && $word['ipa'] !== 'N/A') {
                     $question = "Phiên âm \"{$word['ipa']}\" là của từ nào?";
                     $correctAnswer = $word['word'];
                     $options = $this->getRandomWordsList($allWords, 4, $word['id']);
+                } else {
+                    return null; // Skip nếu không có IPA
                 }
                 break;
 
@@ -227,6 +265,8 @@ class QuizController {
                     $question = "Mô tả \"{$senseText}\" là của từ nào?";
                     $correctAnswer = $word['word'];
                     $options = $this->getRandomWordsList($allWords, 4, $word['id']);
+                } else {
+                    return null; // Skip nếu không có sense
                 }
                 break;
 
@@ -236,20 +276,24 @@ class QuizController {
                     $question = "Từ \"{$word['word']}\" có nghĩa là gì?";
                     $correctAnswer = $senseText;
                     $options = $this->getRandomSenses($word, $allWords, 4);
+                } else {
+                    return null; // Skip nếu không có sense
                 }
                 break;
 
             case 'pos_to_word':
                 $pos = $word['part_of_speech'] ?? 'Unknown';
-                if ($pos !== 'Unknown') {
+                if ($pos && $pos !== 'Unknown') {
                     $question = "Từ nào dưới đây là loại từ {$pos}?";
                     $correctAnswer = $word['word'];
                     $options = $this->getRandomByPOS($word, $allWords, 4);
+                } else {
+                    return null; // Skip nếu không có POS
                 }
                 break;
         }
 
-        if (!$question || empty($options)) {
+        if (!$question || empty($options) || !$correctAnswer) {
             return null;
         }
 

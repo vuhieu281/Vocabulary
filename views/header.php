@@ -39,7 +39,14 @@ if (session_status() === PHP_SESSION_NONE) session_start();
             position: absolute; left: 50%; transform: translateX(-50%);
             display:flex; gap:12px; align-items:center;
         }
-        .nav-right { position: absolute; right: 18px; display:flex; gap:12px; align-items:center; }
+        .nav-right { 
+            position: absolute; right: 18px; 
+            display:flex; 
+            gap:8px; 
+            align-items:center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
         .logo { 
             position:absolute; 
             left:18px; 
@@ -114,30 +121,20 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 
         <!-- LOGO -->
         <div class="logo">
-            <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                <a href="/Vocabulary/public/index.php?route=admin_dashboard" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: white; font-weight: 600; font-size: 18px; letter-spacing: -0.5px;">
-                    <i class="fas fa-user-shield" style="font-size: 22px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
-                    <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">Administrator</span>
-                </a>
-            <?php else: ?>
-                <a href="/Vocabulary/public/index.php?route=home">
-                    <span class="accent">V</span>ocabulary
-                </a>
-            <?php endif; ?>
+            <a href="/Vocabulary/public/index.php?route=home">
+                <span class="accent">V</span>ocabulary
+            </a>
         </div>
 
         <!-- NAV TRUNG TÂM -->
         <div class="nav-center">
-            <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
-                <!-- Menu user bình thường (ẩn cho admin) -->
-                <a href="/Vocabulary/public/index.php?route=home">Home</a>
-                <a href="/Vocabulary/public/index.php?route=topics">Topics</a>
-                <a href="/Vocabulary/public/index.php?route=search">Search</a>
-                <a href="/Vocabulary/public/index.php?route=saved">Saved</a>
-                <a href="/Vocabulary/public/index.php?route=history">History</a>
-                <a href="/Vocabulary/public/index.php?route=flashcard">Flashcard</a>
-                <a href="/Vocabulary/public/index.php?route=quiz">Quiz</a>
-            <?php endif; ?>
+            <a href="/Vocabulary/public/index.php?route=home">Home</a>
+            <a href="/Vocabulary/public/index.php?route=topics">Topics</a>
+            <a href="/Vocabulary/public/index.php?route=search">Search</a>
+            <a href="/Vocabulary/public/index.php?route=saved">Saved</a>
+            <a href="/Vocabulary/public/index.php?route=history">History</a>
+            <a href="/Vocabulary/public/index.php?route=flashcard">Flashcard</a>
+            <a href="/Vocabulary/public/index.php?route=quiz">Quiz</a>
         </div>
 
         <!-- NAV PHẢI -->
@@ -155,7 +152,6 @@ if (session_status() === PHP_SESSION_NONE) session_start();
                     <span>Administrator</span>
                 </span>
                 <a href="/Vocabulary/public/index.php?route=profile" class="btn-register" style="background:#fff;color:#0066cc;">👤 Profile</a>
-                <a href="/Vocabulary/public/index.php?route=admin_dashboard" class="admin-badge">📊 Admin</a>
                 <a href="/Vocabulary/public/index.php?route=logout" class="btn-register" style="background:#fff;color:#d10000;">Logout</a>
 
             <?php else: ?>

@@ -119,11 +119,9 @@ class AuthController {
     }
 
     public function logoutPreview() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        session_destroy();
-        header("Location: index.php?route=home");
+        // Redirect sang trang home mà vẫn giữ session admin
+        // KHÔNG gọi session_destroy()
+        header("Location: /Vocabulary/public/index.php?route=home");
         exit;
     }
 }

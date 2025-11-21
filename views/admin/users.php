@@ -50,29 +50,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($users as $user): ?>
-                        <?php if ($user['role'] === 'admin'): ?>
+                    <?php if (empty($users)): ?>
                         <tr>
-                            <td><?php echo $user['id']; ?></td>
-                            <td><?php echo htmlspecialchars($user['name']); ?></td>
-                            <td><?php echo htmlspecialchars($user['email']); ?></td>
-                            <td>
-                                <span class="role-badge <?php echo strtolower($user['role']); ?>">
-                                    <?php echo $user['role'] === 'admin' ? 'Admin' : 'User'; ?>
-                                </span>
-                            </td>
-                            <td><?php echo date('d/m/Y', strtotime($user['created_at'])); ?></td>
-                            <td class="actions-cell">
-                                <a href="index.php?route=admin_edit_user&id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary" title="Chỉnh sửa user">Sửa</a>
-                                <a href="index.php?route=admin_user_activities&user_id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info" title="Xem hoạt động">Hoạt động</a>
-                                <a href="/Vocabulary/public/index.php?route=logout_preview" class="btn btn-sm btn-success" title="Xem trang Home">🏠 Home</a>
-                                <form method="POST" action="index.php?route=admin_delete_user&id=<?php echo $user['id']; ?>" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa user này?');">
-                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
-                                </form>
+                            <td colspan="6" style="text-align: center; padding: 20px; color: #999;">
+                                Không có admin nào trong hệ thống
                             </td>
                         </tr>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+                    <?php else: ?>
+                        <?php foreach ($users as $user): ?>
+                            <?php if ($user['role'] === 'admin'): ?>
+                            <tr>
+                                <td><?php echo $user['id']; ?></td>
+                                <td><?php echo htmlspecialchars($user['name']); ?></td>
+                                <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                <td>
+                                    <span class="role-badge admin">Admin</span>
+                                </td>
+                                <td><?php echo date('d/m/Y', strtotime($user['created_at'])); ?></td>
+                                <td class="actions-cell">
+                                    <a href="index.php?route=admin_edit_user&id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="index.php?route=admin_user_activities&user_id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info">Hoạt động</a>
+                                    <form method="POST" action="index.php?route=admin_delete_user&id=<?php echo $user['id']; ?>" style="display: inline;" onsubmit="return confirm('Xóa user này?');">
+                                        <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -92,50 +97,36 @@
                         <th>Vai trò</th>
                         <th>Điểm cao nhất</th>
                         <th>Lần làm quiz</th>
-                        <th>Điểm trung bình</th>
                         <th>Ngày tạo</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($users as $user): ?>
-                        <?php if ($user['role'] !== 'admin'): ?>
+                    <?php if (empty($users)): ?>
                         <tr>
-                            <td><?php echo $user['id']; ?></td>
-                            <td><?php echo htmlspecialchars($user['name']); ?></td>
-                            <td><?php echo htmlspecialchars($user['email']); ?></td>
-                            <td>
-                                <span class="role-badge <?php echo strtolower($user['role']); ?>">
-                                    <?php echo $user['role'] === 'admin' ? 'Admin' : 'User'; ?>
-                                </span>
-                            </td>
-                            <td>
-                                <span class="score-badge">
-                                    <?php echo $user['highest_score'] > 0 ? $user['highest_score'] . '/10' : 'N/A'; ?>
-                                </span>
-                            </td>
-                            <td>
-                                <span class="attempts-badge">
-                                    <?php echo $user['quiz_attempts']; ?>
-                                </span>
-                            </td>
-                            <td>
-                                <span class="avg-score-badge">
-                                    <?php echo $user['quiz_attempts'] > 0 ? $user['average_score'] . '/10' : 'N/A'; ?>
-                                </span>
-                            </td>
-                            <td><?php echo date('d/m/Y', strtotime($user['created_at'])); ?></td>
-                            <td class="actions-cell">
-                                <a href="index.php?route=admin_edit_user&id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary" title="Chỉnh sửa user">Sửa</a>
-                                <a href="index.php?route=admin_user_activities&user_id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info" title="Xem hoạt động">Hoạt động</a>
-                                <a href="/Vocabulary/public/index.php?route=logout_preview" class="btn btn-sm btn-success" title="Xem trang Home">🏠 Home</a>
-                                <form method="POST" action="index.php?route=admin_delete_user&id=<?php echo $user['id']; ?>" style="display: inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa user này?');">
-                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
-                                </form>
+                            <td colspan="8" style="text-align: center; padding: 20px; color: #999;">
+                                Không có user nào trong hệ thống
                             </td>
                         </tr>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+                    <?php else: ?>
+                        <?php foreach ($users as $user): ?>
+                            <?php if ($user['role'] !== 'admin'): ?>
+                            <tr>
+                                <td><?php echo $user['id']; ?></td>
+                                <td><?php echo htmlspecialchars($user['name']); ?></td>
+                                <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                <td><span class="role-badge user">User</span></td>
+                                <td><span class="score-badge"><?php echo (isset($user['highest_score']) && $user['highest_score'] > 0) ? $user['highest_score'] . '/10' : 'N/A'; ?></span></td>
+                                <td><span class="attempts-badge"><?php echo isset($user['quiz_attempts']) ? $user['quiz_attempts'] : 0; ?></span></td>
+                                <td><?php echo date('d/m/Y', strtotime($user['created_at'])); ?></td>
+                                <td class="actions-cell">
+                                    <a href="index.php?route=admin_edit_user&id=<?php echo $user['id']; ?>" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="index.php?route=admin_user_activities&user_id=<?php echo $user['id']; ?>" class="btn btn-sm btn-info">Hoạt động</a>
+                                </td>
+                            </tr>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

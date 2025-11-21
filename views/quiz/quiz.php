@@ -199,22 +199,46 @@ function submitQuiz() {
     formData.append('answers', JSON.stringify(answers));
     formData.append('quiz', JSON.stringify(quiz));
 
+    console.log('Submitting quiz with:', {
+        answers: answers,
+        quizLength: quiz.length,
+        totalAnswers: answers.length
+    });
+
     fetch('/Vocabulary/public/index.php?route=quiz&action=submit', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Redirect đến trang kết quả
-            window.location.href = '/Vocabulary/public/index.php?route=quiz&action=result&id=' + data.quiz_result_id;
-        } else {
-            alert('Lỗi: ' + data.message);
+    .then(async response => {
+        const text = await response.text();
+        console.log('Response status:', response.status);
+        console.log('Response text:', text);
+        
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status + ': ' + text);
+        }
+        
+        try {
+            const data = JSON.parse(text);
+            console.log('Parsed data:', data);
+            if (data.success) {
+                console.log('Quiz submitted successfully, redirecting to result with ID:', data.quiz_result_id);
+                const redirectUrl = '/Vocabulary/public/index.php?route=quiz&action=result&id=' + data.quiz_result_id;
+                console.log('Redirect URL:', redirectUrl);
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 500);
+            } else {
+                alert('Lỗi: ' + (data.message || 'Không xác định'));
+            }
+        } catch (parseError) {
+            console.error('JSON parse error:', parseError);
+            throw new Error('Invalid JSON response: ' + text.substring(0, 200));
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Có lỗi xảy ra');
+        alert('Có lỗi xảy ra:\n' + error.message);
     });
 }
 
