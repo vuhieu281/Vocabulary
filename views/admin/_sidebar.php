@@ -20,6 +20,7 @@ $routeParent = [
 $activeRoute = $routeParent[$currentRoute] ?? $currentRoute;
 
 $menuItems = [
+    ['route' => 'home', 'icon' => 'fas fa-home', 'label' => 'Home'],
     ['route' => 'admin_dashboard', 'icon' => 'fas fa-chart-line', 'label' => 'Dashboard'],
     ['route' => 'admin_users', 'icon' => 'fas fa-users', 'label' => 'Quản lý User'],
     ['route' => 'admin_words', 'icon' => 'fas fa-book', 'label' => 'Quản lý Từ vựng'],

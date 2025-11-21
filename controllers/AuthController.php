@@ -32,14 +32,15 @@ class AuthController {
     }
 
     public function login() {
-        if (!isset($_POST['email']) || !isset($_POST['password'])) {
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
+        }
+        
+        if (!isset($_POST['email']) || !isset($_POST['password'])) {
             $error = "Vui lòng nhập email và mật khẩu!";
             include __DIR__.'/../views/auth/login.php';
             return;
         }
-        
-        session_start();
         $email = trim($_POST['email']);
         $password = trim($_POST['password']);
 
@@ -115,5 +116,12 @@ class AuthController {
         }
 
         include __DIR__ . '/../views/auth/profile.php';
+    }
+
+    public function logoutPreview() {
+        // Redirect sang trang home mà vẫn giữ session admin
+        // KHÔNG gọi session_destroy()
+        header("Location: /Vocabulary/public/index.php?route=home");
+        exit;
     }
 }

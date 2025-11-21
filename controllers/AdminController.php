@@ -49,6 +49,25 @@ class AdminController {
         $totalUsers = $this->admin->countUsers();
         $totalPages = ceil($totalUsers / $limit);
 
+        // Tách admin và non-admin users
+        $adminUsers = [];
+        $regularUsers = [];
+        
+        $userModel = new User();
+        foreach ($users as $user) {
+            $user['highest_score'] = $userModel->getHighestScore($user['id']);
+            $user['quiz_attempts'] = $userModel->getQuizAttempts($user['id']);
+            $user['average_score'] = $userModel->getAverageScore($user['id']);
+            
+            if ($user['role'] === 'admin') {
+                $adminUsers[] = $user;
+            } else {
+                $regularUsers[] = $user;
+            }
+        }
+
+        $users = array_merge($adminUsers, $regularUsers);
+
         include __DIR__ . '/../views/admin/users.php';
     }
 

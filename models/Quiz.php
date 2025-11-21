@@ -86,19 +86,49 @@ class Quiz {
      * @return int|false ID của quiz result hoặc false nếu thất bại
      */
     public function saveQuizResult($userId, $score, $totalQuestions) {
+        // Nếu user chưa có quiz, tạo một default quiz
+        $userQuizId = $this->getOrCreateDefaultQuiz($userId);
+        
+        if (!$userQuizId) {
+            return false;
+        }
+
         $query = "
-            INSERT INTO " . $this->table_quiz_results . " (user_id, score, total_questions)
-            VALUES (:user_id, :score, :total_questions)
+            INSERT INTO " . $this->table_quiz_results . " (user_id, user_quiz_id, score, total_questions)
+            VALUES (:user_id, :user_quiz_id, :score, :total_questions)
         ";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':user_quiz_id', $userQuizId, PDO::PARAM_INT);
         $stmt->bindParam(':score', $score, PDO::PARAM_INT);
         $stmt->bindParam(':total_questions', $totalQuestions, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             return $this->db->lastInsertId();
         }
+        return false;
+    }
+
+    /**
+     * Lấy hoặc tạo default quiz cho user
+     */
+    private function getOrCreateDefaultQuiz($userId) {
+        // Kiểm tra xem user có quiz "Default" chưa
+        $stmt = $this->db->prepare("SELECT id FROM user_quizzes WHERE user_id = ? AND name = 'Default' LIMIT 1");
+        $stmt->execute([$userId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($result) {
+            return $result['id'];
+        }
+
+        // Tạo default quiz nếu chưa có
+        $stmt = $this->db->prepare("INSERT INTO user_quizzes (user_id, name, description) VALUES (?, 'Default', 'Quiz mặc định')");
+        if ($stmt->execute([$userId])) {
+            return $this->db->lastInsertId();
+        }
+        
         return false;
     }
 

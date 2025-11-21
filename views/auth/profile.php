@@ -375,7 +375,8 @@
         <button class="btn btn-clear-history" style="background: #ff4e4e; margin-top: 15px;">Xóa toàn bộ lịch sử</button>
     </div>
 
-    <!-- ================= KẾT QUẢ QUIZ ================= -->
+    <!-- ================= KẾT QUẢ QUIZ CỦA USER ================= -->
+    <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
     <div class="section">
         <h3>
             <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png">
@@ -410,6 +411,7 @@
             </table>
         <?php endif; ?>
     </div>
+    <?php endif; ?>
 
     <!-- ================= ĐỔI MẬT KHẨU ================= -->
     <div class="section">
