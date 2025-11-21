@@ -25,18 +25,23 @@
         <div class="content-box">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <h4>Tìm kiếm trong 7 ngày</h4>
+                    <h4><i class="fas fa-chart-bar"></i> Tìm kiếm trong 7 ngày</h4>
                     <div class="activity-chart">
                         <?php foreach (array_reverse($activityStats['searches_by_date']) as $stat): ?>
-                        <div class="chart-bar" style="height: <?php echo ($stat['count'] * 10); ?>px;" title="<?php echo $stat['date']; ?>: <?php echo $stat['count']; ?> lượt">
-                            <small><?php echo $stat['count']; ?></small>
+                        <div class="chart-column">
+                            <div class="chart-bar" style="height: <?php echo ($stat['count'] * 8); ?>px;" title="<?php echo $stat['date']; ?>: <?php echo $stat['count']; ?> lượt">
+                            </div>
+                            <div class="chart-label">
+                                <small><?php echo $stat['count']; ?></small>
+                                <div class="chart-date"><?php echo date('d/m', strtotime($stat['date'])); ?></div>
+                            </div>
                         </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
 
                 <div class="stat-item">
-                    <h4>Top 10 từ được tìm kiếm</h4>
+                    <h4><i class="fas fa-fire"></i> Top 10 từ được tìm kiếm</h4>
                     <ul class="top-list">
                         <?php foreach ($activityStats['top_searched_words'] as $index => $word): ?>
                         <li>
@@ -108,38 +113,80 @@
 .stat-item h4 {
     margin-top: 0;
     color: #2c3e50;
+    margin-bottom: 15px;
 }
 
 .activity-chart {
     display: flex;
     align-items: flex-end;
-    justify-content: space-around;
-    height: 200px;
-    background-color: #ecf0f1;
-    padding: 10px;
-    border-radius: 4px;
-}
-
-.chart-bar {
-    width: 30px;
-    background-color: #3498db;
-    border-radius: 4px 4px 0 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    justify-content: space-between;
+    height: 280px;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #e8eef5;
+    gap: 12px;
     position: relative;
 }
 
-.chart-bar:hover {
-    background-color: #2980b9;
+.activity-chart::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ddd, transparent);
+    border-radius: 0 0 12px 12px;
 }
 
-.chart-bar small {
-    position: absolute;
-    bottom: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-weight: 600;
+.chart-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    height: 100%;
+    position: relative;
+}
+
+.chart-bar {
+    width: 100%;
+    background: linear-gradient(to top, #3498db, #5dade2);
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 4px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+}
+
+.chart-bar:hover {
+    background: linear-gradient(to top, #2980b9, #3498db);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+    transform: translateY(-2px);
+}
+
+.chart-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.chart-label small {
+    font-weight: 700;
     color: #2c3e50;
+    font-size: 13px;
+    display: block;
+}
+
+.chart-date {
+    font-size: 11px;
+    color: #7f8c8d;
+    margin-top: 4px;
+    font-weight: 600;
 }
 
 .top-list {
@@ -214,6 +261,10 @@ hr {
 @media (max-width: 768px) {
     .stats-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .activity-chart {
+        height: 250px;
     }
 }
 </style>

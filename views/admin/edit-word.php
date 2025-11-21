@@ -24,7 +24,7 @@
         </div>
 
         <div class="form-container">
-            <form method="POST" action="/Vocabulary/api/admin_edit_word.php" class="form">
+            <form method="POST" action="index.php?route=admin_update_word" class="form">
                 <input type="hidden" name="id" value="<?php echo $word['id']; ?>">
 
                 <div class="form-group">

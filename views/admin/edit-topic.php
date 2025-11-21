@@ -62,12 +62,13 @@
                         <?php if (!empty($topicWords)): ?>
                             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
                                 <?php foreach ($topicWords as $word): ?>
-                                    <div style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                                    <div class="word-tag" style="background: white; padding: 12px; border-radius: 6px; border: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;" data-word-id="<?php echo $word['id']; ?>">
                                         <span><i class="fas fa-check" style="color: #27ae60; margin-right: 8px;"></i><?php echo htmlspecialchars($word['word']); ?></span>
                                         <button type="button" class="btn-remove-word" data-word-id="<?php echo $word['id']; ?>" style="background: #e74c3c; color: white; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer; font-size: 12px;">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
+                                    <input type="hidden" name="existing_words[]" value="<?php echo $word['id']; ?>" class="existing-word-input">
                                 <?php endforeach; ?>
                             </div>
                         <?php else: ?>
@@ -264,38 +265,29 @@ document.querySelectorAll('.btn-remove-word').forEach(button => {
         }
         
         const wordId = this.dataset.wordId;
-        const topicId = <?php echo $topic['id']; ?>;
-        const wordElement = this.closest('.word-item') || this.closest('div');
+        const wordElement = this.closest('.word-tag');
         
-        fetch('/Vocabulary/api/remove_word_from_topic.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `word_id=${wordId}&topic_id=${topicId}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Loại bỏ element từ DOM
-                wordElement.style.animation = 'fadeOut 0.3s ease-out';
-                setTimeout(() => {
-                    wordElement.remove();
-                    
-                    // Nếu không còn từ nào, hiển thị thông báo
-                    if (document.querySelectorAll('#current-words > div').length === 0) {
-                        document.getElementById('current-words').innerHTML = '<p style="color: #7f8c8d; font-style: italic;">Chủ đề này chưa có từ vựng nào</p>';
-                    }
-                }, 300);
-                alert('Xóa thành công');
-            } else {
-                alert('Xóa thất bại: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Có lỗi xảy ra');
-        });
+        if (wordElement) {
+            // Tìm hidden input tương ứng
+            const hiddenInput = document.querySelector(`input.existing-word-input[value="${wordId}"]`);
+            
+            // Xóa element từ DOM
+            wordElement.style.animation = 'fadeOut 0.3s ease-out';
+            setTimeout(() => {
+                wordElement.remove();
+                
+                // Xóa hidden input
+                if (hiddenInput) {
+                    hiddenInput.remove();
+                }
+                
+                // Nếu không còn từ nào, hiển thị thông báo
+                const currentWords = document.getElementById('current-words');
+                if (currentWords.querySelectorAll('.word-tag').length === 0) {
+                    currentWords.innerHTML = '<p style="color: #7f8c8d; font-style: italic;">Chủ đề này chưa có từ vựng nào</p>';
+                }
+            }, 300);
+        }
     });
 });
 

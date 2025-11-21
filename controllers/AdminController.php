@@ -153,6 +153,44 @@ class AdminController {
         include __DIR__ . '/../views/admin/edit-word.php';
     }
 
+    public function updateWord() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: index.php?route=admin_words");
+            exit;
+        }
+
+        $id = $_POST['id'] ?? null;
+        if (!$id) {
+            header("Location: index.php?route=admin_words");
+            exit;
+        }
+
+        $word = trim($_POST['word'] ?? '');
+        $part_of_speech = trim($_POST['part_of_speech'] ?? '');
+        $ipa = trim($_POST['ipa'] ?? '');
+        $audio_link = trim($_POST['audio_link'] ?? '');
+        $senses = trim($_POST['senses'] ?? '');
+        $level = trim($_POST['level'] ?? '');
+        $oxford_url = trim($_POST['oxford_url'] ?? '');
+
+        if (empty($word)) {
+            header("Location: index.php?route=admin_edit_word&id=$id&error=Từ vựng không được để trống");
+            exit;
+        }
+
+        try {
+            $result = $this->admin->updateWord($id, $word, $part_of_speech, $ipa, $audio_link, $senses, $level, $oxford_url);
+            if ($result) {
+                header("Location: index.php?route=admin_words&success=Cập nhật từ vựng thành công");
+            } else {
+                header("Location: index.php?route=admin_edit_word&id=$id&error=Cập nhật thất bại");
+            }
+        } catch (Exception $e) {
+            header("Location: index.php?route=admin_edit_word&id=$id&error=" . urlencode($e->getMessage()));
+        }
+        exit;
+    }
+
     // ========== TOPIC MANAGEMENT ==========
 
     public function topics() {
@@ -314,16 +352,30 @@ class AdminController {
         try {
             $result = $this->admin->updateTopic($id, $name, $description, $image);
             if ($result) {
-                // Xoá tất cả từ cũ
-                $this->admin->removeAllWordsFromTopic($id);
+                // Danh sách từ cũ cần giữ lại (được gửi từ form qua hidden inputs)
+                $existingWords = $_POST['existing_words'] ?? [];
+                $existingWords = array_filter($existingWords, 'is_numeric');
                 
-                // Xử lý các từ vựng mới
-                $words = $_POST['words'] ?? [];
-                $words = array_filter($words, 'strlen'); // Loại bỏ các trường trống
-                $words = array_slice($words, 0, 10); // Giới hạn 10 từ
+                // Danh sách từ mới (từ input fields)
+                $newWords = $_POST['words'] ?? [];
+                $newWords = array_filter($newWords, 'strlen');
+                $newWords = array_slice($newWords, 0, 10);
                 
-                if (!empty($words)) {
-                    $this->admin->assignWordsToTopic($id, $words);
+                // Nếu có từ mới, xoá tất cả từ cũ và thêm từ mới
+                if (!empty($newWords)) {
+                    $this->admin->removeAllWordsFromTopic($id);
+                    $this->admin->assignWordsToTopic($id, $newWords);
+                } else if (!empty($existingWords)) {
+                    // Nếu không có từ mới nhưng còn từ cũ, chỉ xoá những từ không nằm trong danh sách existing_words
+                    $allCurrentWords = $this->admin->getTopicWords($id);
+                    foreach ($allCurrentWords as $word) {
+                        if (!in_array($word['id'], $existingWords)) {
+                            $this->admin->removeWordFromTopic($word['id'], $id);
+                        }
+                    }
+                } else {
+                    // Nếu không có từ mới và không có từ cũ, xoá tất cả
+                    $this->admin->removeAllWordsFromTopic($id);
                 }
                 
                 header("Location: index.php?route=admin_topics&success=Cập nhật chủ đề thành công");

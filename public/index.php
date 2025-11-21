@@ -157,6 +157,11 @@ switch ($route) {
         (new AdminController())->editWord();
         break;
 
+    case 'admin_update_word':
+        require_once __DIR__ . '/../controllers/AdminController.php';
+        (new AdminController())->updateWord();
+        break;
+
     case 'admin_topics':
         require_once __DIR__ . '/../controllers/AdminController.php';
         (new AdminController())->topics();
