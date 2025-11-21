@@ -8,3 +8,4 @@ Trace: #0 D:\XAMPP\htdocs\Vocabulary\models\Quiz.php(107): PDOStatement->execute
 #3 {main}
 2025-11-21 11:03:21 - Result page: ID=13, Found=YES
 2025-11-21 12:19:46 - Result page: ID=14, Found=YES
+2025-11-21 13:01:21 - Result page: ID=15, Found=YES
