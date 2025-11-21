@@ -163,21 +163,18 @@
 .table th {
     padding: 16px 20px;
     text-align: left;
-    font-weight: 600;
+    font-weight: 700;
     color: white;
     font-size: 13px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .table td {
     padding: 14px 20px;
     border-bottom: 1px solid #f0f2f5;
     font-size: 14px;
-}
-
-.table tr:hover {
-    background-color: #f8f9fb;
 }
 
 .btn {
