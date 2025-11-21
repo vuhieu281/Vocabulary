@@ -429,10 +429,28 @@ body {
   gap: 40px;
   margin-top: 20px;
   max-width: 100%;
-<<<<<<< HEAD
-  width: 100%;
-=======
->>>>>>> 377f527630be8c8b652b7b6359265cd50a28bfe7
+}
+
+/* Three-column layout: main results (fluid) + featured (fixed) + dictionary (narrow) */
+.search-results-wrapper.three-col {
+  grid-template-columns: 1fr 360px 260px;
+}
+
+.search-main {
+  min-height: 420px;
+  padding-right: 6px;
+}
+
+.search-featured {
+  background: #f0f7ff;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.search-dictionary {
+  background: #ffffff;
+  padding-left: 12px;
 }
 
 .search-featured {
