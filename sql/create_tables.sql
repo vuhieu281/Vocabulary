@@ -35,19 +35,14 @@ CREATE TABLE users (
 
 -- ==========================================
 <<<<<<< HEAD
--- 3) TOPICS ─ (ĐÃ CẬP NHẬT - Thêm image)
-=======
--- 3) TOPICS ─ (Không thay đổi)
->>>>>>> 377f527630be8c8b652b7b6359265cd50a28bfe7
+-- ==========================================
+-- 3) TOPICS
 -- ==========================================
 CREATE TABLE topics (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
-<<<<<<< HEAD
     image VARCHAR(255),
-=======
->>>>>>> 377f527630be8c8b652b7b6359265cd50a28bfe7
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

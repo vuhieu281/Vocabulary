@@ -20,7 +20,7 @@ include_once __DIR__ . '/../header.php';
             </div>
         <?php endif; ?>
 
-        <form action="index.php?route=login_action" method="POST">
+        <form action="<?php echo isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/public/') ? 'index.php?route=login_action' : 'public/index.php?route=login_action'; ?>" method="POST">
             <label>Email</label>
             <input type="email" name="email" placeholder="Nhập email..." required
                    style="width:100%; padding:12px; margin:6px 0 14px; border-radius:8px; border:1px solid #bfd7ff;">
