@@ -154,12 +154,13 @@ if (session_status() === PHP_SESSION_NONE) session_start();
                     <i class="fas fa-user-shield" style="font-size: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
                     <span>Administrator</span>
                 </span>
-                <a href="/Vocabulary/public/index.php?route=admin_dashboard" class="admin-badge">📊 Dashboard</a>
+                <a href="/Vocabulary/public/index.php?route=profile" class="btn-register" style="background:#fff;color:#0066cc;">👤 Profile</a>
+                <a href="/Vocabulary/public/index.php?route=admin_dashboard" class="admin-badge">📊 Admin</a>
                 <a href="/Vocabulary/public/index.php?route=logout" class="btn-register" style="background:#fff;color:#d10000;">Logout</a>
 
             <?php else: ?>
                 <!-- Normal user -->
-                <a href="/Vocabulary/public/index.php?route=profile">Profile</a>
+                <a href="/Vocabulary/public/index.php?route=profile">👤 Profile</a>
                 <a href="/Vocabulary/public/index.php?route=logout" class="btn-register" style="background:#fff;color:#d10000;">Logout</a>
 
             <?php endif; ?>
