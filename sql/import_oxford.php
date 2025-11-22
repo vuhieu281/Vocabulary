@@ -1,5 +1,5 @@
 <?php
-$pdo = new PDO("mysql:host=localhost;dbname=vocabulary_db;charset=utf8", "root", "");
+$pdo = new PDO("mysql:host=localhost:3366;dbname=vocabulary_db;charset=utf8", "root", "");
 
 // Mở file CSV
 $file = fopen("oxford_words.csv", "r");

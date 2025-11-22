@@ -88,7 +88,11 @@
             const data = await res.json();
             // remove 'Đang xử lý...'
             const last = messagesEl.lastChild; if(last) messagesEl.removeChild(last);
-            if (data.success) append('bot', data.reply);
+            if (data.success) {
+                append('bot', data.reply);
+                // Reload full history to sync with database
+                setTimeout(loadHistory, 500);
+            }
             else append('bot', 'Lỗi: ' + (data.message || 'Không có phản hồi'));
         }catch(e){
             const last = messagesEl.lastChild; if(last) messagesEl.removeChild(last);

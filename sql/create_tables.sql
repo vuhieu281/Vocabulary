@@ -1,159 +1,250 @@
--- ==========================================
--- 1) TẠO DATABASE
--- ==========================================
-CREATE DATABASE IF NOT EXISTS vocabulary_db;
-USE vocabulary_db;
+-- ============================
+-- TABLE: local_words
+-- ============================
+CREATE TABLE `local_words` (
+  `id` int(11) NOT NULL,
+  `word` varchar(100) NOT NULL,
+  `part_of_speech` varchar(50) DEFAULT NULL,
+  `ipa` varchar(100) DEFAULT NULL,
+  `audio_link` varchar(255) DEFAULT NULL,
+  `senses` text DEFAULT NULL,
+  `level` varchar(10) DEFAULT NULL,
+  `oxford_url` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ==========================================
--- 1) LOCAL WORDS ─ (BẢNG TRUNG TÂM)
--- ==========================================
-CREATE TABLE local_words (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    word VARCHAR(100) NOT NULL UNIQUE, -- Thêm UNIQUE để đảm bảo từ không trùng
-    part_of_speech VARCHAR(50),
-    ipa VARCHAR(100),
-    audio_link VARCHAR(255),
-    senses TEXT, -- (Lưu nghĩa, ví dụ... có thể là JSON hoặc text)
-    level VARCHAR(10),
-    oxford_url VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+ALTER TABLE `local_words`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `word` (`word`);
+
+ALTER TABLE `local_words`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6176;
+
+-- ============================
+-- TABLE: quiz_results
+-- ============================
+CREATE TABLE `quiz_results` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `user_quiz_id` int(11) DEFAULT NULL,
+  `score` int(11) NOT NULL,
+  `total_questions` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `quiz_results`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `user_quiz_id` (`user_quiz_id`);
+
+ALTER TABLE `quiz_results`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+-- ============================
+-- TABLE: quiz_result_details
+-- ============================
+CREATE TABLE `quiz_result_details` (
+  `id` int(11) NOT NULL,
+  `quiz_result_id` int(11) NOT NULL,
+  `local_word_id` int(11) NOT NULL,
+  `user_answer` text NOT NULL,
+  `correct_answer` text NOT NULL,
+  `is_correct` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `quiz_result_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `quiz_result_id` (`quiz_result_id`),
+  ADD KEY `local_word_id` (`local_word_id`);
+
+ALTER TABLE `quiz_result_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+
+-- ============================
+-- TABLE: saved_words
+-- ============================
+CREATE TABLE `saved_words` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `local_word_id` int(11) NOT NULL,
+  `saved_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `saved_words`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`,`local_word_id`),
+  ADD KEY `local_word_id` (`local_word_id`);
+
+ALTER TABLE `saved_words`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+
+-- ============================
+-- TABLE: search_history
+-- ============================
+CREATE TABLE `search_history` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `local_word_id` int(11) NOT NULL,
+  `searched_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `search_history`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `local_word_id` (`local_word_id`);
+
+ALTER TABLE `search_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+
+-- ============================
+-- TABLE: topics
+-- ============================
+CREATE TABLE `topics` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `image_url` varchar(255) DEFAULT NULL,
+  `color_hex` varchar(7) DEFAULT '#0d6efd',
+  `icon_name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `topics`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `topics`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+-- ============================
+-- TABLE: topic_words
+-- ============================
+CREATE TABLE `topic_words` (
+  `id` int(11) NOT NULL,
+  `topic_id` int(11) NOT NULL,
+  `local_word_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `topic_words`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `topic_id` (`topic_id`),
+  ADD KEY `local_word_id` (`local_word_id`);
+
+ALTER TABLE `topic_words`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=819;
+
+-- ============================
+-- TABLE: users
+-- ============================
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `bio` text DEFAULT NULL,
+  `role` enum('user','admin') DEFAULT 'user',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+-- ============================
+-- TABLE: user_quizzes
+-- ============================
+CREATE TABLE `user_quizzes` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `user_quizzes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+ALTER TABLE `user_quizzes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+-- ============================
+-- TABLE: user_quiz_words
+-- ============================
+CREATE TABLE `user_quiz_words` (
+  `id` int(11) NOT NULL,
+  `user_quiz_id` int(11) NOT NULL,
+  `local_word_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `user_quiz_words`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_quiz_id` (`user_quiz_id`,`local_word_id`),
+  ADD KEY `local_word_id` (`local_word_id`);
+
+ALTER TABLE `user_quiz_words`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- ============================
+-- FOREIGN KEY CONSTRAINTS
+-- ============================
+
+ALTER TABLE `quiz_results`
+  ADD CONSTRAINT `quiz_results_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `quiz_results_ibfk_2` FOREIGN KEY (`user_quiz_id`) REFERENCES `user_quizzes` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `quiz_result_details`
+  ADD CONSTRAINT `quiz_result_details_ibfk_1` FOREIGN KEY (`quiz_result_id`) REFERENCES `quiz_results` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `quiz_result_details_ibfk_2` FOREIGN KEY (`local_word_id`) REFERENCES `local_words` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `saved_words`
+  ADD CONSTRAINT `saved_words_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `saved_words_ibfk_2` FOREIGN KEY (`local_word_id`) REFERENCES `local_words` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `search_history`
+  ADD CONSTRAINT `search_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `search_history_ibfk_2` FOREIGN KEY (`local_word_id`) REFERENCES `local_words` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `topic_words`
+  ADD CONSTRAINT `topic_words_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `topic_words_ibfk_2` FOREIGN KEY (`local_word_id`) REFERENCES `local_words` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `user_quizzes`
+  ADD CONSTRAINT `user_quizzes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `user_quiz_words`
+  ADD CONSTRAINT `user_quiz_words_ibfk_1` FOREIGN KEY (`user_quiz_id`) REFERENCES `user_quizzes` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_quiz_words_ibfk_2` FOREIGN KEY (`local_word_id`) REFERENCES `local_words` (`id`) ON DELETE CASCADE;
+
+CREATE TABLE IF NOT EXISTS `chat_history` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `role` ENUM('user','assistant') NOT NULL,
+  `message` TEXT NOT NULL,
+  `meta` JSON NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX (`user_id`),
+  INDEX (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 1. Tạo admin user mới
+INSERT INTO users (name, email, password, role, created_at) 
+VALUES (
+    'Administrator',
+    'admin@vocabulary.local',
+    '$2y$10$YOixf7yyNVVVa7vw9i4Oue5h0H5gXQTH8s2L8J1K2M3N4O5P6Q7R8', -- password: 'admin123'
+    'admin',
+    NOW()
 );
 
--- ==========================================
--- 2) USERS ─ (Không thay đổi)
--- ==========================================
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    avatar VARCHAR(255) DEFAULT NULL,
-    bio TEXT DEFAULT NULL,
-    role ENUM('user','admin') DEFAULT 'user',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- ==========================================
-<<<<<<< HEAD
--- ==========================================
--- 3) TOPICS
--- ==========================================
-CREATE TABLE topics (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    image VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- ==========================================
--- 4) TOPIC WORDS ─ (ĐÃ ĐIỀU CHỈNH)
--- Liên kết chủ đề và từ vựng
--- ==========================================
-CREATE TABLE topic_words (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    topic_id INT NOT NULL,
-    local_word_id INT NOT NULL, -- <-- THAY ĐỔI: Dùng ID
-    
-    FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE CASCADE,
-    FOREIGN KEY (local_word_id) REFERENCES local_words(id) ON DELETE CASCADE
-);
-
--- ==========================================
--- 5) SAVED WORDS ─ (ĐÃ ĐIỀU CHỈNH)
--- Từ vựng user đã lưu
--- ==========================================
-CREATE TABLE saved_words (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    local_word_id INT NOT NULL, -- <-- THAY ĐỔI: Dùng ID
-    saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (local_word_id) REFERENCES local_words(id) ON DELETE CASCADE,
-    
-    -- Đảm bảo 1 user không lưu 1 từ 2 lần
-    UNIQUE(user_id, local_word_id) 
-);
-
--- ==========================================
--- 6) SEARCH HISTORY ─ (ĐÃ ĐIỀU CHỈNH)
--- Lịch sử tra cứu của user
--- ==========================================
-CREATE TABLE search_history (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    local_word_id INT NOT NULL, -- <-- THAY ĐỔI: Dùng ID
-    searched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (local_word_id) REFERENCES local_words(id) ON DELETE CASCADE
-);
-
--- ==========================================
--- 7) QUIZ RESULTS ─ (Không thay đổi)
--- Lưu điểm tổng quát của bài quiz
--- ==========================================
-CREATE TABLE quiz_results (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-<<<<<<< HEAD
-    user_quiz_id INT,
-    score INT NOT NULL,
-    total_questions INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_quiz_id) REFERENCES user_quizzes(id) ON DELETE CASCADE
-=======
-    score INT NOT NULL,
-    total_questions INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
->>>>>>> dd20d1fd78b2ea20cb13823a93939e86f972f189
-);
-
--- ==========================================
--- 8) QUIZ RESULT DETAILS ─ (ĐÃ ĐIỀU CHỈNH)
--- Lưu chi tiết các câu đã trả lời
--- ==========================================
-CREATE TABLE quiz_result_details (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    quiz_result_id INT NOT NULL,
-    local_word_id INT NOT NULL, -- <-- THAY ĐỔI: Dùng ID (biết được câu hỏi là từ nào)
-    user_answer TEXT NOT NULL,
-    correct_answer TEXT NOT NULL,
-    is_correct BOOLEAN DEFAULT 0,
-    
-    FOREIGN KEY (quiz_result_id) REFERENCES quiz_results(id) ON DELETE CASCADE,
-    FOREIGN KEY (local_word_id) REFERENCES local_words(id) ON DELETE CASCADE
-);
-
--- ==========================================
--- 9) USER QUIZZES (ĐỊNH NGHĨA BỘ QUIZ)
--- Lưu trữ các bộ quiz do user tự tạo
--- ==========================================
-CREATE TABLE user_quizzes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,               -- User đã tạo bộ quiz này
-    name VARCHAR(150) NOT NULL,         -- Tên bộ quiz (VD: "Quiz động vật", "30 từ khó")
-    description TEXT DEFAULT NULL,      -- Mô tả thêm (nếu cần)
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
--- ==========================================
--- 10) USER QUIZ WORDS (TỪ VỰNG TRONG BỘ QUIZ)
--- Liên kết bộ quiz (bảng 9) với từ vựng (bảng 1)
--- ==========================================
-CREATE TABLE user_quiz_words (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_quiz_id INT NOT NULL,          -- Thuộc bộ quiz nào (ID từ bảng 9)
-    local_word_id INT NOT NULL,         -- Là từ vựng nào (ID từ bảng 1)
-    
-    FOREIGN KEY (user_quiz_id) REFERENCES user_quizzes(id) ON DELETE CASCADE,
-    FOREIGN KEY (local_word_id) REFERENCES local_words(id) ON DELETE CASCADE,
-    
-    -- Đảm bảo 1 từ không bị thêm 2 lần vào 1 bộ quiz
-    UNIQUE(user_quiz_id, local_word_id)
-);
+-- ============================================
+-- MẬT KHẨU MẶC ĐỊNH:
+-- Email: admin@vocabulary.local
+-- Password: admin123
+-- Role: admin
+-- ============================================
