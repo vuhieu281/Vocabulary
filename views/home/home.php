@@ -260,36 +260,69 @@
     function displayResults(data) {
         if (data.success && data.data.length > 0) {
             const firstWord = data.data[0];
-
-            // Short definition for featured
-            let shortDef = firstWord.senses ? firstWord.senses.substring(0, 140) : 'No definition available';
-            if (shortDef.length >= 140) shortDef += '...';
-
-            // Build main results list (left column)
-            let mainHtml = '<ul class="search-results-list">';
-            data.data.forEach((word) => {
+            
+            // Xử lý short definition (lấy 100 ký tự đầu)
+            let shortDef = firstWord.senses ? firstWord.senses.substring(0, 100) : 'No definition available';
+            if (shortDef.length === 100) shortDef += '...';
+            
+            let html = `
+                <div class="search-results-wrapper">
+                    <div class="search-featured">
+                        <h3>Featured</h3>
+                        <div class="featured-word">${escapeHtml(firstWord.word)}</div>
+                        <div class="result-type">${escapeHtml(firstWord.part_of_speech || '')}</div>
+                        <div class="featured-definition">${shortDef}</div>
+                        <a class="featured-link" onclick="selectWord(${firstWord.id})">See more ></a>
+                    </div>
+                    
+                    <div class="search-dictionary">
+                        <h3 style="margin-top: 0;">Dictionary</h3>
+                        <ul class="search-results-list">
+            `;
+            
+            data.data.forEach((word, index) => {
                 let definition = word.senses ? word.senses.substring(0, 80) : 'No definition';
                 if (definition.length === 80) definition += '...';
-                mainHtml += `\n                    <li onclick="selectWord(${word.id})">\n                        <div class="result-word">${escapeHtml(word.word)}</div>\n                        <div class="result-type">${escapeHtml(word.part_of_speech || '')}</div>\n                        <div class="result-definition">${definition}</div>\n                    </li>`;
+                
+                html += `
+                    <li onclick="selectWord(${word.id})">
+                        <div class="result-word">${escapeHtml(word.word)}</div>
+                        <div class="result-type">${escapeHtml(word.part_of_speech || '')}</div>
+                        <div class="result-definition">${definition}</div>
+                    </li>
+                `;
             });
-            mainHtml += '</ul>';
-
-            // Build dictionary sidebar (right column) - show first 6 related words
-            let dictHtml = '<div class="dictionary-list">';
-            data.data.slice(0,6).forEach(w => {
-                dictHtml += `<div style="padding:12px 0;border-bottom:1px solid #f0f0f0;">` +
-                    `<a href="#" onclick="selectWord(${w.id})" style="color:#0d6efd;font-weight:700;">${escapeHtml(w.word)}</a>` +
-                    `<div style="color:#666;font-size:0.9em;margin-top:6px;">${(w.senses||'').substring(0,80)}${(w.senses&&w.senses.length>80)?'...':''}</div></div>`;
-            });
-            dictHtml += '</div>';
-
-            let html = `\n                <div class="search-results-wrapper three-col">\n                    <div class="search-main">\n                        ${mainHtml}\n                    </div>\n                    <div class="search-featured">\n                        <h3>FEATURED</h3>\n                        <div class="featured-word">${escapeHtml(firstWord.word)}</div>\n                        <div class="result-type">${escapeHtml(firstWord.part_of_speech || '')}</div>\n                        <div class="featured-definition">${shortDef}</div>\n                        <a class="featured-link" onclick="selectWord(${firstWord.id})">See more &gt;</a>\n                    </div>\n                    <div class="search-dictionary">\n                        <h3 style="margin-top: 0;">Dictionary</h3>\n                        ${dictHtml}\n                    </div>\n                </div>\n            `;
-
+            
+            html += `
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
             searchResultsDiv.innerHTML = html;
             searchResultsDiv.style.display = 'block';
         } else {
-            // Empty state layout uses the same three-column wrapper to keep spacing
-            searchResultsDiv.innerHTML = `\n                <div class="search-results-wrapper three-col">\n                    <div class="search-main">\n                        <div class="empty-state">\n                            <h3 class="empty-title">Không tìm thấy từ vựng nào</h3>\n                            <p class="empty-subtitle">Thử tìm từ khác, hoặc khám phá theo Topic và danh sách từ.</p>\n                            <div class="empty-illustrations">\n                                <div class="empty-illustration" aria-hidden="true">\n                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16v2H4zM4 11h10v2H4zM4 16h7v2H4z"/></svg>\n                                </div>\n                                <div class="empty-illustration" aria-hidden="true">\n                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 2h9a2 2 0 0 1 2 2v16l-3-1-3 1-3-1-3 1V4a2 2 0 0 1 2-2z"/></svg>\n                                </div>\n                                <div class="empty-illustration" aria-hidden="true">\n                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 18h18v2H3zM7 6a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm6 0h4v6h-4z"/></svg>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <div class="search-featured">\n                        <h3>FEATURED</h3>\n                        <div class="featured-word">Explore Topics</div>\n                        <div class="featured-definition">Browse curated word lists and lessons to discover vocabulary by topic.</div>\n                    </div>\n                    <div class="search-dictionary">\n                        <h3 style="margin-top: 0;">Dictionary</h3>\n                        <div style="padding:12px;color:#666;">Popular words will appear here.</div>\n                    </div>\n                </div>\n            `;
+            // Empty state with three illustrations (vocab floating, dictionary, learner with laptop)
+            searchResultsDiv.innerHTML = `
+                <div class="empty-state">
+                    <h3 class="empty-title">Không tìm thấy từ vựng nào</h3>
+                    <p class="empty-subtitle">Thử tìm từ khác, hoặc khám phá theo Topic và danh sách từ.</p>
+                    <div class="empty-illustrations">
+                        <div class="empty-illustration" aria-hidden="true">
+                            <!-- floating vocab / words icon -->
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16v2H4zM4 11h10v2H4zM4 16h7v2H4z"/></svg>
+                        </div>
+                        <div class="empty-illustration" aria-hidden="true">
+                            <!-- dictionary icon -->
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 2h9a2 2 0 0 1 2 2v16l-3-1-3 1-3-1-3 1V4a2 2 0 0 1 2-2z"/></svg>
+                        </div>
+                        <div class="empty-illustration" aria-hidden="true">
+                            <!-- learner with laptop icon -->
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 18h18v2H3zM7 6a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm6 0h4v6h-4z"/></svg>
+                        </div>
+                    </div>
+                </div>
+            `;
             searchResultsDiv.style.display = 'block';
         }
     }
