@@ -11,7 +11,7 @@ return [
     // API key: recommended to set as environment variable 'GEMINI_API_KEY'
     // Example (Windows PowerShell): setx GEMINI_API_KEY "AIzaSy..."
     // For security, do NOT commit your API key to the repository. This reads from env var if present.
-    'api_key' => getenv('GEMINI_API_KEY') ?: 'AIzaSyAZ49VTP38_S9eveLdLuHW6d2Wkw19UzAs',
+    'api_key' => getenv('GEMINI_API_KEY') ?: 'AIzaSyAZ5K-9nveEx59UyPVH0856ymHIJC-dRts',
     // Base endpoint (we will append ?key=API_KEY when calling)
     'api_url' => 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
     // optional: timeout seconds for cURL

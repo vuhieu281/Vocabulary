@@ -705,6 +705,52 @@
     background-size: 10px;
   }
 
+  .flashcard-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .flashcard-main {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .flashcard-intro h1 {
+    font-size: 1.6em;
+  }
+
+  .flashcard-intro p {
+    font-size: 0.95em;
+  }
+
+  #flashcard {
+    height: 280px;
+  }
+
+  .flashcard-front,
+  .flashcard-back {
+    padding: 16px;
+  }
+
+  #card-word {
+    font-size: 1.8em;
+  }
+
+  .flashcard-progress {
+    font-size: 1em;
+  }
+
+  .flashcard-header {
+    padding: 16px;
+  }
+
   .btn-audio {
     padding: 10px 16px;
     font-size: 0.9em;

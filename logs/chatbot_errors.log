@@ -133,3 +133,15 @@
   }
 }
 
+2025-11-21 17:31:47 | HTTP 403 | {
+  "error": {
+    "code": 403,
+    "message": "Your API key was reported as leaked. Please use another API key.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+2025-11-21 17:34:49 | SAVE ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'vocabulary_db.chat_history' doesn't exist
+2025-11-21 17:35:56 | SAVE ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'vocabulary_db.chat_history' doesn't exist
+2025-11-21 17:36:27 | SAVE ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'vocabulary_db.chat_history' doesn't exist
+2025-11-21 17:37:13 | SAVE ERROR | SQLSTATE[42S02]: Base table or view not found: 1146 Table 'vocabulary_db.chat_history' doesn't exist

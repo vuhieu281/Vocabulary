@@ -126,6 +126,28 @@ function changeDifficulty(difficulty) {
 }
 
 /**
+lashcards.filter(card => card.level === difficulty);
+    } else {
+        // Hiển thị tất cả
+        flashcards = [...allFlashcards];
+    }
+    
+    // Reset về card đầu tiên
+    if (flashcards.length > 0) {
+        currentIndex = 0;
+        loadCard(0);
+    } else {
+        // Nếu không có từ nào, quay lại
+        alert('Không có từ nào với độ khó này');
+        document.getElementById('difficulty-select').value = '';
+        currentDifficulty = null;
+        flashcards = [...allFlashcards];
+        loadCard(0);
+    }
+}
+
+/**
+>>>>>>> 7ea12cd (cập nhật flashcard)
  * Tải flashcard theo index
  */
 function loadCard(index) {
