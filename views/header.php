@@ -14,11 +14,16 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 
     <style>
         * { box-sizing: border-box; }
+        html, body { height: 100%; }
         body { 
             margin: 0; 
             padding: 0;
             padding-top: 48px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
+        main { flex: 1 0 auto; }
         .navbar {
             position: fixed;
             top: 0;
@@ -131,8 +136,6 @@ if (session_status() === PHP_SESSION_NONE) session_start();
             <a href="/Vocabulary/public/index.php?route=home">Home</a>
             <a href="/Vocabulary/public/index.php?route=topics">Topics</a>
             <a href="/Vocabulary/public/index.php?route=search">Search</a>
-            <a href="/Vocabulary/public/index.php?route=saved">Saved</a>
-            <a href="/Vocabulary/public/index.php?route=history">History</a>
             <a href="/Vocabulary/public/index.php?route=flashcard">Flashcard</a>
             <a href="/Vocabulary/public/index.php?route=quiz">Quiz</a>
         </div>

@@ -410,3 +410,5 @@
 // Include chat widget on homepage
 include __DIR__ . '/../chat/widget.php';
 ?>
+
+</div>
