@@ -9,7 +9,7 @@
             background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
             color: #fff;
             padding: 50px 20px 25px;
-            margin-top: 0; /* footer positioned by flex layout in body */
+            margin-top: 0;
             box-shadow: 0 -6px 20px rgba(13,110,253,0.1);
         }
 
@@ -17,14 +17,14 @@
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
             margin-bottom: 30px;
         }
 
         .footer-section h3 {
-            font-size: 1.05rem;
-            margin-bottom: 16px;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
             font-weight: 700;
             color: #fff;
             letter-spacing: 0.5px;
@@ -37,7 +37,12 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            background: none !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            color: rgba(255,255,255,0.85) !important;
+            font-weight: 400 !important;
         }
 
         .footer-section ul li a {
@@ -119,12 +124,6 @@
     </style>
 
     <div class="footer-container">
-        <!-- About Section -->
-        <div class="footer-section about">
-            <h3>Vocabulary</h3>
-            <p>Nền tảng học từ vựng tiếng Anh hiện đại, cung cấp các công cụ và tài liệu học tập toàn diện cho người dùng ở mọi trình độ.</p>
-        </div>
-
         <!-- Quick Links -->
         <div class="footer-section">
             <h3>Liên Kết Nhanh</h3>

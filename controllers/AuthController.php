@@ -96,7 +96,10 @@ class AuthController {
     }
 
     public function changePassword() {
-        session_start();
+       // Code đã sửa
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
         if (!isset($_SESSION['user_id'])) {
             header("Location: index.php?route=login");
             exit;
