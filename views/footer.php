@@ -17,9 +17,14 @@
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
+            grid-template-columns: 320px repeat(3, 1fr);
+            gap: 28px;
             margin-bottom: 30px;
+        }
+
+        .footer-section {
+            display: flex;
+            flex-direction: column;
         }
 
         .footer-section h3 {
@@ -37,19 +42,26 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            list-style: none;
         }
 
+        /* Make footer links simple, block-aligned and remove unexpected backgrounds */
         .footer-section ul li a {
-            color: rgba(255,255,255,0.85);
+            display: block;
+            color: rgba(255,255,255,0.9);
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            transition: color 0.18s ease, transform 0.18s ease;
+            padding: 6px 0;
+            background: transparent !important;
+            border-radius: 4px !important;
+            box-shadow: none !important;
         }
 
         .footer-section ul li a:hover {
             color: #fff;
-            padding-left: 4px;
+            transform: translateX(4px);
         }
 
         .footer-section.about p {
@@ -60,8 +72,8 @@
         }
 
         .footer-divider {
-            border-top: 1px solid rgba(255,255,255,0.15);
-            margin: 30px 0;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            margin: 26px 0 18px;
         }
 
         .footer-bottom {
@@ -89,7 +101,7 @@
         @media (max-width: 768px) {
             .footer-container {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 22px;
             }
 
             .app-footer {
