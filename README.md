@@ -1,12 +1,12 @@
-# 📘 Vocabulary Web
+#  Vocabulary Web
 
-> 🎯 Nền tảng học từ vựng tiếng Anh toàn diện với Flashcard, Quiz & Chatbot AI
+>  Nền tảng học từ vựng tiếng Anh toàn diện với Flashcard, Quiz & Chatbot AI
 
 Vocabulary Web là ứng dụng web giúp người dùng nâng cao vốn từ vựng tiếng Anh một cách chủ động và hiệu quả. Người dùng có thể tra cứu từ, lưu yêu thích, ôn tập qua Flashcard/Quiz, và tương tác với Chatbot AI.
 
 ---
 
-## 📋 Mục Lục
+##  Mục Lục
 
 - [Giới thiệu](#-giới-thiệu)
 - [Tính năng](#-tính-năng)
@@ -60,7 +60,7 @@ Vocabulary Web là ứng dụng web giúp người dùng nâng cao vốn từ v�
 
 ---
 
-## 👥 Thành viên & Phân công
+##  Thành viên & Phân công
 
 | Tên | Vai trò | Công việc |
 |:---|:---|:---|
@@ -72,7 +72,7 @@ Vocabulary Web là ứng dụng web giúp người dùng nâng cao vốn từ v�
 
 ---
 
-## 🛠 Công nghệ sử dụng
+##  Công nghệ sử dụng
 
 ### Frontend
 - HTML5, CSS3, JavaScript (Vanilla)
@@ -165,7 +165,7 @@ Password: admin123
 
 ```
 Vocabulary/
-├── 📂 api/                           # API endpoints cho AJAX requests
+├── api/                           # API endpoints cho AJAX requests
 │   ├── search_words.php              # Tìm kiếm từ với autocomplete
 │   ├── save_word.php                 # Lưu từ yêu thích vào saved_words
 │   ├── check_saved_word.php          # Kiểm tra từ đã lưu chưa
@@ -180,12 +180,12 @@ Vocabulary/
 │   ├── remove_word_from_topic.php    # Xóa từ khỏi topic (admin)
 │   └── admin_*.php                   # Admin APIs (add/edit/delete users, topics, words)
 │
-├── 📂 config/                        # File cấu hình chung
+├── config/                        # File cấu hình chung
 │   ├── database.php                  # Kết nối MySQL (PDO)
 │   ├── topics.php                    # Cấu hình danh sách topics
 │   └── chatbot.php                   # API key & URL Chatbot
 │
-├── 📂 controllers/                   # Logic xử lý chính (tầng Controller)
+├── controllers/                   # Logic xử lý chính (tầng Controller)
 │   ├── AuthController.php            # Xử lý: Đăng ký, Đăng nhập, Profile, Đổi mật khẩu
 │   ├── TopicController.php           # Xử lý: Danh sách topics, Chi tiết topic
 │   ├── FlashcardController.php       # Xử lý: Learn mode, Review mode, Lật thẻ
@@ -193,7 +193,7 @@ Vocabulary/
 │   ├── ChatbotController.php         # Xử lý: Gọi API Chatbot, Lưu lịch sử chat
 │   └── AdminController.php           # Xử lý: Dashboard, CRUD Users/Topics/Words
 │
-├── 📂 models/                        # Database models (tầng Model - tương tác DB)
+├── models/                        # Database models (tầng Model - tương tác DB)
 │   ├── User.php                      # Methods: getAll, getById, create, update, delete
 │   ├── Word.php                      # Methods: getAll, getById, search, getByTopic
 │   ├── Topic.php                     # Methods: getAll, getById, getWords, countWords
@@ -202,12 +202,12 @@ Vocabulary/
 │   ├── SearchHistory.php             # Methods: add, getByUser, delete, clearAll
 │   └── ChatModel.php                 # Methods: saveChatHistory, getChatHistory
 │
-├── 📂 public/                        # Thư mục public (entry point - DocumentRoot)
+├── public/                        # Thư mục public (entry point - DocumentRoot)
 │   ├── index.php                     # Router chính (xử lý GET route parameter)
 │   ├── auth.php                      # Routes cho auth (login, register, logout)
 │   ├── search.php                    # Routes cho tìm kiếm từ
 │   ├── word.php                      # Routes cho chi tiết từ
-│   └── 📂 css/                       # CSS stylesheets
+│   └── css/                       # CSS stylesheets
 │       ├── home.css                  # Style trang home, login, register
 │       ├── search.css                # Style trang tìm kiếm
 │       ├── admin.css                 # Style admin panel
@@ -215,34 +215,34 @@ Vocabulary/
 │       ├── quiz.css                  # Style quiz
 │       └── word-detail.css           # Style chi tiết từ
 │
-├── 📂 views/                         # HTML template files (tầng View)
+├── views/                         # HTML template files (tầng View)
 │   ├── header.php                    # Navigation bar (chung tất cả trang)
 │   ├── footer.php                    # Footer (chung tất cả trang)
 │   ├── word-detail.php               # Template chi tiết từ (định nghĩa, IPA, ví dụ)
 │   ├── flashcard-learn.php           # Template flashcard learn mode
 │   │
-│   ├── 📂 auth/                      # Templates xác thực
+│   ├── auth/                      # Templates xác thực
 │   │   ├── login.php                 # Form đăng nhập
 │   │   ├── register.php              # Form đăng ký
 │   │   └── profile.php               # Trang profile, sửa thông tin, đổi mật khẩu
 │   │
-│   ├── 📂 home/                      # Templates trang chủ
+│   ├── home/                      # Templates trang chủ
 │   │   └── home.php                  # Trang chủ (sau khi login)
 │   │
-│   ├── 📂 quiz/                      # Templates Quiz
+│   ├── quiz/                      # Templates Quiz
 │   │   ├── index.php                 # Danh sách quiz của user
 │   │   ├── quiz.php                  # Giao diện làm quiz
 │   │   └── result.php                # Kết quả quiz (điểm, chi tiết)
 │   │
-│   ├── 📂 topics/                    # Templates Topics
+│   ├── topics/                    # Templates Topics
 │   │   ├── index.php                 # Danh sách tất cả topics
 │   │   └── detail.php                # Chi tiết topic (danh sách từ)
 │   │
-│   ├── 📂 chat/                      # Templates Chatbot
+│   ├── chat/                      # Templates Chatbot
 │   │   ├── index.php                 # Trang chat riêng (nếu có)
 │   │   └── widget.php                # Widget chatbot (nhúng vào tất cả trang)
 │   │
-│   └── 📂 admin/                     # Templates Admin Panel
+│   └── admin/                     # Templates Admin Panel
 │       ├── _layout.php               # Layout admin chung
 │       ├── _sidebar.php              # Sidebar menu admin
 │       ├── admin-styles.php          # CSS admin inline
@@ -258,20 +258,20 @@ Vocabulary/
 │       ├── activities.php            # Lịch sử hoạt động hệ thống
 │       └── user-activities.php       # Hoạt động của user cụ thể
 │
-├── 📂 sql/                           # Database scripts & data
+├── sql/                           # Database scripts & data
 │   ├── create_tables.sql             # SQL để tạo tất cả bảng (10+ tables)
 │   ├── import_oxford.php             # Script PHP import dữ liệu từ CSV
 │   ├── seed_topics.php               # Script seed dữ liệu topics mẫu
 │   └── oxford_words.csv              # Dữ liệu ~6000 từ từ Oxford
 │
-├── 📂 uploads/                       # Thư mục lưu file upload từ user
-│   └── 📂 topics/                    # Ảnh đại diện topics (uploaded)
+├── uploads/                       # Thư mục lưu file upload từ user
+│   └── topics/                    # Ảnh đại diện topics (uploaded)
 │
-├── 📂 logs/                          # Thư mục logs (error, access logs)
+├── logs/                          # Thư mục logs (error, access logs)
 │
-├── 📄 README.md                      # File này (hướng dẫn dự án)
-├── 📄 .gitignore                     # Git ignore (uploads/, logs/, config/database.php)
-└── 📄 .htaccess                      # Apache rewrite rules (URL friendly)
+├── README.md                      # File này (hướng dẫn dự án)
+├── .gitignore                     # Git ignore (uploads/, logs/, config/database.php)
+└── .htaccess                      # Apache rewrite rules (URL friendly)
 ```
 
 ### Luồng dữ liệu (Data Flow)
