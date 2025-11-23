@@ -19,44 +19,44 @@ Vocabulary Web là ứng dụng web giúp người dùng nâng cao vốn từ v�
 
 ---
 
-## 📖 Giới thiệu
+## Giới thiệu
 
 **Vocabulary Web** là dự án website dành cho người muốn học từ vựng tiếng Anh một cách hiệu quả.
 
-✨ **Điểm nổi bật:**
-- 📖 Kho từ vựng 6000+ từ từ Oxford English Dictionary
-- 🎴 Hệ thống Flashcard tương tác
-- 🎮 Quiz đa dạng (trắc nghiệm, điền từ)
-- 🤖 Chatbot AI hỗ trợ trực tuyến
-- 📚 Học theo chủ đề (20+ topics)
-- 💾 Lưu từ yêu thích & theo dõi lịch sử
-- 🛡️ Admin dashboard quản lý hệ thống
+**Điểm nổi bật:**
+-  Kho từ vựng 6000+ từ từ Oxford English Dictionary
+-  Hệ thống Flashcard tương tác
+-  Quiz đa dạng (trắc nghiệm)
+-  Chatbot AI hỗ trợ trực tuyến
+-  Học theo chủ đề 
+- Lưu từ yêu thích & theo dõi lịch sử
+- Admin dashboard quản lý hệ thống
 
 ---
 
-## 🚀 Tính năng
+##  Tính năng
 
-### 👤 **Người dùng bình thường**
-
-| Tính năng | Mô tả |
-|:---|:---|
-| 🔐 **Tài khoản** | Đăng ký, đăng nhập, quản lý profile |
-| 🔍 **Tra cứu từ** | Tìm kiếm từ, xem chi tiết (định nghĩa, IPA, ví dụ) |
-| 💾 **Lưu từ** | Lưu từ yêu thích vào danh sách riêng |
-| 📚 **Học theo chủ đề** | 20+ chủ đề từ vựng (Food, Animals, Business...) |
-| 🎴 **Flashcard** | 2 mode: Learn & Review |
-| 🎮 **Quiz** | Trắc nghiệm + Điền từ, xem kết quả chi tiết |
-| 🤖 **Chatbot** | Hỏi AI về từ, cách dùng, ví dụ |
-| 📜 **Lịch sử** | Xem & xóa lịch sử tra cứu |
-
-### 🛡️ **Admin**
+### **Người dùng bình thường**
 
 | Tính năng | Mô tả |
 |:---|:---|
-| 📊 **Dashboard** | Thống kê người dùng, từ, chủ đề |
-| 👥 **Quản lý user** | CRUD người dùng |
-| 📖 **Quản lý chủ đề** | Thêm/sửa/xóa topics, upload ảnh |
-| 📝 **Quản lý từ** | Thêm/sửa/xóa từ, phân loại chủ đề |
+|  **Tài khoản** | Đăng ký, đăng nhập, quản lý profile |
+|  **Tra cứu từ** | Tìm kiếm từ, xem chi tiết (định nghĩa, IPA, ví dụ) |
+|  **Lưu từ** | Lưu từ yêu thích vào danh sách riêng |
+|  **Học theo chủ đề** | 20+ chủ đề từ vựng (Food, Animals, Business...) |
+|  **Flashcard** | 2 mode: Learn & Review |
+|  **Quiz** | Trắc nghiệm + Điền từ, xem kết quả chi tiết |
+|  **Chatbot** | Hỏi AI về từ, cách dùng, ví dụ |
+|  **Lịch sử** | Xem & xóa lịch sử tra cứu |
+
+###  **Admin**
+
+| Tính năng | Mô tả |
+|:---|:---|
+|  **Dashboard** | Thống kê người dùng, từ, chủ đề |
+|  **Quản lý user** | CRUD người dùng |
+|  **Quản lý chủ đề** | Thêm/sửa/xóa topics, upload ảnh |
+|  **Quản lý từ** | Thêm/sửa/xóa từ, phân loại chủ đề |
 
 ---
 
@@ -98,9 +98,9 @@ Vocabulary Web là ứng dụng web giúp người dùng nâng cao vốn từ v�
 
 ---
 
-## 💻 Cài đặt & Chạy
+##  Cài đặt & Chạy
 
-### 📋 Yêu cầu
+###  Yêu cầu
 
 - XAMPP 7.4+ (hoặc WAMP)
 - PHP 7.4+ với PDO_MySQL extension
@@ -150,18 +150,18 @@ php sql/import_oxford.php
 2. Start **Apache** & **MySQL**
 3. Truy cập: **http://localhost/Vocabulary/public**
 
-### 🔐 Tài khoản mặc định
+###  Tài khoản mặc định
 
 ```
 Email:    admin@vocabulary.local
 Password: admin123
 ```
 
-⚠️ **Hãy đổi mật khẩu sau khi đăng nhập lần đầu!**
+ **Hãy đổi mật khẩu sau khi đăng nhập lần đầu!**
 
 ---
 
-## 📁 Cấu trúc dự án
+##  Cấu trúc dự án
 
 ```
 Vocabulary/
@@ -274,7 +274,7 @@ Vocabulary/
 └── 📄 .htaccess                      # Apache rewrite rules (URL friendly)
 ```
 
-### 📊 Luồng dữ liệu (Data Flow)
+### Luồng dữ liệu (Data Flow)
 
 ```
 User Request
@@ -298,7 +298,7 @@ views/xxx.php (Render HTML)
 Browser (Display)
 ```
 
-### 🔄 Ví dụ: Luồng tra cứu từ
+###  Ví dụ: Luồng tra cứu từ
 
 1. User gõ từ trong ô search (search.php)
 2. JavaScript gọi AJAX → `/api/search_words.php?q=apple`
@@ -314,9 +314,9 @@ Browser (Display)
 
 ---
 
-## 🎯 Sử dụng
+##  Sử dụng
 
-### 👤 **Người dùng**
+###  **Người dùng**
 
 **Tra cứu từ:**
 ```
@@ -341,7 +341,7 @@ http://localhost/Vocabulary/public/index.php?route=quiz
 Widget trên mọi trang (góc phải dưới) → Hỏi AI
 ```
 
-### 🛡️ **Admin**
+###  **Admin**
 
 **Login Admin:**
 ```
@@ -357,7 +357,7 @@ http://localhost/Vocabulary/public/index.php?route=admin_dashboard
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Tra cứu & Từ vựng
 | Endpoint | Method | Mô tả |
@@ -375,7 +375,7 @@ http://localhost/Vocabulary/public/index.php?route=admin_dashboard
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
 ### Bảng chính
 
@@ -394,9 +394,9 @@ user_quizzes (id, user_id, name, description, created_at)
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
-### ❌ "Connection refused" - MySQL không chạy
+###  "Connection refused" - MySQL không chạy
 ```powershell
 # Mở XAMPP Control Panel, click Start MySQL
 # Hoặc khởi động từ CLI:
@@ -404,26 +404,26 @@ cd C:\xampp\mysql\bin
 mysqld
 ```
 
-### ❌ "Access denied" - Password sai
+### "Access denied" - Password sai
 ```php
 // Chỉnh sửa config/database.php
 private $username = "root";
 private $password = "";  // Để trống nếu chưa set
 ```
 
-### ❌ "Database doesn't exist"
+###  "Database doesn't exist"
 ```
 Làm lại Bước 2: Tạo Database (phía trên)
 ```
 
-### ❌ Upload ảnh không hoạt động
+###  Upload ảnh không hoạt động
 ```
 1. Chuột phải vào uploads/topics/
 2. Properties > Security > Edit > Permissions
 3. Chọn tài khoản > Full Control > Apply
 ```
 
-### ❌ Chatbot không hoạt động
+###  Chatbot không hoạt động
 ```php
 // Cấu hình config/chatbot.php
 define('CHATBOT_API_KEY', 'your_api_key_here');
@@ -432,7 +432,7 @@ define('CHATBOT_API_URL', 'https://api.example.com/chat');
 
 ---
 
-## 📝 Quy ước Code
+##  Quy ước Code
 
 ```
 PHP Classes:       PascalCase (UserController)
@@ -444,16 +444,16 @@ HTML ID/Class:     kebab-case (user-form, btn-primary)
 
 ---
 
-## 🔒 Bảo mật
+##  Bảo mật
 
-✅ **Hiện tại:**
+ **Hiện tại:**
 - Bcrypt password hashing
 - Session-based authentication
 - PDO prepared statements (prevent SQL injection)
 - Input validation
 - UTF-8 encoding
 
-⚠️ **Cần cải thiện:**
+ **Cần cải thiện:**
 - [ ] CSRF token validation
 - [ ] Rate limiting
 - [ ] HTTPS/SSL
@@ -463,7 +463,7 @@ HTML ID/Class:     kebab-case (user-form, btn-primary)
 
 ---
 
-## 📚 Tài liệu tham khảo
+##  Tài liệu tham khảo
 
 - [PHP Docs](https://www.php.net/docs.php)
 - [MySQL Docs](https://dev.mysql.com/doc/)
@@ -472,16 +472,16 @@ HTML ID/Class:     kebab-case (user-form, btn-primary)
 
 ---
 
-## 📧 Liên hệ
+##  Liên hệ
 
 Gặp vấn đề? 
-- 📝 Mở Issue trên GitHub
-- 💬 Tham gia Discussions
-- 📧 Email project
+-  Mở Issue trên GitHub
+-  Tham gia Discussions
+-  Email project
 
 ---
 
-## 📄 License
+##  License
 
 Dự án này được cung cấp cho mục đích giáo dục và học tập.
 
@@ -489,4 +489,4 @@ Dự án này được cung cấp cho mục đích giáo dục và học tập.
 
 **Lần cập nhật cuối:** November 22, 2025
 
-🎓 **Happy Learning!** 📚✨
+🎓 **Happy Learning!** 
