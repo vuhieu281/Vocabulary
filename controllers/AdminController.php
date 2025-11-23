@@ -361,21 +361,17 @@ class AdminController {
                 $newWords = array_filter($newWords, 'strlen');
                 $newWords = array_slice($newWords, 0, 10);
                 
-                // Nếu có từ mới, xoá tất cả từ cũ và thêm từ mới
-                if (!empty($newWords)) {
-                    $this->admin->removeAllWordsFromTopic($id);
-                    $this->admin->assignWordsToTopic($id, $newWords);
-                } else if (!empty($existingWords)) {
-                    // Nếu không có từ mới nhưng còn từ cũ, chỉ xoá những từ không nằm trong danh sách existing_words
-                    $allCurrentWords = $this->admin->getTopicWords($id);
-                    foreach ($allCurrentWords as $word) {
-                        if (!in_array($word['id'], $existingWords)) {
-                            $this->admin->removeWordFromTopic($word['id'], $id);
-                        }
+                // Chỉ xoá những từ cũ không nằm trong danh sách existing_words
+                $allCurrentWords = $this->admin->getTopicWords($id);
+                foreach ($allCurrentWords as $word) {
+                    if (!in_array($word['id'], $existingWords)) {
+                        $this->admin->removeWordFromTopic($word['id'], $id);
                     }
-                } else {
-                    // Nếu không có từ mới và không có từ cũ, xoá tất cả
-                    $this->admin->removeAllWordsFromTopic($id);
+                }
+                
+                // Thêm từ mới vào (nếu có)
+                if (!empty($newWords)) {
+                    $this->admin->assignWordsToTopic($id, $newWords);
                 }
                 
                 header("Location: index.php?route=admin_topics&success=Cập nhật chủ đề thành công");
