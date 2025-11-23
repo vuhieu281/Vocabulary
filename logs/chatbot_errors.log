@@ -18,3 +18,11 @@
   }
 }
 
+2025-11-23 08:48:09 | HTTP 403 | {
+  "error": {
+    "code": 403,
+    "message": "Your API key was reported as leaked. Please use another API key.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
