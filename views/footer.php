@@ -8,31 +8,23 @@
         .app-footer {
             background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
             color: #fff;
-            padding: 56px 0 28px;
-            margin-top: 0;
-            box-shadow: 0 -6px 20px rgba(13,110,253,0.06);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-        }
-
-        /* central wrapper keeps left/right padding consistent with main site */
-        .footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            box-sizing: border-box;
+            padding: 50px 20px 25px;
+            margin-top: 0; /* footer positioned by flex layout in body */
+            box-shadow: 0 -6px 20px rgba(13,110,253,0.1);
         }
 
         .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: 1.6fr 1fr 1fr 1fr;
-            gap: 32px;
-            align-items: start;
-            margin-bottom: 22px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
         }
 
         .footer-section h3 {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
             font-weight: 700;
             color: #fff;
             letter-spacing: 0.5px;
@@ -45,23 +37,20 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 12px;
-            background: none !important;
-            padding: 0 !important;
-            border-radius: 0 !important;
-            color: rgba(255,255,255,0.85) !important;
-            font-weight: 400 !important;
+            margin-bottom: 10px;
         }
 
         .footer-section ul li a {
-            color: rgba(255,255,255,0.88);
+            color: rgba(255,255,255,0.85);
             text-decoration: none;
-            font-size: 0.95rem;
-            transition: transform 0.18s ease, color 0.18s ease;
-            display: inline-block;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
 
-        .footer-section ul li a:hover { transform: translateX(6px); color: #fff; }
+        .footer-section ul li a:hover {
+            color: #fff;
+            padding-left: 4px;
+        }
 
         .footer-section.about p {
             color: rgba(255,255,255,0.8);
@@ -70,44 +59,62 @@
             margin: 0;
         }
 
-        .footer-divider { border-top: 1px solid rgba(255,255,255,0.12); margin: 18px 0; }
+        .footer-divider {
+            border-top: 1px solid rgba(255,255,255,0.15);
+            margin: 30px 0;
+        }
 
         .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
-            color: rgba(255,255,255,0.75);
-            font-size: 0.9rem;
-            padding: 6px 0 6px;
             flex-wrap: wrap;
-            text-align: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.85);
+            font-size: 0.95rem;
+            padding: 6px 12px 18px;
         }
 
         .footer-bottom p {
             margin: 0;
+            text-align: center;
+            width: 100%;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.95);
+            font-weight: 600;
         }
 
-        .footer-links { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
-        .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; transition: color 0.18s ease; }
-        .footer-links a:hover { color: #fff; }
+        @media (max-width: 768px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
 
-        /* Small helper for CTA-like link in footer */
-        .btn-small { padding: 8px 12px; border-radius: 8px; font-weight: 700; }
+            .app-footer {
+                padding: 35px 15px 20px;
+                margin-top: 60px;
+            }
 
-        @media (max-width: 980px) {
-            .footer-container { grid-template-columns: repeat(2, 1fr); }
-        }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
 
-        @media (max-width: 640px) {
-            .footer-container { grid-template-columns: 1fr; gap: 20px; }
-            .footer-bottom { justify-content: center; text-align: center; }
-            .footer-inner { padding: 0 16px; }
+            .footer-links {
+                justify-content: center;
+            }
         }
     </style>
 
-    <div class="footer-inner">
     <div class="footer-container">
+        <!-- About Section -->
+        <div class="footer-section about">
+            <h3>Vocabulary</h3>
+            <p>Nền tảng học từ vựng tiếng Anh hiện đại, cung cấp các công cụ và tài liệu học tập toàn diện cho người dùng ở mọi trình độ.</p>
+        </div>
+
         <!-- Quick Links -->
         <div class="footer-section">
             <h3>Liên Kết Nhanh</h3>
@@ -148,8 +155,7 @@
     <div class="footer-divider"></div>
 
     <div class="footer-bottom">
-        <p class="copyright">&copy; 2025 Vocabulary. Tất cả quyền được bảo lưu.</p>
-    </div>
+        <p>&copy; 2025 Vocabulary. Tất cả quyền được bảo lưu.</p>
     </div>
 </footer>
 
