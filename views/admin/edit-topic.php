@@ -307,4 +307,3 @@ document.head.appendChild(style);
 document.addEventListener('DOMContentLoaded', loadAllWords);
 </script>
 
-<?php include __DIR__ . '/../footer.php'; ?>
