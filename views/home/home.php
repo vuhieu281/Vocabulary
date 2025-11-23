@@ -35,7 +35,6 @@
 </div>
 
 <script>
-    // JavaScript để xử lý tìm kiếm và autocomplete
     const homeContainer = document.querySelector('.home-container');
     const introSection = document.querySelector('.intro-section');
     const suggestSection = document.querySelector('.suggest-section');
@@ -48,12 +47,10 @@
     let autocompleteTimeout;
     let isSearchActive = false;
 
-    // Load recent searches khi page tải
     document.addEventListener('DOMContentLoaded', function() {
         loadRecentSearches();
     });
 
-    // Hàm load tìm kiếm gần đây
     function loadRecentSearches() {
         fetch('../api/get_recent_searches.php')
             .then(response => response.json())
@@ -79,7 +76,6 @@
             });
     }
 
-    // Toggle search mode
     function toggleSearchMode(active) {
         isSearchActive = active;
         if (active) {
@@ -96,14 +92,12 @@
         }
     }
 
-    // Focus vào search input
     searchInput.addEventListener('focus', () => {
         if (!isSearchActive && searchInput.value.trim() === '') {
             toggleSearchMode(true);
         }
     });
 
-    // Blur từ search input
     searchInput.addEventListener('blur', (e) => {
         setTimeout(() => {
             if (!searchResultsDiv.style.display || searchResultsDiv.style.display === 'none') {
@@ -114,35 +108,29 @@
         }, 200);
     });
 
-    // Xử lý sự kiện input cho autocomplete và live search
     searchInput.addEventListener('input', (e) => {
         clearTimeout(autocompleteTimeout);
         const keyword = e.target.value.trim();
 
-        // Nếu có từ khóa >= 2 ký tự
         if (keyword.length >= 2) {
             toggleSearchMode(true);
             
-            // Gọi autocomplete để hiển thị gợi ý
             autocompleteTimeout = setTimeout(() => {
                 fetchAutocomplete(keyword);
-                // Cũng gọi live search cùng lúc
+
                 performSearch(keyword);
             }, 300);
         } else {
-            // Nếu ít hơn 2 ký tự, ẩn kết quả và gợi ý
             searchResultsDiv.style.display = 'none';
             suggestionBox.classList.remove('active');
             suggestionBox.innerHTML = '';
         }
     });
 
-    // Tìm kiếm khi click icon search
     searchBtn.addEventListener('click', () => {
         performSearch(searchInput.value);
     });
 
-    // Tìm kiếm khi nhấn Enter
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             performSearch(searchInput.value);
@@ -150,14 +138,12 @@
         }
     });
 
-    // Ẩn suggestion-box khi click bên ngoài
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.search-bar-wrapper')) {
             suggestionBox.classList.remove('active');
         }
     });
 
-    // Hàm gọi API autocomplete
     function fetchAutocomplete(keyword) {
         fetch(`../api/ajax_autocomplete.php?term=${encodeURIComponent(keyword)}`)
             .then(response => response.json())
@@ -169,7 +155,6 @@
             });
     }
 
-    // Hàm hiển thị gợi ý autocomplete
     function displaySuggestions(suggestions) {
         if (!suggestions || suggestions.length === 0) {
             suggestionBox.classList.remove('active');
@@ -179,12 +164,10 @@
 
         suggestionBox.innerHTML = '';
         suggestions.forEach(item => {
-            // Tạo element link với onclick handler
             const link = document.createElement('a');
             link.href = '#';
             link.className = 'suggestion-item';
             link.textContent = item.word;
-            // Inline styles để chắc chắn
             link.style.display = 'block';
             link.style.padding = '12px 32px';
             link.style.borderBottom = '1px solid #f0f0f0';
@@ -192,7 +175,6 @@
             link.style.color = '#222';
             link.style.fontWeight = '700';
             link.style.cursor = 'pointer';
-            // Click handler - gọi performSearch
             link.onclick = (e) => {
                 e.preventDefault();
                 searchInput.value = item.word;
@@ -205,7 +187,6 @@
         suggestionBox.classList.add('active');
     }
 
-    // Hàm escape HTML để tránh XSS
     function escapeHtml(text) {
         const map = {
             '&': '&amp;',
@@ -217,14 +198,12 @@
         return text.replace(/[&<>"']/g, m => map[m]);
     }
 
-    // Hàm chọn gợi ý autocomplete
     function selectSuggestion(word) {
         searchInput.value = word;
         suggestionBox.classList.remove('active');
         performSearch(word);
     }
 
-    // Hàm thực hiện tìm kiếm
     function performSearch(keyword) {
         if (!keyword.trim()) {
             searchResultsDiv.style.display = 'none';
@@ -246,12 +225,10 @@
             });
     }
 
-    // Hàm hiển thị kết quả tìm kiếm
     function displayResults(data) {
         if (data.success && data.data.length > 0) {
             const firstWord = data.data[0];
             
-            // Xử lý short definition (lấy 100 ký tự đầu)
             let shortDef = firstWord.senses ? firstWord.senses.substring(0, 100) : 'No definition available';
             if (shortDef.length === 100) shortDef += '...';
             
@@ -292,7 +269,7 @@
             searchResultsDiv.innerHTML = html;
             searchResultsDiv.style.display = 'block';
         } else {
-            // Empty state with three illustrations (vocab floating, dictionary, learner with laptop)
+
             searchResultsDiv.innerHTML = `
                 <div class="empty-state">
                     <h3 class="empty-title">Không tìm thấy từ vựng nào</h3>
@@ -317,15 +294,12 @@
         }
     }
 
-    // Hàm filter kết quả (placeholder)
     function filterResults(filter) {
-        // TODO: Implement filter logic later
     }
 
-    // Hàm chọn từ vựng - lưu search history và điều hướng đến trang chi tiết từ
+
     function selectWord(wordId) {
         console.log('Saving search history for word:', wordId);
-        // Gửi request lưu search history (nếu user đã đăng nhập)
         fetch('../api/save_search_history.php', {
             method: 'POST',
             headers: {
@@ -341,19 +315,17 @@
             console.error('Error saving search history:', error);
         });
 
-        // Điều hướng đến trang chi tiết từ
         window.location.href = `../views/word-detail.php?id=${wordId}`;
     }
 
-    /* Placeholder rotator with simple type/erase animation */
     (function() {
         const placeholders = [
             'Gõ từ (ví dụ: headache)',
             'Thử: opportunity, success, love',
             'Gõ 2 ký tự để bắt đầu...' 
         ];
-        const typingSpeed = 40; // ms per char
-        const pauseAfter = 1400; // pause after full text
+        const typingSpeed = 40; 
+        const pauseAfter = 1400; 
         let phIndex = 0;
         let charIndex = 0;
         let typing = true;
@@ -380,24 +352,20 @@
             timeoutId = setTimeout(step, typing ? typingSpeed : typingSpeed / 1.6);
         }
 
-        // Pause rotator while user types / focuses
         searchInput.addEventListener('focus', () => {
             if (timeoutId) { clearTimeout(timeoutId); timeoutId = null; }
         });
         searchInput.addEventListener('blur', () => {
-            // only restart if input empty
             if (!searchInput.value.trim() && !timeoutId) {
                 charIndex = 0; typing = true; timeoutId = setTimeout(step, 400);
             }
         });
 
-        // start when page loads
         timeoutId = setTimeout(step, 600);
     })();
 </script>
 
 <?php
-// Include chat widget on homepage
 include __DIR__ . '/../chat/widget.php';
 ?>
 

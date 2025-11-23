@@ -70,15 +70,12 @@ try {
         ]
     ];
 
-    // 1. Insert Topics
     $topicQuery = "INSERT INTO topics (name, description, image) VALUES (:name, :description, :image)";
     $topicStmt = $db->prepare($topicQuery);
     
-    // 2. Query để lấy word_id từ local_words
     $getWordQuery = "SELECT id FROM local_words WHERE word = :word LIMIT 1";
     $getWordStmt = $db->prepare($getWordQuery);
     
-    // 3. Link word to topic
     $linkQuery = "INSERT INTO topic_words (topic_id, local_word_id) VALUES (:topic_id, :word_id) ON DUPLICATE KEY UPDATE topic_id=topic_id";
     $linkStmt = $db->prepare($linkQuery);
     
@@ -97,7 +94,6 @@ try {
             $topicCount++;
             echo "✅ Chủ đề: {$topicData['name']} (ID: $topicId)<br>";
             
-            // Link existing words from local_words for this topic
             foreach ($topicData['words'] as $word) {
                 $getWordStmt->bindParam(':word', $word);
                 $getWordStmt->execute();

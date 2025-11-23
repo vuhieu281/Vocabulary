@@ -9,7 +9,7 @@
             background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
             color: #fff;
             padding: 50px 20px 25px;
-            margin-top: 0; /* footer positioned by flex layout in body */
+            margin-top: 0; 
             box-shadow: 0 -6px 20px rgba(13,110,253,0.1);
         }
 
@@ -46,7 +46,6 @@
             list-style: none;
         }
 
-        /* Make footer links simple, block-aligned and remove unexpected backgrounds */
         .footer-section ul li a {
             display: block;
             color: rgba(255,255,255,0.9);
@@ -121,13 +120,11 @@
     </style>
 
     <div class="footer-container">
-        <!-- About Section -->
         <div class="footer-section about">
             <h3>Vocabulary</h3>
             <p>Nền tảng học từ vựng tiếng Anh hiện đại, cung cấp các công cụ và tài liệu học tập toàn diện cho người dùng ở mọi trình độ.</p>
         </div>
 
-        <!-- Quick Links -->
         <div class="footer-section">
             <h3>Liên Kết Nhanh</h3>
             <ul>
@@ -139,7 +136,6 @@
             </ul>
         </div>
 
-        <!-- Resources -->
         <div class="footer-section">
             <h3>Tài Nguyên</h3>
             <ul>
@@ -151,7 +147,6 @@
             </ul>
         </div>
 
-        <!-- Support -->
         <div class="footer-section">
             <h3>Hỗ Trợ & Pháp Lý</h3>
             <ul>

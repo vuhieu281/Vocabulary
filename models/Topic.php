@@ -72,7 +72,7 @@ class Topic {
     }
 
     /**
-     * Tạo topic mới (cho admin sau này)
+     * Tạo topic mới 
      */
     public function create($name, $description, $image = null) {
         $query = "INSERT INTO topics (name, description, image) VALUES (:name, :description, :image)";
@@ -88,7 +88,7 @@ class Topic {
     }
 
     /**
-     * Cập nhật topic (cho admin sau này)
+     * Cập nhật topic 
      */
     public function update($id, $name, $description, $image = null) {
         $query = "UPDATE topics SET name = :name, description = :description, image = :image WHERE id = :id";
@@ -102,7 +102,7 @@ class Topic {
     }
 
     /**
-     * Xóa topic (cho admin sau này)
+     * Xóa topic 
      */
     public function delete($id) {
         $query = "DELETE FROM topics WHERE id = :id";
@@ -113,7 +113,7 @@ class Topic {
     }
 
     /**
-     * Thêm từ vào topic (cho admin sau này)
+     * Thêm từ vào topic 
      */
     public function addWord($topicId, $localWordId) {
         $query = "INSERT INTO topic_words (topic_id, local_word_id) VALUES (:tid, :wid)";
@@ -125,7 +125,7 @@ class Topic {
     }
 
     /**
-     * Xóa từ khỏi topic (cho admin sau này)
+     * Xóa từ khỏi topic
      */
     public function removeWord($topicId, $localWordId) {
         $query = "DELETE FROM topic_words WHERE topic_id = :tid AND local_word_id = :wid";

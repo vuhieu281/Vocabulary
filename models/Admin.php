@@ -338,7 +338,7 @@ class Admin {
                 if ($result) {
                     $wordId = $result['id'];
                 } else {
-                    // Nếu từ không tồn tại, tạo mới
+                 
                     $stmt = $this->db->prepare("
                         INSERT INTO local_words (word, part_of_speech, ipa, audio_link, senses, level, oxford_url) 
                         VALUES (?, '', '', '', '', '', '')
@@ -346,7 +346,7 @@ class Admin {
                     if ($stmt->execute([$word])) {
                         $wordId = (int)$this->db->lastInsertId();
                     } else {
-                        continue; // Bỏ qua nếu insert thất bại
+                        continue; 
                     }
                 }
 

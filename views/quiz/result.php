@@ -1,5 +1,5 @@
 <?php
-// views/quiz/result.php - Trang kết quả quiz
+// Trang kết quả quiz
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

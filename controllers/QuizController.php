@@ -1,5 +1,4 @@
 <?php
-// controllers/QuizController.php - Controller để xử lý quiz
 
 require_once __DIR__ . '/../models/Quiz.php';
 
@@ -65,10 +64,8 @@ class QuizController {
      * Lưu kết quả quiz
      */
     public function submit() {
-        // Start output buffering để tránh output trước JSON
         ob_start();
         
-        // Set error log file
         $errorLogFile = __DIR__ . '/../logs/quiz_error.log';
         if (!is_dir(dirname($errorLogFile))) {
             mkdir(dirname($errorLogFile), 0755, true);
@@ -198,12 +195,12 @@ class QuizController {
     private function generateQuiz($words, $allWords) {
         $quizQuestions = [];
         $questionTypes = [
-            'word_to_pos',      // Từ -> Loại từ
-            'word_to_ipa',      // Từ -> IPA
-            'ipa_to_word',      // IPA -> Từ
-            'senses_to_word',   // Mô tả -> Từ
-            'word_to_senses',   // Từ -> Mô tả
-            'pos_to_word',      // Loại từ -> Từ
+            'word_to_pos',      
+            'word_to_ipa',      
+            'ipa_to_word',      
+            'senses_to_word',   
+            'word_to_senses',   
+            'pos_to_word',      
         ];
 
         $typeIndex = 0;

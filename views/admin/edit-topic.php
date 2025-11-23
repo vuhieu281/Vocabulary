@@ -268,20 +268,16 @@ document.querySelectorAll('.btn-remove-word').forEach(button => {
         const wordElement = this.closest('.word-tag');
         
         if (wordElement) {
-            // Tìm hidden input tương ứng
             const hiddenInput = document.querySelector(`input.existing-word-input[value="${wordId}"]`);
             
-            // Xóa element từ DOM
             wordElement.style.animation = 'fadeOut 0.3s ease-out';
             setTimeout(() => {
                 wordElement.remove();
                 
-                // Xóa hidden input
                 if (hiddenInput) {
                     hiddenInput.remove();
                 }
                 
-                // Nếu không còn từ nào, hiển thị thông báo
                 const currentWords = document.getElementById('current-words');
                 if (currentWords.querySelectorAll('.word-tag').length === 0) {
                     currentWords.innerHTML = '<p style="color: #7f8c8d; font-style: italic;">Chủ đề này chưa có từ vựng nào</p>';

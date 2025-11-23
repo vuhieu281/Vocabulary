@@ -1,5 +1,4 @@
 <?php
-// models/Word.php - Model để quản lý dữ liệu từ vựng
 
 require_once __DIR__ . '/../config/database.php';
 
@@ -7,7 +6,7 @@ class Word {
     private $db;
     private $table = 'local_words';
 
-    // Accept an optional PDO instance for flexibility (works with both patterns)
+    // Accept an optional PDO instance for flexibility 
     public function __construct($db = null) {
         if ($db) {
             $this->db = $db;
@@ -125,7 +124,6 @@ class Word {
      * Lấy từ đã lưu của user
      */
     public function getSavedWords($userId) {
-        // Backwards-compatible: if only $userId passed, return all saved words.
         $args = func_get_args();
         if (count($args) === 1) {
             $sql = "
@@ -140,7 +138,6 @@ class Word {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        // If limit/offset provided, use pagination
         $limit = isset($args[1]) ? (int)$args[1] : 20;
         $offset = isset($args[2]) ? (int)$args[2] : 0;
 

@@ -1,5 +1,5 @@
 <?php
-// views/flashcard-learn.php - Trang học flashcard
+// Trang học flashcard
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -81,7 +81,6 @@ $totalCards = count($flashcards);
     </div>
 </div>
 
-<!-- Script để xử lý flashcard -->
 <script>
 const allFlashcards = <?php echo json_encode($flashcards); ?>;
 let flashcards = [...allFlashcards];
@@ -90,7 +89,6 @@ let isFlipped = false;
 let audioUrl = '';
 let currentDifficulty = null;
 
-// Tải card đầu tiên
 document.addEventListener('DOMContentLoaded', function() {
     loadCard(0);
     document.getElementById('flashcard').addEventListener('click', flipCard);
@@ -104,19 +102,15 @@ function changeDifficulty(difficulty) {
     currentDifficulty = difficulty;
     
     if (difficulty) {
-        // Lọc flashcards theo độ khó
         flashcards = allFlashcards.filter(card => card.level === difficulty);
     } else {
-        // Hiển thị tất cả
         flashcards = [...allFlashcards];
     }
     
-    // Reset về card đầu tiên
     if (flashcards.length > 0) {
         currentIndex = 0;
         loadCard(0);
     } else {
-        // Nếu không có từ nào, quay lại
         alert('Không có từ nào với độ khó này');
         document.getElementById('difficulty-select').value = '';
         currentDifficulty = null;
@@ -125,31 +119,6 @@ function changeDifficulty(difficulty) {
     }
 }
 
-/**
-lashcards.filter(card => card.level === difficulty);
-    } else {
-        // Hiển thị tất cả
-        flashcards = [...allFlashcards];
-    }
-    
-    // Reset về card đầu tiên
-    if (flashcards.length > 0) {
-        currentIndex = 0;
-        loadCard(0);
-    } else {
-        // Nếu không có từ nào, quay lại
-        alert('Không có từ nào với độ khó này');
-        document.getElementById('difficulty-select').value = '';
-        currentDifficulty = null;
-        flashcards = [...allFlashcards];
-        loadCard(0);
-    }
-}
-
-/**
->>>>>>> 7ea12cd (cập nhật flashcard)
- * Tải flashcard theo index
- */
 function loadCard(index) {
     if (index < 0) {
         index = flashcards.length - 1;
@@ -160,23 +129,18 @@ function loadCard(index) {
     currentIndex = index;
     const card = flashcards[index];
     
-    // Reset flip state
     isFlipped = false;
     document.getElementById('flashcard').classList.remove('flipped');
 
-    // Cập nhật số thứ tự
     document.getElementById('current-card').textContent = index + 1;
     document.getElementById('total-cards').textContent = flashcards.length;
 
-    // Cập nhật nội dung card
     document.getElementById('card-word').textContent = card.word;
     document.getElementById('card-ipa').textContent = card.ipa || 'N/A';
     document.getElementById('card-pos').textContent = card.part_of_speech || 'N/A';
 
-    // Lưu đường dẫn audio
     audioUrl = card.audio_link || '';
     
-    // Enable/disable nút audio
     const audioBtn = document.getElementById('audio-btn');
     if (audioUrl) {
         audioBtn.disabled = false;
@@ -187,9 +151,6 @@ function loadCard(index) {
     }
 }
 
-/**
- * Lật flashcard
- */
 function flipCard() {
     const card = document.getElementById('flashcard');
     isFlipped = !isFlipped;
@@ -201,23 +162,14 @@ function flipCard() {
     }
 }
 
-/**
- * Chuyển đến card tiếp theo
- */
 function nextCard() {
     loadCard(currentIndex + 1);
 }
 
-/**
- * Quay lại card trước
- */
 function previousCard() {
     loadCard(currentIndex - 1);
 }
 
-/**
- * Phát âm thanh
- */
 function playAudio(event) {
     event.stopPropagation();
     if (audioUrl) {
@@ -244,9 +196,6 @@ function handleKeyPress(event) {
     }
 }
 
-/**
- * Quay lại trang flashcard
- */
 function goBackToFlashcard() {
     window.location.href = '/Vocabulary/public/index.php?route=flashcard';
 }

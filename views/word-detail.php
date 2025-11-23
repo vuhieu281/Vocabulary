@@ -1,7 +1,6 @@
 <?php
-// views/word-detail.php - Trang hiển thị chi tiết từ vựng
+// Trang hiển thị chi tiết từ vựng
 
-// Khởi động session trước khi có output
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -267,16 +266,13 @@ if (!$word_data) {
     </div>
 
     <script>
-        // Biến lưu trữ trạng thái từ
         let wordId = <?php echo $word_id; ?>;
         let isSaved = false;
 
-        // Load trạng thái lưu từ khi trang tải
         document.addEventListener('DOMContentLoaded', function() {
             checkIfWordSaved();
         });
 
-        // Hàm phát âm
         function playAudio(audioUrl) {
             const audio = new Audio(audioUrl);
             audio.play().catch(error => {
@@ -285,7 +281,6 @@ if (!$word_data) {
             });
         }
 
-        // Hàm kiểm tra từ đã được lưu chưa
         function checkIfWordSaved() {
             fetch(`../api/check_saved_word.php?word_id=${wordId}`)
                 .then(response => response.json())
@@ -300,7 +295,6 @@ if (!$word_data) {
                 });
         }
 
-        // Hàm toggle lưu/bỏ lưu từ
         function toggleSaveWord() {
             const action = isSaved ? 'remove' : 'save';
             
@@ -327,7 +321,6 @@ if (!$word_data) {
             });
         }
 
-        // Hàm cập nhật giao diện nút lưu
         function updateSaveButton() {
             const btn = document.getElementById('save-btn');
             if (isSaved) {

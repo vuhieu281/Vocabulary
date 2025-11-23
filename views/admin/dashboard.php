@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <!-- Stats Cards - 4 columns (new style) -->
+        <!-- Stats Cards  -->
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px;">
             <!-- Users Card -->
             <div style="background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%); color: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(255, 107, 107, 0.25); position: relative; overflow: hidden; min-height: 140px;">

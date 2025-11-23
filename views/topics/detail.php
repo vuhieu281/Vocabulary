@@ -1,5 +1,4 @@
 <?php
-// views/topics/detail.php
 ?>
 <div class="container" style="max-width:1100px;margin:32px auto;">
     <nav style="margin-bottom:14px;font-size:0.95rem;color:#666;">

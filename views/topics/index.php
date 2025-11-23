@@ -1,5 +1,4 @@
 <?php
-// views/topics/index.php
 ?>
 <div class="topics-page">
     <div class="topics-inner">
@@ -30,7 +29,6 @@
 </div>
 
 <style>
-/* Topics page styles + subtle animations */
 .topics-page { max-width: 1100px; margin: 32px auto; padding: 0 18px; }
 .topics-inner h2 { color: #0d6efd; margin-bottom: 8px; font-size: 2em; }
 .topics-inner .lead { color:#444; margin-bottom:20px; }

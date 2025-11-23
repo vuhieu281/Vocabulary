@@ -102,7 +102,6 @@ if (session_status() === PHP_SESSION_NONE) session_start();
         .nav-right a { display:inline-flex; align-items:center; }
         .navbar { z-index: 50; }
 
-        /* Ensure button text colors override the generic .navbar a rule */
         .navbar a.btn-register { color: #0d6efd !important; }
         .navbar a.btn-login { color: #ffffff !important; }
 

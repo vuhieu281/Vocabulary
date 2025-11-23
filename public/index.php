@@ -1,15 +1,12 @@
 <?php
-// Router đơn giản theo tham số ?route=
 
-// Middleware: Nếu là admin, redirect sang admin dashboard (trừ logout, api routes)
+
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 $route = $_GET['route'] ?? 'home';
 
-// Routes cho phép admin access
 $adminAllowedRoutes = ['logout', 'logout_preview', 'home', 'search', 'topics', 'topic_detail', 'saved', 'history', 'flashcard', 'quiz'];
 
-// Nếu là admin và route không phải admin route hay logout, redirect về admin dashboard
 if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin' && 
     !in_array($route, $adminAllowedRoutes) && 
     strpos($route, 'admin_') === false) {

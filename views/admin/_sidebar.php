@@ -1,9 +1,7 @@
 <?php
 // Admin sidebar component
-// Lấy route hiện tại để highlight menu item
 $currentRoute = $_GET['route'] ?? 'admin_dashboard';
 
-// Xác định route cha cho từng trang (edit-word, add-word, etc. thì highlight "Words")
 $routeParent = [
     'admin_add_word' => 'admin_words',
     'admin_edit_word' => 'admin_words',
@@ -16,7 +14,6 @@ $routeParent = [
     'admin_user_activities' => 'admin_activities',
 ];
 
-// Determine active route (nếu route hiện tại có parent, dùng parent)
 $activeRoute = $routeParent[$currentRoute] ?? $currentRoute;
 
 $menuItems = [

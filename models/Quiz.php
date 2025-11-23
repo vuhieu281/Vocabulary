@@ -1,5 +1,4 @@
 <?php
-// models/Quiz.php - Model để quản lý quiz
 
 require_once __DIR__ . '/../config/database.php';
 
@@ -18,13 +17,6 @@ class Quiz {
         }
     }
 
-    /**
-     * Lấy các từ ngẫu nhiên để tạo quiz
-     * 
-     * @param int $userId ID của user
-     * @param int $limit Số lượng từ cần lấy (mặc định 10)
-     * @return array Danh sách từ
-     */
     public function getRandomWords($userId, $limit = 10) {
         $query = "
             SELECT 
@@ -50,12 +42,7 @@ class Quiz {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Lấy tất cả từ đã lưu của user
-     * 
-     * @param int $userId ID của user
-     * @return array Danh sách từ
-     */
+
     public function getAllSavedWords($userId) {
         $query = "
             SELECT 
@@ -77,16 +64,7 @@ class Quiz {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Lưu kết quả quiz
-     * 
-     * @param int $userId ID của user
-     * @param int $score Điểm số
-     * @param int $totalQuestions Tổng số câu hỏi
-     * @return int|false ID của quiz result hoặc false nếu thất bại
-     */
     public function saveQuizResult($userId, $score, $totalQuestions) {
-        // Nếu user chưa có quiz, tạo một default quiz
         $userQuizId = $this->getOrCreateDefaultQuiz($userId);
         
         if (!$userQuizId) {
@@ -110,11 +88,7 @@ class Quiz {
         return false;
     }
 
-    /**
-     * Lấy hoặc tạo default quiz cho user
-     */
     private function getOrCreateDefaultQuiz($userId) {
-        // Kiểm tra xem user có quiz "Default" chưa
         $stmt = $this->db->prepare("SELECT id FROM user_quizzes WHERE user_id = ? AND name = 'Default' LIMIT 1");
         $stmt->execute([$userId]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -123,7 +97,6 @@ class Quiz {
             return $result['id'];
         }
 
-        // Tạo default quiz nếu chưa có
         $stmt = $this->db->prepare("INSERT INTO user_quizzes (user_id, name, description) VALUES (?, 'Default', 'Quiz mặc định')");
         if ($stmt->execute([$userId])) {
             return $this->db->lastInsertId();
@@ -132,16 +105,6 @@ class Quiz {
         return false;
     }
 
-    /**
-     * Lưu chi tiết câu trả lời
-     * 
-     * @param int $quizResultId ID của quiz result
-     * @param int $wordId ID của từ
-     * @param string $userAnswer Câu trả lời của user
-     * @param string $correctAnswer Câu trả lời đúng
-     * @param bool $isCorrect Có đúng không
-     * @return bool
-     */
     public function saveQuestionDetail($quizResultId, $wordId, $userAnswer, $correctAnswer, $isCorrect) {
         $query = "
             INSERT INTO " . $this->table_quiz_result_details . " 
@@ -159,14 +122,6 @@ class Quiz {
         return $stmt->execute();
     }
 
-    /**
-     * Lấy kết quả quiz của user
-     * 
-     * @param int $userId ID của user
-     * @param int $limit Số lượng kết quả
-     * @param int $offset Vị trí bắt đầu
-     * @return array Danh sách kết quả quiz
-     */
     public function getQuizResults($userId, $limit = 10, $offset = 0) {
         $query = "
             SELECT *
@@ -185,12 +140,6 @@ class Quiz {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Lấy chi tiết kết quả quiz
-     * 
-     * @param int $quizResultId ID của quiz result
-     * @return array Danh sách chi tiết
-     */
     public function getQuizResultDetails($quizResultId) {
         $query = "
             SELECT 
@@ -215,12 +164,6 @@ class Quiz {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Lấy chi tiết một kết quả quiz
-     * 
-     * @param int $quizResultId ID của quiz result
-     * @return array|null Chi tiết quiz hoặc null
-     */
     public function getQuizResultDetail($quizResultId) {
         $query = "
             SELECT *
@@ -235,12 +178,6 @@ class Quiz {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Kiểm tra user có từ lưu không
-     * 
-     * @param int $userId ID của user
-     * @return bool
-     */
     public function hasSavedWords($userId) {
         $query = "
             SELECT COUNT(*) as total
@@ -256,12 +193,6 @@ class Quiz {
         return $result['total'] > 0;
     }
 
-    /**
-     * Đếm số từ đã lưu
-     * 
-     * @param int $userId ID của user
-     * @return int Số lượng từ
-     */
     public function countSavedWords($userId) {
         $query = "
             SELECT COUNT(*) as total

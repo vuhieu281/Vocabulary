@@ -1,10 +1,8 @@
 <?php
 $pdo = new PDO("mysql:host=localhost:3366;dbname=vocabulary_db;charset=utf8", "root", "");
 
-// Mở file CSV
 $file = fopen("oxford_words.csv", "r");
 
-// Bỏ dòng header
 fgetcsv($file);
 
 while (($row = fgetcsv($file)) !== FALSE) {
@@ -17,13 +15,12 @@ while (($row = fgetcsv($file)) !== FALSE) {
     $audio_link    = $row[6];
     $senses        = $row[7];
 
-    // Chuẩn bị câu lệnh insert, bỏ qua từ trùng lặp
+
     $stmt = $pdo->prepare("
         INSERT IGNORE INTO local_words (word, part_of_speech, ipa, audio_link, senses, level, oxford_url)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     ");
 
-    // Thực thi
     $stmt->execute([$word, $part_of_speech, $ipa, $audio_link, $senses, $level, $oxford_url]);
 }
 

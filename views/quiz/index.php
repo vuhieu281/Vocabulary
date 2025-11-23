@@ -1,5 +1,5 @@
 <?php
-// views/quiz/index.php - Trang chính quiz
+// Trang chính quiz
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -14,7 +14,6 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <?php if ($hasWords): ?>
-            <!-- Khi user có từ lưu -->
             <div class="quiz-stats">
                 <div class="stat-item">
                     <div class="stat-content">
@@ -48,7 +47,6 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
         <?php else: ?>
-            <!-- Khi user chưa lưu từ nào -->
             <div class="quiz-empty">
                 <div class="empty-icon">❌</div>
                 <h2>Bạn chưa lưu từ nào</h2>

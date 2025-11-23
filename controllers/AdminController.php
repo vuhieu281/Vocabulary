@@ -49,7 +49,6 @@ class AdminController {
         $totalUsers = $this->admin->countUsers();
         $totalPages = ceil($totalUsers / $limit);
 
-        // Tách admin và non-admin users
         $adminUsers = [];
         $regularUsers = [];
         

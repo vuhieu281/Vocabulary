@@ -1,6 +1,4 @@
 <?php
-// views/chat/index.php
-// session already started in controller; do not call session_start() here to avoid notices
 ?>
 <div class="container" style="max-width:900px;margin:28px auto;">
     <h2 style="color:#0d6efd;margin-bottom:12px;">Chatbot - Trợ lý học tiếng Anh</h2>
@@ -32,7 +30,6 @@ function appendMessage(role, text) {
         wrap.innerHTML = `<div style="text-align:left;"><div style="display:inline-block;background:#f6f9ff;color:#06406b;padding:8px 12px;border-radius:12px;max-width:80%;">${escapeHtml(text)}</div></div>`;
     }
     messagesEl.appendChild(wrap);
-    // scroll
     const chatBox = document.getElementById('chat-box');
     chatBox.scrollTop = chatBox.scrollHeight;
 }
@@ -57,7 +54,6 @@ async function sendMessage() {
             body: JSON.stringify({message: text})
         });
         const data = await res.json();
-        // remove the 'Đang xử lý...' placeholder
         const last = messagesEl.lastChild;
         if (last) messagesEl.removeChild(last);
 
@@ -74,7 +70,6 @@ async function sendMessage() {
 sendBtn.addEventListener('click', sendMessage);
 inputEl.addEventListener('keydown', function(e){ if (e.key === 'Enter') sendMessage(); });
 
-// load recent history on open
 async function loadHistory(){
     try {
         const res = await fetch('../api/chatbot.php?action=history&limit=50&page=1');

@@ -207,14 +207,12 @@ function updateWordlist(searchTerm = '') {
     });
 }
 
-// Thêm event listeners cho input fields
 document.querySelectorAll('input[name="words[]"]').forEach(input => {
     input.addEventListener('input', function() {
         updateWordlist(this.value);
     });
 });
 
-// Tải danh sách từ vựng khi trang load
 document.addEventListener('DOMContentLoaded', loadAllWords);
 </script>
 

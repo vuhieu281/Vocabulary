@@ -1,5 +1,5 @@
 <?php
-// views/flashcard.php - Trang chính flashcard
+// Trang chính flashcard
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -14,7 +14,6 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
 
         <?php if ($hasWords): ?>
-            <!-- Khi user có từ lưu -->
             <div class="flashcard-actions">
                 <a href="/Vocabulary/public/index.php?route=flashcard&action=learn" class="btn-primary">
                     <span class="btn-icon">▶</span>
@@ -33,7 +32,6 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
         <?php else: ?>
-            <!-- Khi user chưa lưu từ nào -->
             <div class="flashcard-empty">
                 <div class="empty-icon">📭</div>
                 <h2>Bạn chưa lưu từ nào</h2>
@@ -58,5 +56,4 @@ if (session_status() === PHP_SESSION_NONE) {
 </div>
 
 <script>
-// Removed
 </script>

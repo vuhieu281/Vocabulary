@@ -1,7 +1,3 @@
-/* ========================================
-   FLASHCARD STYLES
-   ======================================== */
-
 /* Trang chính flashcard */
 .flashcard-container {
   max-width: 900px;
@@ -262,10 +258,6 @@
 .flashcard-guide strong {
   color: #0d6efd;
 }
-
-/* ========================================
-   FLASHCARD LEARNING VIEW
-   ======================================== */
 
 .flashcard-learn-container {
   max-width: 900px;

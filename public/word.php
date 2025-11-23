@@ -1,5 +1,5 @@
 <?php
-// Trang chi tiết từ vựng - public/word.php (OOP style)
+// Trang chi tiết từ vựng
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../models/Word.php';
 
@@ -15,7 +15,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 }
 
 if (!$item) {
-    // include header/footer to keep site chrome
     if (file_exists(__DIR__ . '/../views/header.php')) include __DIR__ . '/../views/header.php';
     echo '<div style="max-width:900px;margin:40px auto;padding:20px;background:#fff;border-radius:8px;">Không tìm thấy từ vựng.</div>';
     if (file_exists(__DIR__ . '/../views/footer.php')) include __DIR__ . '/../views/footer.php';

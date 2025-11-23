@@ -4,3 +4,6 @@ Trace: #0 C:\xampp1\htdocs\Vocabulary\models\Quiz.php(107): PDOStatement->execut
 #2 C:\xampp1\htdocs\Vocabulary\public\index.php(88): QuizController->submit()
 #3 {main}
 2025-11-22 08:10:57 - Result page: ID=1, Found=YES
+2025-11-23 10:26:26 - Result page: ID=22, Found=YES
+2025-11-23 10:47:43 - Result page: ID=23, Found=YES
+2025-11-23 16:28:44 - Result page: ID=24, Found=YES

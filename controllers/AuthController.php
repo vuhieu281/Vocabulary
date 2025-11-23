@@ -58,7 +58,6 @@ class AuthController {
         $_SESSION['user_email'] = $data['email'];
         $_SESSION['user_role'] = $data['role'];
         
-        // Chuyển hướng dựa trên role
         if ($data['role'] === 'admin') {
             header("Location: index.php?route=admin_dashboard");
         } else {
@@ -84,7 +83,7 @@ class AuthController {
         $wordModel = new Word();
 
         $user = $userModel->getById($_SESSION['user_id']);
-        // Saved words pagination (server-side)
+
         $savedLimit = isset($_GET['saved_limit']) ? max(1, (int)$_GET['saved_limit']) : 6;
         $savedPage = isset($_GET['saved_page']) ? max(1, (int)$_GET['saved_page']) : 1;
         $savedOffset = ($savedPage - 1) * $savedLimit;
@@ -96,7 +95,7 @@ class AuthController {
     }
 
     public function changePassword() {
-       // Code đã sửa
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -122,8 +121,7 @@ if (session_status() === PHP_SESSION_NONE) {
     }
 
     public function logoutPreview() {
-        // Redirect sang trang home mà vẫn giữ session admin
-        // KHÔNG gọi session_destroy()
+
         header("Location: /Vocabulary/public/index.php?route=home");
         exit;
     }

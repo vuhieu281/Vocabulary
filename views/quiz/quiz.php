@@ -1,5 +1,5 @@
 <?php
-// views/quiz/quiz.php - Trang làm quiz
+// Trang làm quiz
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -23,16 +23,13 @@ $totalQuestions = count($quiz);
         <div class="question-container">
             <div class="question-text" id="question-text">Loading...</div>
             
-            <!-- Audio nếu có -->
             <div id="audio-section" class="audio-section" style="display: none;">
                 <button id="audio-btn" class="btn-audio-play" onclick="playAudio(event)">
                     🔊 Phát âm thanh
                 </button>
             </div>
 
-            <!-- Options -->
             <div class="options-container" id="options-container">
-                <!-- Sẽ được fill bởi JavaScript -->
             </div>
         </div>
     </div>
@@ -53,7 +50,6 @@ let currentQuestion = 0;
 let answers = new Array(quiz.length).fill(null);
 let currentAudioUrl = '';
 
-// Initialize
 document.addEventListener('DOMContentLoaded', function() {
     displayQuestion(0);
 });
@@ -74,7 +70,6 @@ function displayQuestion(index) {
     // Hiển thị câu hỏi
     document.getElementById('question-text').textContent = question.question;
 
-    // Hiển thị audio nếu có
     if (question.type === 'word_to_audio' || question.type === 'audio_to_word') {
         document.getElementById('audio-section').style.display = 'block';
         currentAudioUrl = question.audio_link;
@@ -96,7 +91,6 @@ function displayQuestion(index) {
         input.value = option;
         input.id = 'option-' + optIndex;
         
-        // Nếu đã chọn lựa chọn này trước đó, check nó
         if (answers[index] === option) {
             input.checked = true;
         }
@@ -125,7 +119,6 @@ function nextQuestion() {
     if (currentQuestion < quiz.length - 1) {
         displayQuestion(currentQuestion + 1);
     } else {
-        // Đã xong, submit
         submitQuiz();
     }
 }

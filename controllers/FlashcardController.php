@@ -1,5 +1,4 @@
 <?php
-// controllers/FlashcardController.php - Controller để xử lý flashcard
 
 require_once __DIR__ . '/../models/Flashcard.php';
 require_once __DIR__ . '/../models/User.php';
@@ -17,9 +16,7 @@ class FlashcardController {
         $this->user = new User();
     }
 
-    /**
-     * Hiển thị trang flashcard chính
-     */
+
     public function index() {
         // Kiểm tra user đã đăng nhập chưa
         if (!$this->isUserLoggedIn()) {
@@ -35,7 +32,7 @@ class FlashcardController {
         // Kiểm tra xem user có từ lưu không
         $hasWords = $this->flashcard->hasSavedWords($userId);
 
-        // Include header
+
         include_once __DIR__ . '/../views/header.php';
         
         // Include view flashcard
@@ -45,9 +42,6 @@ class FlashcardController {
         include_once __DIR__ . '/../views/footer.php';
     }
 
-    /**
-     * Hiển thị trang học flashcard
-     */
     public function learn() {
         // Kiểm tra user đã đăng nhập chưa
         if (!$this->isUserLoggedIn()) {
@@ -66,13 +60,10 @@ class FlashcardController {
         // Lấy tất cả flashcard
         $flashcards = $this->flashcard->getFlashcardsByUserId($userId);
 
-        // Include header
         include_once __DIR__ . '/../views/header.php';
         
-        // Include view flashcard học
         include_once __DIR__ . '/../views/flashcard-learn.php';
         
-        // Include footer
         include_once __DIR__ . '/../views/footer.php';
     }
 

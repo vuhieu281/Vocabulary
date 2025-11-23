@@ -8,7 +8,7 @@ class ChatbotController {
             exit;
         }
 
-        // Render chat view
+
         include __DIR__ . '/../views/header.php';
         include __DIR__ . '/../views/chat/index.php';
         include __DIR__ . '/../views/footer.php';

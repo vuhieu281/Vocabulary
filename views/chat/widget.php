@@ -1,5 +1,5 @@
 <?php
-// Small floating chatbot widget (partial)
+// Small floating chatbot widget 
 ?>
 <style>
 /* Chat widget styles */
@@ -86,11 +86,10 @@
         try{
             const res = await fetch('../api/chatbot.php', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text})});
             const data = await res.json();
-            // remove 'Đang xử lý...'
+
             const last = messagesEl.lastChild; if(last) messagesEl.removeChild(last);
             if (data.success) {
                 append('bot', data.reply);
-                // Reload full history to sync with database
                 setTimeout(loadHistory, 500);
             }
             else append('bot', 'Lỗi: ' + (data.message || 'Không có phản hồi'));

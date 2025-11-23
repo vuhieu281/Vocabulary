@@ -68,12 +68,10 @@
         text-align: center;
     }
 
-    /* Make header cells centered and control column widths */
     table th {
         text-align: center;
     }
 
-    /* Specific column widths for quiz results table */
     .quiz-table col.col-score { width: 15%; }
     .quiz-table col.col-count { width: 15%; }
     .quiz-table col.col-date { width: 70%; }
@@ -444,9 +442,9 @@
 </div>
 
 <script>
-    // Load search history khi page tải (client-side pagination)
+    // Load search history khi page tải
     document.addEventListener('DOMContentLoaded', function() {
-        const historyLimit = 6; // items per page
+        const historyLimit = 6; 
         loadSearchHistory(1, historyLimit);
 
         // Xử lý nút Xóa toàn bộ lịch sử
@@ -538,7 +536,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    loadSearchHistory(); // Reload danh sách
+                    loadSearchHistory(); 
                 } else {
                     alert('Không thể xóa mục này');
                 }
@@ -554,7 +552,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                loadSearchHistory(); // Reload danh sách
+                loadSearchHistory(); 
                 alert('Đã xóa toàn bộ lịch sử tìm kiếm');
             } else {
                 alert('Lỗi: ' + data.message);
@@ -589,7 +587,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    location.reload(); // Reload trang để cập nhật
+                    location.reload(); 
                 } else {
                     alert('Lỗi: ' + data.message);
                 }

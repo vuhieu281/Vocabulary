@@ -1,5 +1,4 @@
 <?php
-// models/Flashcard.php - Model để quản lý flashcard
 
 require_once __DIR__ . '/../config/database.php';
 
@@ -16,12 +15,6 @@ class Flashcard {
         }
     }
 
-    /**
-     * Lấy tất cả từ đã lưu của user, xáo trộn ngẫu nhiên
-     * 
-     * @param int $userId ID của user
-     * @return array Danh sách flashcard
-     */
     public function getFlashcardsByUserId($userId) {
         $query = "
             SELECT 
@@ -46,12 +39,6 @@ class Flashcard {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Lấy số lượng từ đã lưu của user
-     * 
-     * @param int $userId ID của user
-     * @return int Số lượng từ
-     */
     public function getSavedWordsCount($userId) {
         $query = "
             SELECT COUNT(*) as total
@@ -67,13 +54,6 @@ class Flashcard {
         return $result['total'] ?? 0;
     }
 
-    /**
-     * Lấy flashcard từ user học gần đây nhất
-     * (Có thể dùng cho tính năng "Tiếp tục học")
-     * 
-     * @param int $userId ID của user
-     * @return array|null Flashcard hoặc null nếu không có
-     */
     public function getRecentFlashcard($userId) {
         $query = "
             SELECT 
@@ -96,14 +76,6 @@ class Flashcard {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Lấy danh sách flashcard theo page (pagination)
-     * 
-     * @param int $userId ID của user
-     * @param int $limit Số từ trên mỗi trang
-     * @param int $offset Vị trí bắt đầu
-     * @return array Danh sách flashcard
-     */
     public function getFlashcardsPaginated($userId, $limit = 10, $offset = 0) {
         $query = "
             SELECT 
@@ -130,12 +102,6 @@ class Flashcard {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Lấy chi tiết một flashcard theo ID từ
-     * 
-     * @param int $wordId ID của từ
-     * @return array|null Chi tiết từ hoặc null nếu không tìm thấy
-     */
     public function getFlashcardDetail($wordId) {
         $query = "
             SELECT *
@@ -150,12 +116,6 @@ class Flashcard {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Kiểm tra xem user có từ lưu không
-     * 
-     * @param int $userId ID của user
-     * @return bool True nếu có từ lưu, false nếu không
-     */
     public function hasSavedWords($userId) {
         $count = $this->getSavedWordsCount($userId);
         return $count > 0;
