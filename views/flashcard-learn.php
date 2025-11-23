@@ -20,7 +20,7 @@ $totalCards = count($flashcards);
         <div class="filter-bar">
             <span class="filter-label">Bộ lọc:</span>
             <select id="difficulty-select" class="difficulty-select" onchange="changeDifficulty(this.value)">
-                <option value="">📚 Tất cả từ</option>
+                <option value="">Tất cả từ</option>
                 <?php 
                     $availableLevels = [];
                     foreach ($flashcards as $card) {
@@ -69,15 +69,15 @@ $totalCards = count($flashcards);
         </div>
 
         <div class="flashcard-controls">
-            <button class="btn-nav" onclick="previousCard()">⬅ Trước</button>
-            <button class="btn-flip" onclick="flipCard()">🔄 Lật</button>
-            <button class="btn-nav" onclick="nextCard()">Tiếp ➡</button>
+            <button class="btn-nav" onclick="previousCard()">Trước</button>
+            <button class="btn-flip" onclick="flipCard()">Lật</button>
+            <button class="btn-nav" onclick="nextCard()">Tiếp</button>
         </div>
     </div>
 
     <div class="flashcard-info">
-        <p>💡 <strong>Nhấp vào card</strong> hoặc nhấn <strong>Lật</strong> để xem mặt sau</p>
-        <p>📱 Sử dụng các phím <strong>← →</strong> để chuyển đổi card</p>
+        <p><strong>Nhấp vào card</strong> hoặc nhấn <strong>Lật</strong> để xem mặt sau</p>
+        <p>Sử dụng các phím <strong>← →</strong> để chuyển đổi card</p>
     </div>
 </div>
 

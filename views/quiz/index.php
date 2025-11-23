@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <div class="quiz-container">
     <div class="quiz-main">
         <div class="quiz-intro">
-            <h1>🎯 Quiz Từ Vựng</h1>
+            <h1>Quiz Từ Vựng</h1>
             <p>Kiểm tra kiến thức của bạn với các câu hỏi trắc nghiệm thú vị</p>
         </div>
 
@@ -17,14 +17,12 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Khi user có từ lưu -->
             <div class="quiz-stats">
                 <div class="stat-item">
-                    <div class="stat-icon">📚</div>
                     <div class="stat-content">
                         <div class="stat-number"><?php echo $totalWords; ?></div>
                         <div class="stat-label">Từ đã lưu</div>
                     </div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-icon">❓</div>
                     <div class="stat-content">
                         <div class="stat-number">10</div>
                         <div class="stat-label">Câu hỏi/Quiz</div>
@@ -33,8 +31,8 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
             <div class="quiz-actions">
-                <a href="/Vocabulary/public/index.php?route=quiz&action=start" class="btn-quiz-start">
-                    <span class="btn-icon">▶️</span>
+                <a href="/Vocabulary/public/index.php?route=quiz&action=start" class="btn-primary">
+                    <span class="btn-icon">▶</span>
                     Bắt đầu Quiz
                 </a>
             </div>

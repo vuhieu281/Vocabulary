@@ -8,18 +8,26 @@
         .app-footer {
             background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
             color: #fff;
-            padding: 50px 20px 25px;
-            margin-top: 0; /* footer positioned by flex layout in body */
-            box-shadow: 0 -6px 20px rgba(13,110,253,0.1);
+            padding: 56px 0 28px;
+            margin-top: 0;
+            box-shadow: 0 -6px 20px rgba(13,110,253,0.06);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+
+        /* central wrapper keeps left/right padding consistent with main site */
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 30px;
+            grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: 32px;
+            align-items: start;
+            margin-bottom: 22px;
         }
 
         .footer-section h3 {
@@ -41,16 +49,14 @@
         }
 
         .footer-section ul li a {
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.88);
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            transition: transform 0.18s ease, color 0.18s ease;
+            display: inline-block;
         }
 
-        .footer-section ul li a:hover {
-            color: #fff;
-            padding-left: 4px;
-        }
+        .footer-section ul li a:hover { transform: translateX(6px); color: #fff; }
 
         .footer-section.about p {
             color: rgba(255,255,255,0.8);
@@ -59,65 +65,43 @@
             margin: 0;
         }
 
-        .footer-divider {
-            border-top: 1px solid rgba(255,255,255,0.15);
-            margin: 30px 0;
-        }
+        .footer-divider { border-top: 1px solid rgba(255,255,255,0.12); margin: 18px 0; }
 
         .footer-bottom {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.75);
+            font-size: 0.9rem;
+            padding: 6px 0 6px;
             flex-wrap: wrap;
-            gap: 20px;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.85rem;
+            text-align: center;
         }
 
         .footer-bottom p {
             margin: 0;
         }
 
-        .footer-links {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
+        .footer-links { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+        .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; transition: color 0.18s ease; }
+        .footer-links a:hover { color: #fff; }
+
+        /* Small helper for CTA-like link in footer */
+        .btn-small { padding: 8px 12px; border-radius: 8px; font-weight: 700; }
+
+        @media (max-width: 980px) {
+            .footer-container { grid-template-columns: repeat(2, 1fr); }
         }
 
-        .footer-links a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: #fff;
-        }
-
-        @media (max-width: 768px) {
-            .footer-container {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .app-footer {
-                padding: 35px 15px 20px;
-                margin-top: 60px;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-links {
-                justify-content: center;
-            }
+        @media (max-width: 640px) {
+            .footer-container { grid-template-columns: 1fr; gap: 20px; }
+            .footer-bottom { justify-content: center; text-align: center; }
+            .footer-inner { padding: 0 16px; }
         }
     </style>
 
+    <div class="footer-inner">
     <div class="footer-container">
         <!-- About Section -->
         <div class="footer-section about">
@@ -165,12 +149,8 @@
     <div class="footer-divider"></div>
 
     <div class="footer-bottom">
-        <p>&copy; 2025 Vocabulary. Tất cả quyền được bảo lưu.</p>
-        <div class="footer-links">
-            <a href="#terms">Điều Khoản Sử Dụng</a>
-            <a href="#privacy">Chính Sách Bảo Mật</a>
-            <a href="#sitemap">Sơ Đồ Trang</a>
-        </div>
+        <p class="copyright">&copy; 2025 Vocabulary. Tất cả quyền được bảo lưu.</p>
+    </div>
     </div>
 </footer>
 

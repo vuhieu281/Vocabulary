@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <div class="flashcard-container">
     <div class="flashcard-main">
         <div class="flashcard-intro">
-            <h1>📚 Học Flashcard</h1>
+            <h1>Học Flashcard</h1>
             <p>Cải thiện từ vựng của bạn một cách vui vẻ và hiệu quả với các flashcard tương tác</p>
         </div>
 
