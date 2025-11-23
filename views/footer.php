@@ -31,8 +31,8 @@
         }
 
         .footer-section h3 {
-            font-size: 1.05rem;
-            margin-bottom: 16px;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
             font-weight: 700;
             color: #fff;
             letter-spacing: 0.5px;
@@ -45,7 +45,12 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            background: none !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            color: rgba(255,255,255,0.85) !important;
+            font-weight: 400 !important;
         }
 
         .footer-section ul li a {
@@ -103,12 +108,6 @@
 
     <div class="footer-inner">
     <div class="footer-container">
-        <!-- About Section -->
-        <div class="footer-section about">
-            <h3>Vocabulary</h3>
-            <p>Nền tảng học từ vựng tiếng Anh hiện đại, cung cấp các công cụ và tài liệu học tập toàn diện cho người dùng ở mọi trình độ.</p>
-        </div>
-
         <!-- Quick Links -->
         <div class="footer-section">
             <h3>Liên Kết Nhanh</h3>

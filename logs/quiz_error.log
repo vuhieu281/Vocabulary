@@ -1,0 +1,6 @@
+2025-11-22 08:08:18 - Exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user_quiz_id' in 'field list'
+Trace: #0 C:\xampp1\htdocs\Vocabulary\models\Quiz.php(107): PDOStatement->execute()
+#1 C:\xampp1\htdocs\Vocabulary\controllers\QuizController.php(113): Quiz->saveQuizResult(4, 8, 10)
+#2 C:\xampp1\htdocs\Vocabulary\public\index.php(88): QuizController->submit()
+#3 {main}
+2025-11-22 08:10:57 - Result page: ID=1, Found=YES
