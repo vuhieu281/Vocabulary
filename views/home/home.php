@@ -4,17 +4,7 @@
 <div class="home-container">
     <div class="intro-section">
         <div class="title-row">
-            <div class="hero-illustration left" aria-hidden="true">
-                <!-- book SVG -->
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="48" height="48" aria-hidden="true" focusable="false"><path fill="#0d6efd" d="M3 5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v13a1 1 0 0 1-1.447.894L13 17H6a2 2 0 0 1-2-2V5z"/></svg>
-            </div>
-            <span class="star-icon">&#10024;</span>
             <h1>Chào mừng đến với Vocabulary!</h1>
-            <span class="star-icon">&#10024;</span>
-            <div class="hero-illustration right" aria-hidden="true">
-                <!-- lightbulb SVG -->
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="48" height="48" aria-hidden="true" focusable="false"><path fill="#0d6efd" d="M9 21h6v-1a1 1 0 0 0-1-1H10a1 1 0 0 0-1 1v1zM12 2a7 7 0 0 0-4 12v1a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1a7 7 0 0 0-4-12z"/></svg>
-            </div>
         </div>
         <p>Khám phá kho từ vựng tiếng Anh, tra cứu và luyện tập mỗi ngày với giao diện hiện đại, thân thiện.</p>
     </div>

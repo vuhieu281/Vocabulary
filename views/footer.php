@@ -9,7 +9,7 @@
             background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
             color: #fff;
             padding: 50px 20px 25px;
-            margin-top: 0;
+            margin-top: 0; /* footer positioned by flex layout in body */
             box-shadow: 0 -6px 20px rgba(13,110,253,0.1);
         }
 
@@ -17,14 +17,19 @@
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 60px;
+            grid-template-columns: 320px repeat(3, 1fr);
+            gap: 28px;
             margin-bottom: 30px;
         }
 
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+        }
+
         .footer-section h3 {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
             font-weight: 700;
             color: #fff;
             letter-spacing: 0.5px;
@@ -37,24 +42,26 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 12px;
-            background: none !important;
-            padding: 0 !important;
-            border-radius: 0 !important;
-            color: rgba(255,255,255,0.85) !important;
-            font-weight: 400 !important;
+            margin-bottom: 8px;
+            list-style: none;
         }
 
+        /* Make footer links simple, block-aligned and remove unexpected backgrounds */
         .footer-section ul li a {
-            color: rgba(255,255,255,0.85);
+            display: block;
+            color: rgba(255,255,255,0.9);
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            transition: color 0.18s ease, transform 0.18s ease;
+            padding: 6px 0;
+            background: transparent !important;
+            border-radius: 4px !important;
+            box-shadow: none !important;
         }
 
         .footer-section ul li a:hover {
             color: #fff;
-            padding-left: 4px;
+            transform: translateX(4px);
         }
 
         .footer-section.about p {
@@ -65,46 +72,36 @@
         }
 
         .footer-divider {
-            border-top: 1px solid rgba(255,255,255,0.15);
-            margin: 30px 0;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            margin: 26px 0 18px;
         }
 
         .footer-bottom {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.85rem;
+            gap: 12px;
+            color: rgba(255,255,255,0.85);
+            font-size: 0.95rem;
+            padding: 6px 12px 18px;
         }
 
         .footer-bottom p {
             margin: 0;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: #fff;
+            text-align: center;
+            width: 100%;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.95);
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
             .footer-container {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 22px;
             }
 
             .app-footer {
@@ -124,6 +121,12 @@
     </style>
 
     <div class="footer-container">
+        <!-- About Section -->
+        <div class="footer-section about">
+            <h3>Vocabulary</h3>
+            <p>Nền tảng học từ vựng tiếng Anh hiện đại, cung cấp các công cụ và tài liệu học tập toàn diện cho người dùng ở mọi trình độ.</p>
+        </div>
+
         <!-- Quick Links -->
         <div class="footer-section">
             <h3>Liên Kết Nhanh</h3>
@@ -165,11 +168,6 @@
 
     <div class="footer-bottom">
         <p>&copy; 2025 Vocabulary. Tất cả quyền được bảo lưu.</p>
-        <div class="footer-links">
-            <a href="#terms">Điều Khoản Sử Dụng</a>
-            <a href="#privacy">Chính Sách Bảo Mật</a>
-            <a href="#sitemap">Sơ Đồ Trang</a>
-        </div>
     </div>
 </footer>
 

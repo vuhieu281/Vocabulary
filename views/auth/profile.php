@@ -78,7 +78,7 @@
     .quiz-table col.col-count { width: 15%; }
     .quiz-table col.col-date { width: 70%; }
 
-    ul li {
+    .wrapper ul li {
         margin-bottom: 6px;
         background: #eef4ff;
         padding: 10px 12px;
@@ -599,4 +599,3 @@
 </script>
 
 <?php include_once __DIR__ . '/../footer.php'; ?>
-</script>
